@@ -1,0 +1,126 @@
+package com.svalero.game.screen;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.svalero.game.MyGame;
+
+public class MainMenuScreen implements Screen {
+
+    private Stage stage;
+
+    private MyGame game;
+
+    private Texture backgroundTexture;
+
+    private SpriteBatch batch;
+
+    public MainMenuScreen(MyGame game) {
+        this.game = game;
+        batch = new SpriteBatch();
+        this.backgroundTexture = new Texture(Gdx.files.internal("ui/backgrounds/Purple_Nebula_05-1024x1024.png"));
+    }
+
+    private void loadStage() {
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        stage = new Stage(new ScreenViewport());
+        Table table = createOptionsTable();
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    @Override
+    public void show() {
+        loadStage();
+    }
+
+    @Override
+    public void render(float dt) {
+        //Clean screen
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Set background
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+
+        stage.act();
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        batch.dispose();
+        backgroundTexture.dispose();
+    }
+
+    private Table createOptionsTable() {
+        Skin skin = game.getSkin();
+        Table table = new Table();
+        table.setFillParent(true);
+        table.center();
+
+        // Title
+        Label title = new Label("Space Defenders", skin, "title");
+        title.setFontScale(1.2f);
+
+        // Buttons
+        TextButton playBtn = new TextButton("Play", skin);
+        playBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                //game.setScreen(new GameScreen(game));
+            }
+        });
+
+        TextButton settingsBtn = new TextButton("Settings", skin);
+
+        TextButton exitBtn = new TextButton("Exit", skin);
+        exitBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+
+        table.add(title).padBottom(50).row();
+        table.add(playBtn).width(500).height(120).padBottom(20).row();
+        table.add(settingsBtn).width(500).height(120).padBottom(20).row();
+        table.add(exitBtn).width(500).height(120).row();
+
+        return table;
+    }
+}
