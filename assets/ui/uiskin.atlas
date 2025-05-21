@@ -24,3 +24,17 @@ button-up
   orig: 1024, 1024
   offset: 0, 0
   index: -1
+progress-bar-bg
+  rotate: false
+  xy: 0, 0
+  size: 10, 20
+  orig: 10, 20
+  offset: 0, 0
+  index: -1
+progress-bar-fill
+  rotate: false
+  xy: 10, 0
+  size: 10, 20
+  orig: 10, 20
+  offset: 0, 0
+  index: -1

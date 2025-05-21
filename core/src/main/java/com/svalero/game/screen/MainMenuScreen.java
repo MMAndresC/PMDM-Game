@@ -1,5 +1,6 @@
 package com.svalero.game.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,33 +16,38 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
 
+import java.io.File;
+
+import static com.svalero.game.constants.Constants.*;
+
 public class MainMenuScreen implements Screen {
 
-    private Stage stage;
+    private Stage stage = null;
 
-    private MyGame game;
+    private final MyGame game;
 
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
 
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
     public MainMenuScreen(MyGame game) {
         this.game = game;
         batch = new SpriteBatch();
-        this.backgroundTexture = new Texture(Gdx.files.internal("ui/backgrounds/Purple_Nebula_05-1024x1024.png"));
+        this.backgroundTexture = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + MENU_BACKGROUND));
+        // Initialize stage in constructor
+        stage = new Stage(new ScreenViewport());
+        loadStage();
     }
 
     private void loadStage() {
-        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-        stage = new Stage(new ScreenViewport());
         Table table = createOptionsTable();
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
-        loadStage();
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -55,13 +61,17 @@ public class MainMenuScreen implements Screen {
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-        stage.act();
-        stage.draw();
+        if (stage != null) {
+            stage.act(dt);
+            stage.draw();
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        if (stage != null) {
+            stage.getViewport().update(width, height, true);
+        }
     }
 
     @Override
@@ -81,9 +91,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        batch.dispose();
-        backgroundTexture.dispose();
+        if (stage != null) stage.dispose();
+        if (batch != null) batch.dispose();
+        if (backgroundTexture != null) backgroundTexture.dispose();
     }
 
     private Table createOptionsTable() {
@@ -102,7 +112,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                //game.setScreen(new GameScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
             }
         });
 
@@ -116,10 +126,10 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        table.add(title).padBottom(50).row();
-        table.add(playBtn).width(500).height(120).padBottom(20).row();
-        table.add(settingsBtn).width(500).height(120).padBottom(20).row();
-        table.add(exitBtn).width(500).height(120).row();
+        table.add(title).padBottom(PADDING_TITLE).row();
+        table.add(playBtn).width(WIDTH_BUTTON).height(HEIGHT_BUTTON).padBottom(PADDING_BUTTON).row();
+        table.add(settingsBtn).width(WIDTH_BUTTON).height(HEIGHT_BUTTON).padBottom(PADDING_BUTTON).row();
+        table.add(exitBtn).width(WIDTH_BUTTON).height(HEIGHT_BUTTON).row();
 
         return table;
     }
