@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
 import com.svalero.game.utils.DrawInfo;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ import static com.svalero.game.constants.Constants.RANGER_ENGINE_EFFECTS_POWERIN
 @AllArgsConstructor
 public class Ranger extends Character{
 
-    private List<Projectile> projectiles;
+    private List<ProjectileRanger> projectiles;
     private int score;
     private boolean isMoving;
 
@@ -39,9 +40,15 @@ public class Ranger extends Character{
 
     public Ranger() {
         //Init
-        projectiles = new ArrayList<Projectile>();
+        projectiles = new ArrayList<ProjectileRanger>();
         score = 0;
         isMoving = false;
+
+        //Ammo data
+        fireRate = RANGER_FIRE_RATE;
+        bulletDamage = RANGER_BULLET_DAMAGE;
+        bulletSpeed = RANGER_BULLET_SPEED;
+        lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
 
         //Load textures
         body = new DrawInfo();
@@ -111,5 +118,11 @@ public class Ranger extends Character{
         float hitBoxWidth = rangerWidth * 0.46f; //Init in 1/3 and up number adjusting
         //Update hitBox
         hitBox.set(x + 25f, hitBoxY, hitBoxWidth, hitBoxHeight);
+    }
+
+    public void updateProjectiles(float dt){
+        for(ProjectileRanger projectile : projectiles){
+            projectile.update(dt);
+        }
     }
 }

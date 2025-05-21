@@ -29,6 +29,9 @@ public interface Constants {
     AnimationInfo RANGER_ENGINE_EFFECTS_POWERING = new AnimationInfo("Main-Ship-Engine-Effect-Powering", 4);
     String RANGER_FULL_HEALTH = "Main-Ship-Full-health";
     String RANGER_ENGINE = "Main-Ship-Engines-Supercharged";
+    String RANGER_AMMO_PLASMA = "Projectile-Plasma-Large";
+    String RANGER_AMMO_LASER = "Projectile-Laser-Large";
+    String RANGER_AMMO_MINI_GUN = "Projectile-Minigun-Large";
 
 
     //Config UI
@@ -43,5 +46,8 @@ public interface Constants {
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;
     float RANGER_SCALE = 2f; //Double size
+    float RANGER_FIRE_RATE = 0.7f;
+    float RANGER_BULLET_DAMAGE = 10f;
+    float RANGER_BULLET_SPEED = 100f;
 
 }

@@ -3,7 +3,9 @@ package com.svalero.game.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.MyGame;
+import com.svalero.game.characters.ProjectileRanger;
 import com.svalero.game.characters.Ranger;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,6 +52,15 @@ public class LogicManager {
             isMoving = true;
         }
 
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            //Spacing out shots
+            float currentTime = TimeUtils.nanoTime() / 1_000_000_000f; // Seconds
+            if (currentTime - ranger.getLastShot() >= ranger.getFireRate()) {
+                ranger.setLastShot(currentTime);
+                createProjectile();
+            }
+        }
+
         this.ranger.setMoving(isMoving);
 
         //Control screen limits so that ranger does not go out of the screen
@@ -66,8 +77,21 @@ public class LogicManager {
         this.ranger.setPosition(position);
     }
 
+    private void createProjectile(){
+        Vector2 position = new Vector2(
+            ranger.getPosition().x - 2f,
+            ranger.getPosition().y + (ranger.getRangerHeight() / 2)
+        );
+        ranger.getProjectiles().add(
+            new ProjectileRanger(
+                position, ranger.getBulletSpeed(), ranger.getFireRate(), ranger.getBulletDamage()
+            )
+        );
+    }
+
     public void update(float dt, float animationTime) {
-        this.ranger.setAnimationTime(animationTime);
+        ranger.setAnimationTime(animationTime);
         handleInput(dt);
+        ranger.updateProjectiles(dt);
     }
 }

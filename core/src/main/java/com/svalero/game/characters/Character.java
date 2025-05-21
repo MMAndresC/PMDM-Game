@@ -18,13 +18,14 @@ public abstract class Character implements Disposable {
     protected float speed;
 
     //Projectile speed
-    private float bulletSpeed;
+    protected float bulletSpeed;
 
     //Projectile damage
-    private float bulletDamage;
+    protected float bulletDamage;
 
     //Weapon fire rate
-    private float fireRate;
+    protected float fireRate;
+    protected float lastShot;
 
     //Points of life
     private float hitPoints;

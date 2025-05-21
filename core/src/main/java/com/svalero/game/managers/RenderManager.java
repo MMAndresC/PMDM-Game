@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.svalero.game.characters.Projectile;
 import com.svalero.game.utils.DrawInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +34,9 @@ public class RenderManager {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Draw
         batch.begin();
-        drawRanger();
         drawBackground(dt, background);
+        drawRanger();
+        drawRangerProjectile();
         batch.end();
 
         //DEBUG tool to show rectangle border
@@ -55,6 +57,12 @@ public class RenderManager {
         batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
         batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
         batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+    }
+
+    public void drawRangerProjectile(){
+        for(Projectile projectile : logicManager.getRanger().getProjectiles()) {
+            batch.draw(projectile.getTexture(), projectile.getPosition().x, projectile.getPosition().y);
+        }
     }
 
     private void updateBackground(float dt, float bgHeight) {

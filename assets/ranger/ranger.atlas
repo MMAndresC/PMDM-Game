@@ -1,11 +1,11 @@
 ranger.png
-size: 58, 351
+size: 58, 387
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Main-Ship-Damaged
   rotate: false
-  xy: 0, 63
+  xy: 0, 99
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -89,36 +89,99 @@ Main-Ship-Engine-Effect-Powering4
   index: -1
 Main-Ship-Engines-Base
   rotate: false
-  xy: 0, 111
+  xy: 0, 147
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Engines-Supercharged
   rotate: false
-  xy: 0, 159
+  xy: 0, 195
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Full-health
   rotate: false
-  xy: 0, 207
+  xy: 0, 243
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Slight-damage
   rotate: false
-  xy: 0, 255
+  xy: 0, 291
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Very-damaged
   rotate: false
-  xy: 0, 303
+  xy: 0, 339
   size: 48, 48
   orig: 48, 48
+  offset: 0, 0
+  index: -1
+Projectile-Laser-Large
+  rotate: false
+  xy: 35, 68
+  size: 8, 28
+  orig: 8, 28
+  offset: 0, 0
+  index: -1
+Projectile-Laser-Medium
+  rotate: false
+  xy: 43, 47
+  size: 7, 21
+  orig: 7, 21
+  offset: 0, 0
+  index: -1
+Projectile-Laser-Small
+  rotate: false
+  xy: 37, 47
+  size: 6, 18
+  orig: 6, 18
+  offset: 0, 0
+  index: -1
+Projectile-Minigun-Large
+  rotate: false
+  xy: 26, 68
+  size: 9, 27
+  orig: 9, 27
+  offset: 0, 0
+  index: -1
+Projectile-Minigun-Medium
+  rotate: false
+  xy: 0, 68
+  size: 11, 21
+  orig: 11, 21
+  offset: 0, 0
+  index: -1
+Projectile-Minigun-Small
+  rotate: false
+  xy: 30, 47
+  size: 7, 17
+  orig: 7, 17
+  offset: 0, 0
+  index: -1
+Projectile-Plasma-Large
+  rotate: false
+  xy: 43, 68
+  size: 9, 31
+  orig: 9, 31
+  offset: 0, 0
+  index: -1
+Projectile-Plasma-Medium
+  rotate: false
+  xy: 18, 68
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+Projectile-Plasma-Small
+  rotate: false
+  xy: 11, 68
+  size: 7, 24
+  orig: 7, 24
   offset: 0, 0
   index: -1
