@@ -1,9 +1,9 @@
 package com.svalero.game.characters;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,9 +32,8 @@ public abstract class Character implements Disposable {
     private int lives;
 
     //Position
-    protected float x;
-    protected float y;
-    private Rectangle rect;
+    protected Vector2 position;
+    protected Rectangle hitBox;
 
     // Character animation
     protected Animation<TextureRegion> animation;
@@ -42,9 +41,14 @@ public abstract class Character implements Disposable {
     protected TextureRegion currentFrame;
 
     public Character(float x, float y, float speed) {
-        this.x = x;
-        this.y = y;
+        this.position.x = x;
+        this.position.y = y;
         this.speed = speed;
+    }
+
+    public Character(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
     }
 
     // Get hit
@@ -55,12 +59,9 @@ public abstract class Character implements Disposable {
         }
     }
 
-    // Draw character
-    public abstract void draw(SpriteBatch batch);
-
     @Override
     public void dispose() {
-        rect = null;
+        hitBox = null;
         animation = null;
     }
 }
