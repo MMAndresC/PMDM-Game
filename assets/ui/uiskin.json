@@ -43,5 +43,12 @@
       "name": "button-over",
       "color": "blue"
     }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
+    "default": {
+      "background": "progress-bar-bg",
+      "knobBefore": "progress-bar-fill"
+    }
   }
 }

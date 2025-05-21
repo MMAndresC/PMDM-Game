@@ -4,6 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.svalero.game.screen.MainMenuScreen;
+import com.svalero.game.screen.SplashScreen;
+
+import java.io.File;
+
+import static com.svalero.game.constants.Constants.*;
 
 
 public class MyGame extends Game {
@@ -12,7 +17,7 @@ public class MyGame extends Game {
 
     @Override
     public void create() {
-        ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(this));
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new SplashScreen(this));
     }
 
     @Override
@@ -27,7 +32,7 @@ public class MyGame extends Game {
 
     public Skin getSkin() {
         if(skin == null ) {
-            skin = new Skin(Gdx.files.internal("ui/skins/uiskin.json"));
+            skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
         }
         return skin;
     }
