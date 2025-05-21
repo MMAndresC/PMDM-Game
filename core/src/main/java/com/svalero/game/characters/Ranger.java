@@ -38,7 +38,6 @@ public class Ranger extends Character{
 
 
     public Ranger() {
-
         //Init
         projectiles = new ArrayList<Projectile>();
         score = 0;
@@ -87,11 +86,13 @@ public class Ranger extends Character{
 
         // 1. Engine effect
         TextureRegion effect;
-        if(isMoving)
+        if(isMoving){
             effect = engineEffectPoweringAnimation.getKeyFrame(animationTime);
-        else
+            engineEffect.update(effect, x + 20f, yOffset + 5f, rangerWidth * 0.6f, engineEffectHeight * 1.5f);
+        } else {
             effect = engineEffectAnimation.getKeyFrame(animationTime);
-        engineEffect.update(effect, x + 20f, yOffset + 5f, rangerWidth * 0.6f, engineEffectHeight * 1.5f);
+            engineEffect.update(effect, x + 20f, yOffset + 20f, rangerWidth * 0.6f, engineEffectHeight * 1.5f);
+        }
 
         yOffset += engineEffectHeight - overlap;
         overlap = 38f * RANGER_SCALE;
