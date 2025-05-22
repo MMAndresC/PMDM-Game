@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import com.svalero.game.constants.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public abstract class Character implements Disposable {
     protected float lastShot;
 
     //Points of life
-    private float hitPoints;
+    protected float hitPoints;
 
     private int lives;
 
@@ -38,8 +39,10 @@ public abstract class Character implements Disposable {
 
     // Character animation
     protected Animation<TextureRegion> animation;
-    protected float stateTime;
+    protected float animationTime;
     protected TextureRegion currentFrame;
+
+    protected Constants.STATUS status;
 
     public Character(float x, float y, float speed) {
         this.position.x = x;
@@ -59,6 +62,8 @@ public abstract class Character implements Disposable {
             lives--;
         }
     }
+
+    public void update(float dt) {}
 
     @Override
     public void dispose() {

@@ -22,8 +22,6 @@ public class GameScreen implements Screen {
 
     private Texture background;
 
-    private float animationTime = 0f;
-
 
     public GameScreen(MyGame game) {
         this.game = game;
@@ -43,8 +41,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float dt) {
-        animationTime += dt;
-        logicManager.update(dt, animationTime);
+        logicManager.update(dt);
         renderManager.render(dt, background);
     }
 

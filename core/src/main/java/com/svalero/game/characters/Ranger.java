@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.svalero.game.constants.Constants.*;
-import static com.svalero.game.constants.Constants.RANGER_ENGINE_EFFECTS_POWERING;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -78,7 +77,9 @@ public class Ranger extends Character{
         hitBox = new Rectangle();
     }
 
-    public void drawRanger() {
+    @Override
+    public void update(float dt) {
+        animationTime += dt;
         //Adjust textures to form ranger, three separate parts
         float overlap =  2f * RANGER_SCALE;
 

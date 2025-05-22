@@ -1,0 +1,33 @@
+enemies.png
+size: 63, 108
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Asteroid1
+  rotate: false
+  xy: 0, 0
+  size: 39, 37
+  orig: 39, 37
+  offset: 0, 0
+  index: -1
+Asteroid2
+  rotate: false
+  xy: 0, 37
+  size: 26, 28
+  orig: 26, 28
+  offset: 0, 0
+  index: -1
+Asteroid3
+  rotate: false
+  xy: 26, 37
+  size: 37, 36
+  orig: 37, 36
+  offset: 0, 0
+  index: -1
+Asteroid4
+  rotate: false
+  xy: 0, 73
+  size: 44, 35
+  orig: 44, 35
+  offset: 0, 0
+  index: -1

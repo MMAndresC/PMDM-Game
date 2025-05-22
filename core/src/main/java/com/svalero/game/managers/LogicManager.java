@@ -22,12 +22,13 @@ public class LogicManager {
 
     private Ranger ranger;
 
-    private float animationTime;
+    private EnemyManager enemyManager;
+
 
     public LogicManager(MyGame game) {
         this.game = game;
         this.ranger = new Ranger();
-        this.animationTime = 0f;
+        this.enemyManager = new EnemyManager();
     }
 
     private void handleInput(float dt) {
@@ -35,6 +36,7 @@ public class LogicManager {
         float x = ranger.getPosition().x;
         float y = ranger.getPosition().y;
 
+        //Movement
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             x -= RANGER_SPEED * dt;
             isMoving = true;
@@ -51,7 +53,9 @@ public class LogicManager {
             y -= RANGER_SPEED * dt;
             isMoving = true;
         }
+        this.ranger.setMoving(isMoving);
 
+        //Shoot
         if(Gdx.input.isKeyPressed(Input.Keys.S)){
             //Spacing out shots
             float currentTime = TimeUtils.nanoTime() / 1_000_000_000f; // Seconds
@@ -60,8 +64,6 @@ public class LogicManager {
                 createProjectile();
             }
         }
-
-        this.ranger.setMoving(isMoving);
 
         //Control screen limits so that ranger does not go out of the screen
         float minX = this.ranger.getRangerWidth() / 2f;
@@ -89,9 +91,10 @@ public class LogicManager {
         );
     }
 
-    public void update(float dt, float animationTime) {
-        ranger.setAnimationTime(animationTime);
-        handleInput(dt);
+    public void update(float dt) {
         ranger.updateProjectiles(dt);
+        handleInput(dt);
+        ranger.update(dt);
+        enemyManager.update(dt);
     }
 }

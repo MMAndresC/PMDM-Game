@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.svalero.game.characters.Character;
 import com.svalero.game.characters.Projectile;
 import com.svalero.game.utils.DrawInfo;
+import com.svalero.game.utils.ShowRectangleDebug;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 import static com.svalero.game.constants.Constants.BACKGROUND_SPEED;
 
@@ -37,20 +41,19 @@ public class RenderManager {
         drawBackground(dt, background);
         drawRanger();
         drawRangerProjectile();
+        drawEnemies(dt);
         batch.end();
 
         //DEBUG tool to show rectangle border
-        /*ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(logicManager.getRanger().getHitBox().x, logicManager.getRanger().getHitBox().y,
-            logicManager.getRanger().getHitBox().width, logicManager.getRanger().getHitBox().height);
-        shapeRenderer.end();
-        shapeRenderer.dispose();*/
+        //Ranger
+       /* ShowRectangleDebug.inRed(
+            logicManager.getRanger().getHitBox().x,
+            logicManager.getRanger().getHitBox().y,
+            logicManager.getRanger().getHitBox().width,
+            logicManager.getRanger().getHitBox().height);*/
     }
 
     public void drawRanger() {
-        logicManager.getRanger().drawRanger();
         DrawInfo body = logicManager.getRanger().getBody();
         DrawInfo engine = logicManager.getRanger().getEngine();
         DrawInfo engineEffect = logicManager.getRanger().getEngineEffect();
@@ -76,5 +79,12 @@ public class RenderManager {
         updateBackground(dt, background.getHeight());
         batch.draw(background, 0, bgY, Gdx.graphics.getWidth(), background.getHeight());
         batch.draw(background, 0, bgY + background.getHeight(), Gdx.graphics.getWidth(), background.getHeight());
+    }
+
+    private void drawEnemies(float dt) {
+        List<Character> enemies = logicManager.getEnemyManager().getEnemies();
+        for(Character enemy: enemies) {
+            batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
+        }
     }
 }
