@@ -23,12 +23,14 @@ public class LogicManager {
     private Ranger ranger;
 
     private EnemyManager enemyManager;
+    private FighterSquadronManager fighterSquadronManager;
 
 
     public LogicManager(MyGame game) {
         this.game = game;
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
+        this.fighterSquadronManager = new FighterSquadronManager();
     }
 
     private void handleInput(float dt) {
@@ -95,6 +97,7 @@ public class LogicManager {
         ranger.updateProjectiles(dt);
         handleInput(dt);
         ranger.update(dt);
-        enemyManager.update(dt);
+        enemyManager.update(dt, ranger.getPosition());
+        fighterSquadronManager.update(dt, ranger.getPosition());
     }
 }

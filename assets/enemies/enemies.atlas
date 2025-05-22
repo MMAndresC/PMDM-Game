@@ -1,5 +1,5 @@
 enemies.png
-size: 63, 108
+size: 64, 456
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -29,5 +29,61 @@ Asteroid4
   xy: 0, 73
   size: 44, 35
   orig: 44, 35
+  offset: 0, 0
+  index: -1
+Enemy-Fighter-Idle
+  rotate: false
+  xy: 0, 108
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Enemy-Fighter-Left1
+  rotate: false
+  xy: 0, 172
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Enemy-Fighter-Left2
+  rotate: false
+  xy: 0, 236
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Enemy-Fighter-Right1
+  rotate: false
+  xy: 0, 300
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Enemy-Fighter-Right2
+  rotate: false
+  xy: 0, 364
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Projectile-Laser-Large
+  rotate: false
+  xy: 0, 428
+  size: 8, 28
+  orig: 8, 28
+  offset: 0, 0
+  index: -1
+Projectile-Laser-Medium
+  rotate: false
+  xy: 8, 428
+  size: 7, 21
+  orig: 7, 21
+  offset: 0, 0
+  index: -1
+Projectile-Laser-Small
+  rotate: false
+  xy: 15, 428
+  size: 6, 18
+  orig: 6, 18
   offset: 0, 0
   index: -1

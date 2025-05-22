@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.svalero.game.characters.Character;
+import com.svalero.game.characters.Fighter;
 import com.svalero.game.characters.Projectile;
 import com.svalero.game.utils.DrawInfo;
 import com.svalero.game.utils.ShowRectangleDebug;
@@ -42,6 +43,7 @@ public class RenderManager {
         drawRanger();
         drawRangerProjectile();
         drawEnemies(dt);
+        drawFighterSquadrons();
         batch.end();
 
         //DEBUG tool to show rectangle border
@@ -87,4 +89,12 @@ public class RenderManager {
             batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
         }
     }
+
+    private void drawFighterSquadrons() {
+        List<Fighter> fighters = logicManager.getFighterSquadronManager().getAllFighters();
+        for (Fighter fighter : fighters) {
+            batch.draw(fighter.getCurrentFrame(), fighter.getPosition().x, fighter.getPosition().y);
+        }
+    }
+
 }

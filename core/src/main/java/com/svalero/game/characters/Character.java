@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import com.svalero.game.constants.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static com.svalero.game.constants.Constants.STATUS;
+import static com.svalero.game.constants.Constants.FORMATION;
 
 @Data
 @AllArgsConstructor
@@ -42,7 +44,7 @@ public abstract class Character implements Disposable {
     protected float animationTime;
     protected TextureRegion currentFrame;
 
-    protected Constants.STATUS status;
+    protected STATUS status;
 
     public Character(float x, float y, float speed) {
         this.position.x = x;
@@ -64,6 +66,8 @@ public abstract class Character implements Disposable {
     }
 
     public void update(float dt) {}
+
+    public void update(float dt, Vector2 rangerPosition){}
 
     @Override
     public void dispose() {

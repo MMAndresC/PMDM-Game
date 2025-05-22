@@ -6,7 +6,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.characters.Asteroid;
 import com.svalero.game.characters.Character;
+import com.svalero.game.characters.Fighter;
 import com.svalero.game.characters.Projectile;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -21,76 +23,104 @@ public class EnemyManager {
 
     private List<Character> enemies;
     private List<Projectile> projectiles;
+    private FighterSquadronManager fighterSquadronManager;
 
     private float timeSinceLastSpawn;
 
-    private List<ENEMY_TYPE> level1 = List.of(ENEMY_TYPE.ASTEROID, ENEMY_TYPE.ASTEROID, ENEMY_TYPE.ASTEROID);
+    private List<ENEMY_TYPE> level1 = List.of(
+        ENEMY_TYPE.ASTEROID,
+        ENEMY_TYPE.ASTEROID,
+        ENEMY_TYPE.FIGHTER_SQUADRON,
+        ENEMY_TYPE.ASTEROID,
+        ENEMY_TYPE.FIGHTER_SQUADRON
+    );
     private int indexEnemy;
 
-    public EnemyManager(){
+    private Vector2 rangerPosition;
+
+    public EnemyManager() {
         enemies = new ArrayList<>();
         projectiles = new ArrayList<>();
         timeSinceLastSpawn = 0;
         indexEnemy = 0;
+        rangerPosition = new Vector2();
+        fighterSquadronManager = new FighterSquadronManager();
     }
 
-    public void update(float dt){
+    public void update(float dt, Vector2 rangerPosition) {
         timeSinceLastSpawn += dt;
-        if(timeSinceLastSpawn >= ENEMY_SPAWN_DELAY && indexEnemy < level1.size()){
+        this.rangerPosition.set(rangerPosition);
+
+        if (timeSinceLastSpawn >= ENEMY_SPAWN_DELAY && indexEnemy < level1.size()) {
             timeSinceLastSpawn = 0;
             generateEnemy();
         }
-        for(Character enemy: enemies){
+
+        // Update all enemies
+        for (Character enemy : enemies) {
             enemy.update(dt);
         }
-       removeElementsOutScreen();
+
+        // Update fighter squadrons and add their fighters to the general list
+        fighterSquadronManager.update(dt, rangerPosition);
+        enemies.removeIf(enemy -> enemy instanceof Fighter); // Remove fighter references
+        enemies.addAll(fighterSquadronManager.getAllFighters()); //Load new with updates to synchronize
+
+        removeElementsOutScreen();
     }
 
-    public void removeElementsOutScreen(){
-        //Remove enemies out of screen
+    public void removeElementsOutScreen() {
         enemies.removeIf(enemy -> enemy.getStatus() == STATUS.OUT);
-
     }
 
-    public void generateEnemy(){
+    public void generateEnemy() {
         ENEMY_TYPE enemyType = level1.get(indexEnemy);
 
-        switch(enemyType){
+        switch (enemyType) {
             case ASTEROID:
                 createAsteroidShower();
+                break;
+            case FIGHTER_SQUADRON:
+                createFightersSquadron();
+                break;
         }
 
         indexEnemy++;
     }
 
+    public void createFightersSquadron() {
+        fighterSquadronManager.createSquadron();
+    }
+
     public void createAsteroidShower() {
         float screenHeight = Gdx.graphics.getHeight();
         float screenWidth = Gdx.graphics.getWidth();
+        //Generate random origin left or right
         int direction = MathUtils.random(0, 1);
-
         float offsetRange = 30f;
 
         for (int i = 0; i < ASTEROID_SHOWER; i++) {
             Asteroid asteroid = new Asteroid();
             asteroid.setDirection(direction);
+
             float asteroidWidth = asteroid.getCurrentFrame().getRegionWidth();
             float asteroidHeight = asteroid.getCurrentFrame().getRegionHeight();
+
             float baseX = (direction == 0)
                 ? -asteroidWidth
                 : screenWidth;
 
-            float spacing = asteroid.getCurrentFrame().getRegionWidth() + 20; //Avoid superposition
+            //Spacing to avoid overlap, random to change origin position
+            float spacing = asteroidWidth + 20;
 
             float offset = MathUtils.random(-offsetRange, offsetRange);
             float startX = baseX + i * (spacing + offset) * (direction == 0 ? 1 : -1);
-
             float startY = MathUtils.random(screenHeight * 2 / 3f, screenHeight);
 
             asteroid.setPosition(new Vector2(startX, startY));
-            //Set collision rectangle
             asteroid.setHitBox(new Rectangle(startX, startY, asteroidWidth, asteroidHeight));
+
             enemies.add(asteroid);
         }
     }
-
 }

@@ -35,7 +35,9 @@ public interface Constants {
     String RANGER_AMMO_LASER = "Projectile-Laser-Large";
     String RANGER_AMMO_MINI_GUN = "Projectile-Minigun-Large";
     AnimationInfo ASTEROID = new AnimationInfo("Asteroid", 4);
-
+    AnimationInfo FIGHTER_LEFT = new AnimationInfo("Enemy-Fighter-Left", 2);
+    AnimationInfo FIGHTER_RIGHT = new AnimationInfo("Enemy-Fighter-Right", 2);
+    String FIGHTER_IDLE = "Enemy-Fighter-Idle";
 
     //Config UI
 
@@ -52,15 +54,22 @@ public interface Constants {
     float RANGER_FIRE_RATE = 0.7f;
     float RANGER_BULLET_DAMAGE = 10f;
     float RANGER_BULLET_SPEED = 100f;
+    float RANGER_HIT_POINTS = 200f;
 
     float ASTEROID_HIT_POINTS = 100;
     float ASTEROID_SPEED = 200f;
     int ASTEROID_SHOWER = 10;
 
+    float FIGHTER_HIT_POINTS = 20f;
+    float FIGHTER_SPEED = 25f;
+    float FIGHTER_BEAM_DAMAGE = 5f;
+    float FIGHTER_DELAY_ACTION = 2f; //2 seconds between actions
+
     float ENEMY_SPAWN_DELAY = 5f; //5 seconds
 
     //Enum
     enum STATUS { OUT, ACTIVE, DESTROYED};
-    enum ENEMY_TYPE {ASTEROID, TURRET, TRIDENT, KAMIKAZE};
+    enum ENEMY_TYPE {ASTEROID, TURRET, FIGHTER_SQUADRON, KAMIKAZE};
+    enum FORMATION {RIGHT, LEFT,FRONT}
 
 }
