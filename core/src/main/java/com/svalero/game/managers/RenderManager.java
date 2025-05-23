@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.svalero.game.characters.Character;
 import com.svalero.game.characters.Fighter;
+import com.svalero.game.characters.GunTurret;
 import com.svalero.game.characters.Projectile;
 import com.svalero.game.utils.DrawInfo;
 import com.svalero.game.utils.ShowRectangleDebug;
@@ -86,7 +87,15 @@ public class RenderManager {
     private void drawEnemies(float dt) {
         List<Character> enemies = logicManager.getEnemyManager().getEnemies();
         for(Character enemy: enemies) {
-            batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
+            if(enemy instanceof GunTurret) {
+                DrawInfo body = ((GunTurret) enemy).getBody();
+                DrawInfo gun = ((GunTurret) enemy).getGun();
+                DrawInfo mount = ((GunTurret) enemy).getMount();
+                batch.draw(mount.getRegion(), mount.getX(), mount.getY());
+                batch.draw(gun.getRegion(), gun.getX(), gun.getY());
+                batch.draw(body.getRegion(), body.getX(), body.getY());
+            }else
+                batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
         }
     }
 

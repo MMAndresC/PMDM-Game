@@ -1,88 +1,305 @@
 enemies.png
-size: 64, 456
+size: 484, 259
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Asteroid1
   rotate: false
-  xy: 0, 0
+  xy: 226, 0
   size: 39, 37
   orig: 39, 37
   offset: 0, 0
   index: -1
 Asteroid2
   rotate: false
-  xy: 0, 37
+  xy: 21, 0
   size: 26, 28
   orig: 26, 28
   offset: 0, 0
   index: -1
 Asteroid3
   rotate: false
-  xy: 26, 37
+  xy: 113, 0
   size: 37, 36
   orig: 37, 36
   offset: 0, 0
   index: -1
 Asteroid4
   rotate: false
-  xy: 0, 73
+  xy: 265, 0
   size: 44, 35
   orig: 44, 35
   offset: 0, 0
   index: -1
 Enemy-Fighter-Idle
   rotate: false
-  xy: 0, 108
+  xy: 420, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Left1
   rotate: false
-  xy: 0, 172
+  xy: 0, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Left2
   rotate: false
-  xy: 0, 236
+  xy: 64, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Right1
   rotate: false
-  xy: 0, 300
+  xy: 128, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Right2
   rotate: false
-  xy: 0, 364
+  xy: 192, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+Explosion1
+  rotate: false
+  xy: 256, 64
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion2
+  rotate: false
+  xy: 321, 64
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion3
+  rotate: false
+  xy: 386, 64
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion4
+  rotate: false
+  xy: 0, 128
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion5
+  rotate: false
+  xy: 65, 128
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion6
+  rotate: false
+  xy: 130, 128
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion7
+  rotate: false
+  xy: 195, 128
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion8
+  rotate: false
+  xy: 260, 128
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Explosion9
+  rotate: false
+  xy: 325, 128
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Gun-Turret-Gun-Left
+  rotate: false
+  xy: 150, 0
+  size: 38, 8
+  orig: 38, 8
+  offset: 0, 0
+  index: -1
+Gun-Turret-Gun-Right
+  rotate: false
+  xy: 188, 0
+  size: 38, 8
+  orig: 38, 8
+  offset: 0, 0
+  index: -1
+Gun-Turret-Left
+  rotate: false
+  xy: 47, 0
+  size: 33, 38
+  orig: 33, 38
+  offset: 0, 0
+  index: -1
+Gun-Turret-Mount
+  rotate: false
+  xy: 357, 0
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+Gun-Turret-Right
+  rotate: false
+  xy: 80, 0
+  size: 33, 38
+  orig: 33, 38
+  offset: 0, 0
+  index: -1
+Missile-idle
+  rotate: false
+  xy: 309, 0
+  size: 48, 22
+  orig: 48, 22
+  offset: 0, 0
+  index: -1
+Missile1
+  rotate: false
+  xy: 390, 128
+  size: 74, 19
+  orig: 74, 19
+  offset: 0, 0
+  index: -1
+Missile2
+  rotate: false
+  xy: 74, 192
+  size: 88, 20
+  orig: 88, 20
+  offset: 0, 0
+  index: -1
+Missile3
+  rotate: false
+  xy: 162, 192
+  size: 88, 21
+  orig: 88, 21
+  offset: 0, 0
+  index: -1
+Missile4
+  rotate: false
+  xy: 340, 192
+  size: 91, 21
+  orig: 91, 21
+  offset: 0, 0
+  index: -1
+Missile5
+  rotate: false
+  xy: 250, 192
+  size: 90, 21
+  orig: 90, 21
+  offset: 0, 0
+  index: -1
+Missile6
+  rotate: false
+  xy: 183, 214
+  size: 93, 22
+  orig: 93, 22
+  offset: 0, 0
+  index: -1
+Missile7
+  rotate: false
+  xy: 0, 236
+  size: 94, 22
+  orig: 94, 22
+  offset: 0, 0
+  index: -1
+Missile8
+  rotate: false
+  xy: 382, 236
+  size: 97, 22
+  orig: 97, 22
+  offset: 0, 0
+  index: -1
+Missile9
+  rotate: false
+  xy: 94, 236
+  size: 96, 23
+  orig: 96, 23
+  offset: 0, 0
+  index: -1
+Missile10
+  rotate: false
+  xy: 190, 236
+  size: 96, 21
+  orig: 96, 21
+  offset: 0, 0
+  index: -1
+Missile11
+  rotate: false
+  xy: 286, 236
+  size: 96, 21
+  orig: 96, 21
+  offset: 0, 0
+  index: -1
+Missile12
+  rotate: false
+  xy: 91, 214
+  size: 92, 21
+  orig: 92, 21
+  offset: 0, 0
+  index: -1
+Missile13
+  rotate: false
+  xy: 276, 214
+  size: 93, 22
+  orig: 93, 22
+  offset: 0, 0
+  index: -1
+Missile14
+  rotate: false
+  xy: 369, 214
+  size: 93, 21
+  orig: 93, 21
+  offset: 0, 0
+  index: -1
+Missile15
+  rotate: false
+  xy: 0, 214
+  size: 91, 22
+  orig: 91, 22
+  offset: 0, 0
+  index: -1
+Missile16
+  rotate: false
+  xy: 0, 192
+  size: 74, 22
+  orig: 74, 22
+  offset: 0, 0
+  index: -1
 Projectile-Laser-Large
   rotate: false
-  xy: 0, 428
+  xy: 13, 0
   size: 8, 28
   orig: 8, 28
   offset: 0, 0
   index: -1
 Projectile-Laser-Medium
   rotate: false
-  xy: 8, 428
+  xy: 6, 0
   size: 7, 21
   orig: 7, 21
   offset: 0, 0
   index: -1
 Projectile-Laser-Small
   rotate: false
-  xy: 15, 428
+  xy: 0, 0
   size: 6, 18
   orig: 6, 18
   offset: 0, 0

@@ -67,7 +67,7 @@ public class Ranger extends Character{
         //Set ranger in screen
         this.position = new Vector2(
             Gdx.graphics.getWidth() / 2f - body.getRegion().getRegionWidth() / 2f,
-            Gdx.graphics.getHeight() / 2f - body.getRegion().getRegionHeight() / 2f
+            Gdx.graphics.getHeight() / 3f - body.getRegion().getRegionHeight() / 2f
         );
 
         //Calculate ranger dimensions

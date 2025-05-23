@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.svalero.game.characters.Asteroid;
-import com.svalero.game.characters.Character;
-import com.svalero.game.characters.Fighter;
-import com.svalero.game.characters.Projectile;
+import com.svalero.game.characters.*;
 
+import com.svalero.game.characters.Character;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -30,9 +28,15 @@ public class EnemyManager {
     private List<ENEMY_TYPE> level1 = List.of(
         ENEMY_TYPE.ASTEROID,
         ENEMY_TYPE.ASTEROID,
+        ENEMY_TYPE.GUN_TURRET,
+        ENEMY_TYPE.GUN_TURRET,
+        ENEMY_TYPE.GUN_TURRET,
         ENEMY_TYPE.FIGHTER_SQUADRON,
         ENEMY_TYPE.ASTEROID,
-        ENEMY_TYPE.FIGHTER_SQUADRON
+        ENEMY_TYPE.FIGHTER_SQUADRON,
+        ENEMY_TYPE.GUN_TURRET,
+        ENEMY_TYPE.GUN_TURRET,
+        ENEMY_TYPE.GUN_TURRET
     );
     private int indexEnemy;
 
@@ -83,9 +87,17 @@ public class EnemyManager {
             case FIGHTER_SQUADRON:
                 createFightersSquadron();
                 break;
+            case GUN_TURRET:
+                createGunTurret();
+                break;
         }
 
         indexEnemy++;
+    }
+
+    public void createGunTurret(){
+        GunTurret gunTurret = new GunTurret();
+        enemies.add(gunTurret);
     }
 
     public void createFightersSquadron() {
