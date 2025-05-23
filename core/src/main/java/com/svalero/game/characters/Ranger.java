@@ -34,7 +34,6 @@ public class Ranger extends Character{
 
     private Animation<TextureRegion> engineEffectAnimation;
     private Animation<TextureRegion> engineEffectPoweringAnimation;
-    private float animationTime;
 
 
     public Ranger() {

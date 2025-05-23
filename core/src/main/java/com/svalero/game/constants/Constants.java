@@ -44,6 +44,9 @@ public interface Constants {
     String GUN_TURRET_GUN_RIGHT = "Gun-Turret-Gun-Right";
     String GUN_TURRET_MOUNT = "Gun-Turret-Mount";
     AnimationInfo GUN_TURRET_MISSILES = new AnimationInfo("Missile", 16);
+    String KAMIKAZE = "Kamikaze";
+    AnimationInfo KAMIKAZE_ENGINE_EFFECTS = new AnimationInfo("Kamikaze-Engine-Effect", 10);
+    AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
 
     //Config UI
 
@@ -75,6 +78,10 @@ public interface Constants {
     float GUN_TURRET_FIRE_RATE = 1f;
     float GUN_TURRET_SPEED = 2f;
     float GUN_TURRET_SCALE = 1.5f;
+
+    float KAMIKAZE_SPEED = 90f;
+    float KAMIKAZE_HIT_POINTS = 20f;
+    float KAMIKAZE_SCALE = 1.5f;
 
     float ENEMY_SPAWN_DELAY = 5f; //5 seconds
 

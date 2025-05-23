@@ -58,34 +58,43 @@ public class GunTurret extends Character{
 
     @Override
     public void update(float dt) {
+        //Update position, only y movement
         position.y -= GUN_TURRET_SPEED;
         mount.setX(position.x);
         mount.setY(position.y);
 
+        float mountWidth = mount.getRegion().getRegionWidth() * GUN_TURRET_SCALE;
+        float mountHeight = mount.getRegion().getRegionHeight() * GUN_TURRET_SCALE;
+        float bodyWidth = body.getRegion().getRegionWidth() * GUN_TURRET_SCALE;
+        float bodyHeight = body.getRegion().getRegionHeight() * GUN_TURRET_SCALE;
+        float gunHeight = gun.getRegion().getRegionHeight() * GUN_TURRET_SCALE;
+
         // Center body horizontally on mount
         float bodyX;
         if(direction == 0){
-            bodyX = position.x + (
-                mount.getRegion().getRegionWidth() * GUN_TURRET_SCALE
-                    - body.getRegion().getRegionWidth() * GUN_TURRET_SCALE) / 2f;
+            bodyX = position.x + (mountWidth - bodyWidth) / 2f;
         }else{
-            bodyX = position.x + (
-                     body.getRegion().getRegionWidth() * GUN_TURRET_SCALE / 4f);
+            bodyX = position.x + (bodyWidth / 4f);
         }
-        float bodyY = position.y + (
-            mount.getRegion().getRegionHeight() * GUN_TURRET_SCALE
-                - body.getRegion().getRegionHeight() * GUN_TURRET_SCALE) / 2f;
+        float bodyY = position.y + (mountHeight - bodyHeight) / 2f;
         body.setX(bodyX);
         body.setY(bodyY);
 
         // Center gun on body
         float gunX = (direction == 0)
-            ? bodyX + (body.getRegion().getRegionWidth() * GUN_TURRET_SCALE) / 2f - 4
-            : bodyX - (body.getRegion().getRegionWidth() * GUN_TURRET_SCALE) / 2f;
-        float gunY = bodyY + (body.getRegion().getRegionHeight() * GUN_TURRET_SCALE
-            - gun.getRegion().getRegionHeight() * GUN_TURRET_SCALE) / 2f - 7;
+            ? bodyX + (bodyWidth) / 2f - 4
+            : bodyX - (bodyWidth) / 2f;
+        float gunY = bodyY + (bodyHeight - gunHeight) / 2f - 7;
         gun.setX(gunX);
         gun.setY(gunY);
+
+        //Calculate new rectangle hit box
+        float left = Math.min(mount.getX(), body.getX());
+        float right = Math.max(mount.getX() + mountWidth, body.getX() + bodyWidth);
+        float top = Math.max(mount.getY() + mountHeight, body.getY() + bodyHeight);
+        float bottom = Math.min(mount.getY(), body.getY());
+
+        hitBox.set(left, bottom, right - left, top - bottom);
     }
 
     private TextureRegion flipHorizontalTextureRegion(TextureRegion region){

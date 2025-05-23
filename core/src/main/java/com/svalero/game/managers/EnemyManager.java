@@ -28,6 +28,7 @@ public class EnemyManager {
     private List<ENEMY_TYPE> level1 = List.of(
         ENEMY_TYPE.ASTEROID,
         ENEMY_TYPE.ASTEROID,
+        ENEMY_TYPE.KAMIKAZE,
         ENEMY_TYPE.GUN_TURRET,
         ENEMY_TYPE.GUN_TURRET,
         ENEMY_TYPE.GUN_TURRET,
@@ -62,7 +63,10 @@ public class EnemyManager {
 
         // Update all enemies
         for (Character enemy : enemies) {
-            enemy.update(dt);
+            if(enemy instanceof Kamikaze)
+                enemy.update(dt, rangerPosition);
+            else
+                enemy.update(dt);
         }
 
         // Update fighter squadrons and add their fighters to the general list
@@ -90,9 +94,17 @@ public class EnemyManager {
             case GUN_TURRET:
                 createGunTurret();
                 break;
+            case KAMIKAZE:
+                createKamikaze();
+                break;
         }
 
         indexEnemy++;
+    }
+
+    public void createKamikaze(){
+        Kamikaze kamikaze = new Kamikaze(rangerPosition);
+        enemies.add(kamikaze);
     }
 
     public void createGunTurret(){

@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
-import com.svalero.game.characters.Fighter;
-import com.svalero.game.characters.GunTurret;
-import com.svalero.game.characters.Projectile;
 import com.svalero.game.utils.DrawInfo;
 import com.svalero.game.utils.ShowRectangleDebug;
 import lombok.AllArgsConstructor;
@@ -94,6 +92,11 @@ public class RenderManager {
                 batch.draw(mount.getRegion(), mount.getX(), mount.getY());
                 batch.draw(gun.getRegion(), gun.getX(), gun.getY());
                 batch.draw(body.getRegion(), body.getX(), body.getY());
+            }else if(enemy instanceof Kamikaze) {
+                DrawInfo body = ((Kamikaze) enemy).getBody();
+                DrawInfo engineEffect = ((Kamikaze) enemy).getEngineEffect();
+                batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+                batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
             }else
                 batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
         }

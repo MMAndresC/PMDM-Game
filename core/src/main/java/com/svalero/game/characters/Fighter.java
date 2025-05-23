@@ -22,6 +22,7 @@ public class Fighter extends Character {
     private FORMATION formation;
 
     public Fighter() {
+        //Init
         hitPoints = FIGHTER_HIT_POINTS;
 
         // Load textures

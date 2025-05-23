@@ -1,284 +1,466 @@
 enemies.png
-size: 484, 259
+size: 486, 421
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+Asteroid-Explosion1
+  rotate: false
+  xy: 167, 133
+  size: 56, 46
+  orig: 56, 46
+  offset: 0, 0
+  index: -1
+Asteroid-Explosion2
+  rotate: false
+  xy: 0, 133
+  size: 55, 42
+  orig: 55, 42
+  offset: 0, 0
+  index: -1
+Asteroid-Explosion3
+  rotate: false
+  xy: 223, 133
+  size: 71, 52
+  orig: 71, 52
+  offset: 0, 0
+  index: -1
+Asteroid-Explosion4
+  rotate: false
+  xy: 65, 325
+  size: 82, 68
+  orig: 82, 68
+  offset: 0, 0
+  index: -1
+Asteroid-Explosion5
+  rotate: false
+  xy: 147, 325
+  size: 88, 82
+  orig: 88, 82
+  offset: 0, 0
+  index: -1
+Asteroid-Explosion7
+  rotate: false
+  xy: 331, 325
+  size: 99, 95
+  orig: 99, 95
+  offset: 0, 0
+  index: -1
+Asteroid-Idle
+  rotate: false
+  xy: 235, 325
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
 Asteroid1
   rotate: false
-  xy: 226, 0
+  xy: 340, 28
   size: 39, 37
   orig: 39, 37
   offset: 0, 0
   index: -1
 Asteroid2
   rotate: false
-  xy: 21, 0
+  xy: 445, 0
   size: 26, 28
   orig: 26, 28
   offset: 0, 0
   index: -1
 Asteroid3
   rotate: false
-  xy: 113, 0
+  xy: 150, 28
   size: 37, 36
   orig: 37, 36
   offset: 0, 0
   index: -1
 Asteroid4
   rotate: false
-  xy: 265, 0
+  xy: 379, 28
   size: 44, 35
   orig: 44, 35
   offset: 0, 0
   index: -1
 Enemy-Fighter-Idle
   rotate: false
-  xy: 420, 0
+  xy: 422, 133
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Left1
   rotate: false
-  xy: 0, 64
+  xy: 0, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Left2
   rotate: false
-  xy: 64, 64
+  xy: 64, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Right1
   rotate: false
-  xy: 128, 64
+  xy: 128, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Enemy-Fighter-Right2
   rotate: false
-  xy: 192, 64
+  xy: 192, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Explosion1
   rotate: false
-  xy: 256, 64
+  xy: 384, 197
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion2
   rotate: false
-  xy: 321, 64
+  xy: 0, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion3
   rotate: false
-  xy: 386, 64
+  xy: 65, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion4
   rotate: false
-  xy: 0, 128
+  xy: 130, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion5
   rotate: false
-  xy: 65, 128
+  xy: 195, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion6
   rotate: false
-  xy: 130, 128
+  xy: 260, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion7
   rotate: false
-  xy: 195, 128
+  xy: 325, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion8
   rotate: false
-  xy: 260, 128
+  xy: 390, 261
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion9
   rotate: false
-  xy: 325, 128
+  xy: 0, 325
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Gun-Turret-Gun-Left
   rotate: false
-  xy: 150, 0
+  xy: 21, 0
   size: 38, 8
   orig: 38, 8
   offset: 0, 0
   index: -1
 Gun-Turret-Gun-Right
   rotate: false
-  xy: 188, 0
+  xy: 59, 0
   size: 38, 8
   orig: 38, 8
   offset: 0, 0
   index: -1
 Gun-Turret-Left
   rotate: false
-  xy: 47, 0
+  xy: 48, 28
   size: 33, 38
   orig: 33, 38
   offset: 0, 0
   index: -1
 Gun-Turret-Mount
   rotate: false
-  xy: 357, 0
+  xy: 294, 133
   size: 63, 63
   orig: 63, 63
   offset: 0, 0
   index: -1
 Gun-Turret-Right
   rotate: false
-  xy: 80, 0
+  xy: 81, 28
   size: 33, 38
   orig: 33, 38
   offset: 0, 0
   index: -1
+Kamikaze-Engine-Effect1
+  rotate: false
+  xy: 408, 0
+  size: 37, 19
+  orig: 37, 19
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect2
+  rotate: false
+  xy: 162, 0
+  size: 35, 15
+  orig: 35, 15
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect3
+  rotate: false
+  xy: 197, 0
+  size: 33, 16
+  orig: 33, 16
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect4
+  rotate: false
+  xy: 230, 0
+  size: 33, 16
+  orig: 33, 16
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect5
+  rotate: false
+  xy: 332, 0
+  size: 38, 15
+  orig: 38, 15
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect6
+  rotate: false
+  xy: 370, 0
+  size: 38, 16
+  orig: 38, 16
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect7
+  rotate: false
+  xy: 97, 0
+  size: 33, 15
+  orig: 33, 15
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect8
+  rotate: false
+  xy: 263, 0
+  size: 34, 16
+  orig: 34, 16
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect9
+  rotate: false
+  xy: 130, 0
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+Kamikaze-Engine-Effect10
+  rotate: false
+  xy: 297, 0
+  size: 35, 16
+  orig: 35, 16
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion1
+  rotate: false
+  xy: 423, 28
+  size: 42, 38
+  orig: 42, 38
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion2
+  rotate: false
+  xy: 225, 28
+  size: 41, 34
+  orig: 41, 34
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion3
+  rotate: false
+  xy: 187, 28
+  size: 38, 36
+  orig: 38, 36
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion4
+  rotate: false
+  xy: 114, 28
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion5
+  rotate: false
+  xy: 55, 133
+  size: 55, 46
+  orig: 55, 46
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion6
+  rotate: false
+  xy: 256, 197
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion7
+  rotate: false
+  xy: 357, 133
+  size: 65, 63
+  orig: 65, 63
+  offset: 0, 0
+  index: -1
+Kamikaze-Explosion8
+  rotate: false
+  xy: 110, 133
+  size: 57, 45
+  orig: 57, 45
+  offset: 0, 0
+  index: -1
+Kamikaze
+  rotate: false
+  xy: 320, 197
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 Missile-idle
   rotate: false
-  xy: 309, 0
+  xy: 0, 28
   size: 48, 22
   orig: 48, 22
   offset: 0, 0
   index: -1
 Missile1
   rotate: false
-  xy: 390, 128
+  xy: 266, 28
   size: 74, 19
   orig: 74, 19
   offset: 0, 0
   index: -1
 Missile2
   rotate: false
-  xy: 74, 192
+  xy: 74, 66
   size: 88, 20
   orig: 88, 20
   offset: 0, 0
   index: -1
 Missile3
   rotate: false
-  xy: 162, 192
+  xy: 162, 66
   size: 88, 21
   orig: 88, 21
   offset: 0, 0
   index: -1
 Missile4
   rotate: false
-  xy: 340, 192
+  xy: 340, 66
   size: 91, 21
   orig: 91, 21
   offset: 0, 0
   index: -1
 Missile5
   rotate: false
-  xy: 250, 192
+  xy: 250, 66
   size: 90, 21
   orig: 90, 21
   offset: 0, 0
   index: -1
 Missile6
   rotate: false
-  xy: 183, 214
+  xy: 0, 110
   size: 93, 22
   orig: 93, 22
   offset: 0, 0
   index: -1
 Missile7
   rotate: false
-  xy: 0, 236
+  xy: 186, 110
   size: 94, 22
   orig: 94, 22
   offset: 0, 0
   index: -1
 Missile8
   rotate: false
-  xy: 382, 236
+  xy: 280, 110
   size: 97, 22
   orig: 97, 22
   offset: 0, 0
   index: -1
 Missile9
   rotate: false
-  xy: 94, 236
+  xy: 377, 110
   size: 96, 23
   orig: 96, 23
   offset: 0, 0
   index: -1
 Missile10
   rotate: false
-  xy: 190, 236
+  xy: 276, 88
   size: 96, 21
   orig: 96, 21
   offset: 0, 0
   index: -1
 Missile11
   rotate: false
-  xy: 286, 236
+  xy: 372, 88
   size: 96, 21
   orig: 96, 21
   offset: 0, 0
   index: -1
 Missile12
   rotate: false
-  xy: 91, 214
+  xy: 0, 88
   size: 92, 21
   orig: 92, 21
   offset: 0, 0
   index: -1
 Missile13
   rotate: false
-  xy: 276, 214
+  xy: 93, 110
   size: 93, 22
   orig: 93, 22
   offset: 0, 0
   index: -1
 Missile14
   rotate: false
-  xy: 369, 214
+  xy: 92, 88
   size: 93, 21
   orig: 93, 21
   offset: 0, 0
   index: -1
 Missile15
   rotate: false
-  xy: 0, 214
+  xy: 185, 88
   size: 91, 22
   orig: 91, 22
   offset: 0, 0
   index: -1
 Missile16
   rotate: false
-  xy: 0, 192
+  xy: 0, 66
   size: 74, 22
   orig: 74, 22
   offset: 0, 0
