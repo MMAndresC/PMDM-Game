@@ -35,12 +35,20 @@ public class Ranger extends Character{
     private Animation<TextureRegion> engineEffectAnimation;
     private Animation<TextureRegion> engineEffectPoweringAnimation;
 
+    //Immune when lose life
+    private boolean isImmune;
+    private float immuneTime;
+
 
     public Ranger() {
         //Init
         projectiles = new ArrayList<ProjectileRanger>();
         score = 0;
         isMoving = false;
+        type = CHARACTER_TYPE.RANGER;
+        isImmune = false;
+        immuneTime = 0;
+        lives = RANGER_LIVES;
 
         //Ammo data
         fireRate = RANGER_FIRE_RATE;
@@ -118,6 +126,25 @@ public class Ranger extends Character{
         float hitBoxWidth = rangerWidth * 0.46f; //Init in 1/3 and up number adjusting
         //Update hitBox
         hitBox.set(x + 25f, hitBoxY, hitBoxWidth, hitBoxHeight);
+
+        //Calculate immunity duration
+        if (isImmune) {
+            immuneTime += dt;
+            if (immuneTime >= RANGER_IMMUNITY_DURATION) {
+                isImmune = false;
+                immuneTime = 0;
+            }
+        }
+    }
+
+    public void lostLife(){
+        lives--;
+        if(lives == 0)
+            status = STATUS.DESTROYED;
+    }
+
+    public boolean isDestroyed(){
+        return status == STATUS.DESTROYED;
     }
 
     public void updateProjectiles(float dt){

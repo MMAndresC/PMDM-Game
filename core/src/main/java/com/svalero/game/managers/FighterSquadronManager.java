@@ -54,6 +54,10 @@ public class FighterSquadronManager {
     }
 
     public void update(float dt, Vector2 rangerPosition) {
+        //Remove squadrons destroyed
+        squadrons.removeIf(squadron ->
+            squadron.getFighters().stream().allMatch(Fighter::isDestroyed)
+        );
         for (FighterSquadron squadron : squadrons) {
             squadron.update(dt, rangerPosition);
         }
@@ -62,6 +66,8 @@ public class FighterSquadronManager {
     public List<Fighter> getAllFighters() {
         return squadrons.stream()
             .flatMap(squadron -> squadron.getFighters().stream())
+            .filter(fighter -> !fighter.isDestroyed())
             .collect(Collectors.toList());
     }
+
 }

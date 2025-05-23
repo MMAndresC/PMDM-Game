@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.constants.Constants;
 import com.svalero.game.utils.DrawInfo;
 import com.svalero.game.utils.ShowRectangleDebug;
 import lombok.AllArgsConstructor;
@@ -39,10 +41,12 @@ public class RenderManager {
         //Draw
         batch.begin();
         drawBackground(dt, background);
-        drawRanger();
+        if(!logicManager.getRanger().isDestroyed())
+            drawRanger();
         drawRangerProjectile();
         drawEnemies(dt);
         drawFighterSquadrons();
+        drawExplosions();
         batch.end();
 
         //DEBUG tool to show rectangle border
@@ -54,13 +58,31 @@ public class RenderManager {
             logicManager.getRanger().getHitBox().height);*/
     }
 
+    public void drawExplosions() {
+        for(Explosion explosion: logicManager.getExplosions()){
+            DrawInfo drawInfo = explosion.getExplosion();
+            batch.draw(drawInfo.getRegion(), drawInfo.getX(), drawInfo.getY(),
+                drawInfo.getWidth(), drawInfo.getHeight());
+        }
+        logicManager.getExplosions().removeIf(Explosion::isFinished);
+    }
+
     public void drawRanger() {
-        DrawInfo body = logicManager.getRanger().getBody();
-        DrawInfo engine = logicManager.getRanger().getEngine();
-        DrawInfo engineEffect = logicManager.getRanger().getEngineEffect();
-        batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
-        batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
-        batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+        boolean shouldDraw = true;
+        Ranger ranger = logicManager.getRanger();
+        if (ranger.isImmune()) {
+            float time = TimeUtils.nanoTime() / 1_000_000_000f;
+            shouldDraw = ((int)(time * 10) % 2 != 0);  // Draw in odd frames
+        }
+
+        if (shouldDraw || !ranger.isImmune()) {
+            DrawInfo body = ranger.getBody();
+            DrawInfo engine = ranger.getEngine();
+            DrawInfo engineEffect = ranger.getEngineEffect();
+            batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+            batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
+            batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+        }
     }
 
     public void drawRangerProjectile(){

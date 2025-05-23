@@ -40,16 +40,25 @@ public class FighterSquadron {
             Vector2 direction = new Vector2(newFrontPos).sub(front.getPosition());
             getSquadronPosition(newFrontPos);
 
-            //Change to animation if moving
-            if (direction.len() > 1f) {
+            //Change to animation if moving, only if still alive
+            if (!front.isDestroyed() && direction.len() > 1f) {
                 front.setAnimationByDirection(direction, dt);
-                left.setAnimationByDirection(direction, dt);
-                right.setAnimationByDirection(direction, dt);
-            } else {
-                front.setIdle();
-                left.setIdle();
-                right.setIdle();
             }
+            if (!left.isDestroyed()) {
+                if (direction.len() > 1f) left.setAnimationByDirection(direction, dt);
+                else left.setIdle();
+            }
+            if (!right.isDestroyed()) {
+                if (direction.len() > 1f) right.setAnimationByDirection(direction, dt);
+                else right.setIdle();
+            }
+
+
+            //Update hit box
+            if (!front.isDestroyed()) front.updateHitBox();
+            if (!left.isDestroyed()) left.updateHitBox();
+            if (!right.isDestroyed()) right.updateHitBox();
+
         }
     }
 
