@@ -18,10 +18,16 @@ public abstract class Projectile {
     protected float fireRate;
     protected float damage;
 
+
+
     public Projectile(Vector2 position, float speed, float fireRate, float damage) {
         this.position = position;
         this.speed = speed;
         this.fireRate = fireRate;
+    }
+
+    public Projectile(Vector2 position){
+        this.position = position;
     }
 
     public abstract void update(float dt);

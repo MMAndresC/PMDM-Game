@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static com.svalero.game.constants.Constants.STATUS;
+import static com.svalero.game.constants.Constants.FORMATION;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +31,7 @@ public abstract class Character implements Disposable {
     protected float lastShot;
 
     //Points of life
-    private float hitPoints;
+    protected float hitPoints;
 
     private int lives;
 
@@ -38,8 +41,10 @@ public abstract class Character implements Disposable {
 
     // Character animation
     protected Animation<TextureRegion> animation;
-    protected float stateTime;
+    protected float animationTime;
     protected TextureRegion currentFrame;
+
+    protected STATUS status;
 
     public Character(float x, float y, float speed) {
         this.position.x = x;
@@ -59,6 +64,10 @@ public abstract class Character implements Disposable {
             lives--;
         }
     }
+
+    public void update(float dt) {}
+
+    public void update(float dt, Vector2 rangerPosition){}
 
     @Override
     public void dispose() {

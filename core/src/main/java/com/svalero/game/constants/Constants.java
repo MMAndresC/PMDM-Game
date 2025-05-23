@@ -10,6 +10,7 @@ public interface Constants {
     //Atlas
 
     String RANGER_ATLAS = "ranger.atlas";
+    String ENEMIES_ATLAS = "enemies.atlas";
 
     //Resources dir
 
@@ -17,6 +18,7 @@ public interface Constants {
     String UI = "ui";
     String RANGER = "ranger";
     String FONTS = "fonts";
+    String ENEMIES = "enemies";
 
     //Files
 
@@ -32,7 +34,19 @@ public interface Constants {
     String RANGER_AMMO_PLASMA = "Projectile-Plasma-Large";
     String RANGER_AMMO_LASER = "Projectile-Laser-Large";
     String RANGER_AMMO_MINI_GUN = "Projectile-Minigun-Large";
-
+    AnimationInfo ASTEROID = new AnimationInfo("Asteroid", 4);
+    AnimationInfo FIGHTER_LEFT = new AnimationInfo("Enemy-Fighter-Left", 2);
+    AnimationInfo FIGHTER_RIGHT = new AnimationInfo("Enemy-Fighter-Right", 2);
+    String FIGHTER_IDLE = "Enemy-Fighter-Idle";
+    String GUN_TURRET_LEFT = "Gun-Turret-Left";
+    String GUN_TURRET_RIGHT = "Gun-Turret-Right";
+    String GUN_TURRET_GUN_LEFT = "Gun-Turret-Gun-Left";
+    String GUN_TURRET_GUN_RIGHT = "Gun-Turret-Gun-Right";
+    String GUN_TURRET_MOUNT = "Gun-Turret-Mount";
+    AnimationInfo GUN_TURRET_MISSILES = new AnimationInfo("Missile", 16);
+    String KAMIKAZE = "Kamikaze";
+    AnimationInfo KAMIKAZE_ENGINE_EFFECTS = new AnimationInfo("Kamikaze-Engine-Effect", 10);
+    AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
 
     //Config UI
 
@@ -49,5 +63,31 @@ public interface Constants {
     float RANGER_FIRE_RATE = 0.7f;
     float RANGER_BULLET_DAMAGE = 10f;
     float RANGER_BULLET_SPEED = 100f;
+    float RANGER_HIT_POINTS = 200f;
+
+    float ASTEROID_HIT_POINTS = 100;
+    float ASTEROID_SPEED = 200f;
+    int ASTEROID_SHOWER = 10;
+
+    float FIGHTER_HIT_POINTS = 20f;
+    float FIGHTER_SPEED = 5f;
+    float FIGHTER_BEAM_DAMAGE = 5f;
+    float FIGHTER_DELAY_ACTION = 2f; //2 seconds between actions
+
+    float GUN_TURRET_HIT_POINTS = 40f;
+    float GUN_TURRET_FIRE_RATE = 1f;
+    float GUN_TURRET_SPEED = 2f;
+    float GUN_TURRET_SCALE = 1.5f;
+
+    float KAMIKAZE_SPEED = 90f;
+    float KAMIKAZE_HIT_POINTS = 20f;
+    float KAMIKAZE_SCALE = 1.5f;
+
+    float ENEMY_SPAWN_DELAY = 5f; //5 seconds
+
+    //Enum
+    enum STATUS { OUT, ACTIVE, DESTROYED};
+    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE};
+    enum FORMATION {RIGHT, LEFT,FRONT}
 
 }
