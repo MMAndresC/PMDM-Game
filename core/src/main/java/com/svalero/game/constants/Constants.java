@@ -46,7 +46,11 @@ public interface Constants {
     AnimationInfo GUN_TURRET_MISSILES = new AnimationInfo("Missile", 16);
     String KAMIKAZE = "Kamikaze";
     AnimationInfo KAMIKAZE_ENGINE_EFFECTS = new AnimationInfo("Kamikaze-Engine-Effect", 10);
+    //Explosions
+    AnimationInfo DEFAULT_ENEMY_EXPLOSION = new AnimationInfo("Explosion", 9);
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
+    AnimationInfo ASTEROID_EXPLOSION = new AnimationInfo("Asteroid-Explosion", 7);
+    AnimationInfo RANGER_EXPLOSION = new AnimationInfo("Explosion", 9);
 
     //Config UI
 
@@ -63,7 +67,10 @@ public interface Constants {
     float RANGER_FIRE_RATE = 0.7f;
     float RANGER_BULLET_DAMAGE = 10f;
     float RANGER_BULLET_SPEED = 100f;
-    float RANGER_HIT_POINTS = 200f;
+    float RANGER_HIT_POINTS = 100f;
+    float RANGER_IMMUNITY_DURATION = 2f; //2 seconds
+    int RANGER_LIVES = 3;
+    float RANGER_EXPLOSION_SCALE = 5f;
 
     float ASTEROID_HIT_POINTS = 100;
     float ASTEROID_SPEED = 200f;
@@ -89,5 +96,6 @@ public interface Constants {
     enum STATUS { OUT, ACTIVE, DESTROYED};
     enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE};
     enum FORMATION {RIGHT, LEFT,FRONT}
+    enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE}
 
 }

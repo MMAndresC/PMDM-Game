@@ -24,6 +24,8 @@ public class GunTurret extends Character{
     public GunTurret(){
         //Init
         hitPoints = GUN_TURRET_HIT_POINTS;
+        type = CHARACTER_TYPE.GUN_TURRET;
+
         //Load textures
         //Random side of screen, 0 left, 1 right
         //Default texture is left to right
@@ -38,6 +40,7 @@ public class GunTurret extends Character{
             ? R.getEnemyTexture(GUN_TURRET_GUN_LEFT)
             :R.getEnemyTexture(GUN_TURRET_GUN_RIGHT));
         mount.setRegion(R.getEnemyTexture(GUN_TURRET_MOUNT));
+
         //Show bigger
         body.setWidth(body.getRegion().getRegionWidth() * GUN_TURRET_SCALE);
         body.setHeight(body.getRegion().getRegionHeight() * GUN_TURRET_SCALE);
@@ -45,6 +48,7 @@ public class GunTurret extends Character{
         gun.setHeight(gun.getRegion().getRegionHeight() * GUN_TURRET_SCALE);
         mount.setWidth(mount.getRegion().getRegionWidth() * GUN_TURRET_SCALE);
         mount.setHeight(mount.getRegion().getRegionHeight() * GUN_TURRET_SCALE);
+
         //Initial position out of screen y
         float spacing = 80f;
         float x = (direction == 0)
@@ -52,6 +56,7 @@ public class GunTurret extends Character{
             : Gdx.graphics.getWidth() - mount.getRegion().getRegionWidth() - spacing;
         float y = Gdx.graphics.getHeight() + mount.getRegion().getRegionHeight();
         position = new Vector2(x,y);
+
         //Init hit box
         hitBox = new Rectangle();
     }

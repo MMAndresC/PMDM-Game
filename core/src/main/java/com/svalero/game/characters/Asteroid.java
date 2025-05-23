@@ -18,13 +18,17 @@ public class Asteroid extends Character {
     private int direction; //0 left, 1 right
 
     public Asteroid() {
+        //Init
         hitPoints = ASTEROID_HIT_POINTS;
+        type = CHARACTER_TYPE.ASTEROID;
+
         //Load textures
         Array<TextureRegion> frames = R.getEnemiesRegions(ASTEROID);
-        animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+        animation = new Animation<>(0.2f, frames, Animation.PlayMode.LOOP);
         animationTime = 0f;
         currentFrame = animation.getKeyFrame(animationTime);
         speed = ASTEROID_SPEED;
+
         //Init hit box
         hitBox = new Rectangle();
     }

@@ -24,6 +24,7 @@ public class Fighter extends Character {
     public Fighter() {
         //Init
         hitPoints = FIGHTER_HIT_POINTS;
+        type = CHARACTER_TYPE.FIGHTER;
 
         // Load textures
         idleFrame = R.getEnemyTexture(FIGHTER_IDLE);
@@ -42,6 +43,18 @@ public class Fighter extends Character {
         hitBox = new Rectangle();
     }
 
+    public void updateHitBox() {
+        float width = currentFrame.getRegionWidth();
+        float height = currentFrame.getRegionHeight();
+
+        hitBox.set(
+            position.x - width / 2f,
+            position.y - height / 2f,
+            width,
+            height
+        );
+    }
+
     public void setAnimationByDirection(Vector2 direction, float dt) {
         animationTime += dt;
 
@@ -54,5 +67,9 @@ public class Fighter extends Character {
 
     public void setIdle() {
         currentFrame = idleFrame;
+    }
+
+    public boolean isDestroyed() {
+        return status == STATUS.DESTROYED;
     }
 }
