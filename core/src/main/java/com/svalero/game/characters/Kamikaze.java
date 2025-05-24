@@ -26,6 +26,8 @@ public class Kamikaze extends Character{
         animationTime = 0;
         speed = KAMIKAZE_SPEED;
         type = CHARACTER_TYPE.KAMIKAZE;
+        status = STATUS.ACTIVE;
+        lives = 1;
 
         //Load textures
         TextureRegion texture =  R.getEnemyTexture(KAMIKAZE);

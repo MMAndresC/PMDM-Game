@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.characters.Fighter;
 import com.svalero.game.characters.FighterSquadron;
+import com.svalero.game.characters.Projectile;
+
 import static com.svalero.game.constants.Constants.*;
 
 import java.util.ArrayList;
@@ -69,5 +71,12 @@ public class FighterSquadronManager {
             .filter(fighter -> !fighter.isDestroyed())
             .collect(Collectors.toList());
     }
+
+    public List<Projectile> getProjectiles() {
+        return squadrons.stream()
+            .flatMap(s -> s.getProjectiles().stream())
+            .collect(Collectors.toList());
+    }
+
 
 }

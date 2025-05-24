@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
-import com.svalero.game.constants.Constants;
 import com.svalero.game.utils.DrawInfo;
-import com.svalero.game.utils.ShowRectangleDebug;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,11 +39,10 @@ public class RenderManager {
         //Draw
         batch.begin();
         drawBackground(dt, background);
-        if(!logicManager.getRanger().isDestroyed())
-            drawRanger();
+        drawRanger();
         drawRangerProjectile();
         drawEnemies(dt);
-        drawFighterSquadrons();
+        drawEnemiesProjectiles();
         drawExplosions();
         batch.end();
 
@@ -68,6 +65,9 @@ public class RenderManager {
     }
 
     public void drawRanger() {
+        //Nor render if is destroyed
+        if(logicManager.getRanger().isDestroyed()) return;
+
         boolean shouldDraw = true;
         Ranger ranger = logicManager.getRanger();
         if (ranger.isImmune()) {
@@ -87,7 +87,13 @@ public class RenderManager {
 
     public void drawRangerProjectile(){
         for(Projectile projectile : logicManager.getRanger().getProjectiles()) {
-            batch.draw(projectile.getTexture(), projectile.getPosition().x, projectile.getPosition().y);
+            batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y);
+        }
+    }
+
+    public void drawEnemiesProjectiles(){
+        for(Projectile projectile: logicManager.getEnemyManager().getProjectiles()) {
+            batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y);
         }
     }
 
@@ -107,6 +113,10 @@ public class RenderManager {
     private void drawEnemies(float dt) {
         List<Character> enemies = logicManager.getEnemyManager().getEnemies();
         for(Character enemy: enemies) {
+
+            //Not render inactives or destroyed enemies
+            if(enemy.isInactive() || enemy.isDestroyed()) continue;
+
             if(enemy instanceof GunTurret) {
                 DrawInfo body = ((GunTurret) enemy).getBody();
                 DrawInfo gun = ((GunTurret) enemy).getGun();
@@ -121,13 +131,6 @@ public class RenderManager {
                 batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
             }else
                 batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
-        }
-    }
-
-    private void drawFighterSquadrons() {
-        List<Fighter> fighters = logicManager.getFighterSquadronManager().getAllFighters();
-        for (Fighter fighter : fighters) {
-            batch.draw(fighter.getCurrentFrame(), fighter.getPosition().x, fighter.getPosition().y);
         }
     }
 

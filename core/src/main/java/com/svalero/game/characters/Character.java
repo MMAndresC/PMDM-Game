@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.svalero.game.constants.Constants.*;
 
 @Data
@@ -67,9 +70,25 @@ public abstract class Character implements Disposable {
         }
     }
 
+    public boolean noHitPointsLeft(){
+        return hitPoints <= 0;
+    }
+
     public void update(float dt) {}
 
     public void update(float dt, Vector2 rangerPosition){}
+
+    public boolean isInactive() {
+        return status == STATUS.INACTIVE;
+    }
+
+    public boolean isDestroyed() {
+        return status == STATUS.DESTROYED;
+    }
+
+    public boolean isActive() {
+        return status == STATUS.ACTIVE;
+    }
 
     @Override
     public void dispose() {
