@@ -69,8 +69,8 @@ public interface Constants {
     float RANGER_BULLET_DAMAGE = 10f;
     float RANGER_BULLET_SPEED = 100f;
     float RANGER_HIT_POINTS = 100f;
-    float RANGER_IMMUNITY_DURATION = 2.5f; //2.5 seconds
-    float RANGER_IMMUNITY_HIT_DURATION = 0.5f;
+    float RANGER_IMMUNITY_DURATION = 3f; //2.5 seconds
+    float RANGER_IMMUNITY_HIT_DURATION = 1f;
     int RANGER_LIVES = 3;
     float RANGER_EXPLOSION_SCALE = 5f;
 

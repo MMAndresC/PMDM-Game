@@ -30,6 +30,19 @@ public abstract class Projectile implements Disposable {
 
     protected Rectangle rect;
 
+    //Relation with shooter
+    protected Character shooter;
+
+
+    public Projectile(Character shooter, Vector2 position, float speed, float fireRate, float damage) {
+        this.position = position;
+        this.speed = speed;
+        this.fireRate = fireRate;
+        this.damage = damage;
+        this.rect = new Rectangle();
+        this.status = STATUS.ACTIVE;
+        this.shooter = shooter;
+    }
 
     public Projectile(Vector2 position, float speed, float fireRate, float damage) {
         this.position = position;
@@ -40,19 +53,21 @@ public abstract class Projectile implements Disposable {
         this.status = STATUS.ACTIVE;
     }
 
-    public Projectile(Vector2 position){
+    public Projectile(Character shooter, Vector2 position){
         this.position = position;
         this.rect = new Rectangle();
         this.status = STATUS.ACTIVE;
+        this.shooter = shooter;
     }
 
-    public Projectile(Vector2 position, float speed, float damage, TextureRegion currentFrame) {
+    public Projectile(Character shooter, Vector2 position, float speed, float damage, TextureRegion currentFrame) {
         this.position = new Vector2(position);
         this.speed = speed;
         this.damage = damage;
         this.rect = new Rectangle();
         this.status = STATUS.ACTIVE;
         this.currentFrame = currentFrame;
+        this.shooter = shooter;
     }
 
     public abstract void update(float dt);

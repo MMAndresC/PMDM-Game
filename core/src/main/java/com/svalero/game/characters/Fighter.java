@@ -26,6 +26,7 @@ public class Fighter extends Character {
         hitPoints = FIGHTER_HIT_POINTS;
         type = CHARACTER_TYPE.FIGHTER;
         status = STATUS.ACTIVE;
+        lives = 1;
 
         // Load textures
         idleFrame = R.getEnemyTexture(FIGHTER_IDLE);
@@ -73,7 +74,7 @@ public class Fighter extends Character {
     public Projectile fireProjectile() {
         Vector2 origin = new Vector2(position.x + (currentFrame.getRegionWidth() / 2f ), position.y);
         TextureRegion frame = R.getEnemyTexture(DEFAULT_ENEMY_PROJECTILE);
-       return new Projectile(origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_SPEED, frame) {
+       return new Projectile(this, origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_SPEED, frame) {
             @Override
             public void update(float dt) {
                 position.y -= speed * dt;

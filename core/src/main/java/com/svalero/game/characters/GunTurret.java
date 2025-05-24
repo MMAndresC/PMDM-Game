@@ -37,6 +37,7 @@ public class GunTurret extends Character{
         bulletDamage = GUN_TURRET_MISSILE_DAMAGE;
         bulletSpeed = GUN_TURRET_MISSILE_SPEED;
         status = STATUS.ACTIVE;
+        lives = 1;
 
         //Load textures
         //Random side of screen, 0 left, 1 right
@@ -139,7 +140,7 @@ public class GunTurret extends Character{
             float originY = gun.getY() + gun.getHeight() / 2f - 2f;
 
             Vector2 origin = new Vector2(originX, originY);
-            missiles.add(new Missile(origin, bulletSpeed, bulletDamage, rangerPosition));
+            missiles.add(new Missile(this, origin, bulletSpeed, bulletDamage, rangerPosition));
         }
     }
 
@@ -152,6 +153,10 @@ public class GunTurret extends Character{
 
         //Remove out of screen missiles
         missiles.removeIf(Projectile::isOutOfBounds);
+    }
+
+    public void removeMissile(Projectile p) {
+        missiles.remove(p);
     }
 
 }

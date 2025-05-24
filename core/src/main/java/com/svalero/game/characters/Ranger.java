@@ -89,6 +89,7 @@ public class Ranger extends Character{
 
     @Override
     public void update(float dt) {
+        updateProjectiles(dt);
         if(status == STATUS.DESTROYED) return;
         animationTime += dt;
         //Adjust textures to form ranger, three separate parts
@@ -177,12 +178,32 @@ public class Ranger extends Character{
         lives--;
         if(lives == 0)
             status = STATUS.DESTROYED;
-        else this.immuneDuration = immuneDuration;
+        else {
+            this.immuneDuration = immuneDuration;
+            isImmune = true;
+        }
     }
 
     public void updateProjectiles(float dt){
         for(ProjectileRanger projectile : projectiles){
             projectile.update(dt);
+        }
+    }
+
+    // Get hit
+    @Override
+    public void hit(float damage) {
+        hitPoints -= damage;
+        if(hitPoints <= 0) {
+            lives--;
+            if(lives > 0) {
+                hitPoints = RANGER_HIT_POINTS;
+                immuneDuration = RANGER_IMMUNITY_HIT_DURATION;
+                isImmune = true;
+            } else status = STATUS.DESTROYED;
+        }else{
+            immuneDuration = RANGER_IMMUNITY_HIT_DURATION;
+            isImmune = true;
         }
     }
 }

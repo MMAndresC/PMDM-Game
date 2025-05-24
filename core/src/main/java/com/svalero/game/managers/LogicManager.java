@@ -70,28 +70,57 @@ public class LogicManager {
 
     public void update(float dt) {
         handleInput(dt);
-        ranger.updateProjectiles(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
         if(!ranger.isImmune() && !ranger.isDestroyed()){
-            checkCollisions();
+            checkBodyCollisions();
+            checkEnemiesProjectilesCollisions();
         }
         for(Explosion explosion: explosions){
             explosion.update(dt);
         }
     }
 
-    public void checkCollisions() {
+    public void checkEnemiesProjectilesCollisions(){
+        boolean collision = false;
+        int index = 0;
+        while(!collision && enemyManager.getProjectiles().size() > index){
+            Projectile projectile = enemyManager.getProjectiles().get(index);
+            Rectangle rect = projectile.getRect();
+            if(rect != null && rect.overlaps(ranger.getHitBox())) {
+                collision = true;
+                ranger.hit(projectile.getDamage());
+                if (ranger.isDestroyed()) {
+                    explosions.add(new Explosion(ranger.getPosition(), CHARACTER_TYPE.RANGER));
+                    ranger.dispose();
+                    //TODO termina partida
+                }
+            }else index++;
+        }
+        if(collision){
+            Projectile p = enemyManager.getProjectiles().get(index);
+            Character shooter = null;
+
+            if (p instanceof Missile missile) {
+                shooter = missile.getShooter();
+                if (shooter instanceof GunTurret turret) {
+                    turret.removeMissile(missile);
+                }
+            }
+            enemyManager.getProjectiles().get(index).dispose();
+            enemyManager.getProjectiles().remove(index);
+        }
+    }
+
+    public void checkBodyCollisions() {
         boolean collision = false;
         int index = 0;
         while(!collision && enemyManager.getEnemies().size() > index){
             Character enemy = enemyManager.getEnemies().get(index);
             Rectangle hitBox = enemy.getHitBox();
-            if(hitBox.overlaps(ranger.getHitBox())) {
+            if(hitBox != null && hitBox.overlaps(ranger.getHitBox())) {
                 ranger.lostLife(RANGER_IMMUNITY_DURATION);
-                if (!ranger.isDestroyed()) {
-                    ranger.setImmune(true);
-                } else {
+                if (ranger.isDestroyed()) {
                     explosions.add(new Explosion(ranger.getPosition(), CHARACTER_TYPE.RANGER));
                     ranger.dispose();
                     //TODO termina partida
