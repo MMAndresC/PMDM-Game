@@ -135,9 +135,9 @@ public class GunTurret extends Character{
         if (currentTime - lastShot >= fireRate) {
             lastShot = currentTime;
             float originX = (direction == 0)
-                ? gun.getX() + gun.getWidth()
-                : gun.getX();
-            float originY = gun.getY() + gun.getHeight() / 2f - 2f;
+                ? gun.getX() + (gun.getWidth() / 2f)
+                : gun.getX() - (gun.getWidth() / 2f);
+            float originY = gun.getY() + gun.getHeight() / 2f - 10f;
 
             Vector2 origin = new Vector2(originX, originY);
             missiles.add(new Missile(this, origin, bulletSpeed, bulletDamage, rangerPosition));

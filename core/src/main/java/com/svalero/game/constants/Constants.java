@@ -30,6 +30,8 @@ public interface Constants {
     AnimationInfo RANGER_ENGINE_EFFECTS_IDLE = new AnimationInfo("Main-Ship-Engine-Effect-Idle", 4);
     AnimationInfo RANGER_ENGINE_EFFECTS_POWERING = new AnimationInfo("Main-Ship-Engine-Effect-Powering", 4);
     String RANGER_FULL_HEALTH = "Main-Ship-Full-health";
+    String RANGER_SLIGHT_DAMAGED = "Main-Ship-Slight-damage";
+    String RANGER_VERY_DAMAGED = "Main-Ship-Very-damaged";
     String RANGER_ENGINE = "Main-Ship-Engines-Supercharged";
     String RANGER_AMMO_PLASMA = "Projectile-Plasma-Large";
     String RANGER_AMMO_LASER = "Projectile-Laser-Large";
@@ -88,10 +90,10 @@ public interface Constants {
     float GUN_TURRET_FIRE_RATE = 2f;
     float GUN_TURRET_SPEED = 2f;
     float GUN_TURRET_SCALE = 1.5f;
-    float GUN_TURRET_MISSILE_DAMAGE = 90f;
+    float GUN_TURRET_MISSILE_DAMAGE = 80f;
     float GUN_TURRET_MISSILE_SPEED = 200f;
 
-    float KAMIKAZE_SPEED = 120f;
+    float KAMIKAZE_SPEED = 150f;
     float KAMIKAZE_HIT_POINTS = 25f;
     float KAMIKAZE_SCALE = 1.5f;
 

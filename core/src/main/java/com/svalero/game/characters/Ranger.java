@@ -35,6 +35,8 @@ public class Ranger extends Character{
     private Animation<TextureRegion> engineEffectAnimation;
     private Animation<TextureRegion> engineEffectPoweringAnimation;
 
+    private TextureRegion fullHealth, mediumHealth, lowHealth;
+
     //Immune when lose life
     private boolean isImmune;
     private float immuneTime;
@@ -60,10 +62,13 @@ public class Ranger extends Character{
         lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
 
         //Load textures
+        fullHealth = R.getRangerTexture(RANGER_FULL_HEALTH);
+        mediumHealth = R.getRangerTexture(RANGER_SLIGHT_DAMAGED);
+        lowHealth = R.getRangerTexture(RANGER_VERY_DAMAGED);
         body = new DrawInfo();
         engine = new DrawInfo();
         engineEffect = new DrawInfo();
-        body.setRegion(R.getRangerTexture(RANGER_FULL_HEALTH));
+        body.setRegion(fullHealth);
         engine.setRegion(R.getRangerTexture(RANGER_ENGINE));
         //Load animations
         Array<TextureRegion> frames = R.getRangerRegions(RANGER_ENGINE_EFFECTS_IDLE);
@@ -197,11 +202,15 @@ public class Ranger extends Character{
         if(hitPoints <= 0) {
             lives--;
             if(lives > 0) {
+                body.setRegion(fullHealth);
                 hitPoints = RANGER_HIT_POINTS;
-                immuneDuration = RANGER_IMMUNITY_HIT_DURATION;
+                immuneDuration = RANGER_IMMUNITY_DURATION;
                 isImmune = true;
             } else status = STATUS.DESTROYED;
         }else{
+            if(hitPoints <= RANGER_HIT_POINTS / 2f){
+                body.setRegion(lowHealth);
+            }else body.setRegion(mediumHealth);
             immuneDuration = RANGER_IMMUNITY_HIT_DURATION;
             isImmune = true;
         }
