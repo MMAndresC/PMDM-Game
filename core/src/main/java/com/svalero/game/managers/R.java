@@ -17,10 +17,12 @@ public class R {
 
     private static final String RANGER_ATLAS_PATH = RANGER + File.separator + RANGER_ATLAS;
     private static final String ENEMIES_ATLAS_PATH = ENEMIES + File.separator + ENEMIES_ATLAS;
+    private static final String UI_ATLAS_PATH = UI + File.separator + UI_ATLAS;
 
     public static void loadAllResources() {
         assetManager.load(RANGER_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(ENEMIES_ATLAS_PATH, TextureAtlas.class);
+        assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
     }
 
     public static TextureRegion getRangerTexture(String name) {
@@ -49,6 +51,10 @@ public class R {
             frames.add(frame);
         }
         return frames;
+    }
+
+    public static TextureRegion getUITexture(String name){
+        return assetManager.get(UI_ATLAS_PATH, TextureAtlas.class).findRegion(name);
     }
 
     public static void dispose() {

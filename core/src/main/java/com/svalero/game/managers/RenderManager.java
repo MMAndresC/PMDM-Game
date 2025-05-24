@@ -3,7 +3,9 @@ package com.svalero.game.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-import static com.svalero.game.constants.Constants.BACKGROUND_SPEED;
+import static com.svalero.game.constants.Constants.*;
 
 @Data
 @NoArgsConstructor
@@ -25,11 +27,14 @@ public class RenderManager {
 
     private SpriteBatch batch;
 
+    private BitmapFont font;
+
     private float bgY;
 
     public RenderManager(LogicManager logicManager) {
         this.logicManager = logicManager;
         this.batch = new SpriteBatch();
+        this.font = new BitmapFont(Gdx.files.internal("fonts/font32Option.fnt"));
     }
 
     public void render(float dt, Texture background) {
@@ -39,6 +44,7 @@ public class RenderManager {
         //Draw
         batch.begin();
         drawBackground(dt, background);
+        drawUI();
         drawRanger();
         drawRangerProjectile();
         drawEnemies(dt);
@@ -132,6 +138,27 @@ public class RenderManager {
             }else
                 batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
         }
+    }
+
+    private void drawUI(){
+        float screenWidth = Gdx.graphics.getWidth();
+        TextureRegion statsBar = R.getUITexture(STATS_BAR);
+        batch.draw(statsBar, 0, 0, WIDTH_STATS_BAR, HEIGHT_STATS_BAR);
+        //TODO cambiar cuando se haga el level manager
+        font.draw(batch, "Level 1", 30f, HEIGHT_STATS_BAR - 12);
+        font.draw(batch, "Score", 255f, HEIGHT_STATS_BAR - 12);
+        float hitPoints = logicManager.getRanger().getScore();
+        String formatted = String.format("%06.0f", hitPoints);
+        font.draw(batch, formatted , 440f, HEIGHT_STATS_BAR - 12);
+        TextureRegion healthBar = R.getUITexture(HEALTH_BAR);
+        batch.draw(healthBar,screenWidth - WIDTH_HEALTH_BAR,0, WIDTH_HEALTH_BAR, HEIGHT_HEALTH_BAR);
+        TextureRegion shipIcon = R.getUITexture(SHIP_ICON);
+        font.draw(batch, "X " + logicManager.getRanger().getLives(), screenWidth - WIDTH_HEALTH_BAR - SPACING, HEIGHT_HEALTH_BAR - 10);
+        batch.draw(shipIcon, screenWidth - WIDTH_HEALTH_BAR - SPACING - WIDTH_SHIP_ICON - 10, 0, WIDTH_SHIP_ICON, HEIGHT_SHIP_ICON);
+        TextureRegion healthStat = R.getUITexture(HEALTH_STAT);
+        float healthPercentage = logicManager.getRanger().getHitPoints() / RANGER_HIT_POINTS;
+        float width = healthPercentage * WIDTH_HEALTH_STAT;
+        batch.draw(healthStat, screenWidth - WIDTH_HEALTH_BAR + 5f, 5f, width, HEIGHT_STATS_BAR - 10f);
     }
 
 }

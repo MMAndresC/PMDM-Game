@@ -51,6 +51,8 @@ public abstract class Character implements Disposable {
 
     protected CHARACTER_TYPE type;
 
+    protected float pointsScore;
+
     public Character(float x, float y, float speed) {
         this.position.x = x;
         this.position.y = y;

@@ -92,6 +92,7 @@ public class LogicManager {
                     projectile.setStatus(STATUS.DESTROYED);
                     enemy.hit(RANGER_BULLET_DAMAGE);
                     if(enemy.noHitPointsLeft()){
+                        ranger.sumScore(enemy.getPointsScore());
                         enemy.setStatus(STATUS.DESTROYED);
                         if(enemy instanceof GunTurret){
                             if(!((GunTurret) enemy).getMissiles().isEmpty()){

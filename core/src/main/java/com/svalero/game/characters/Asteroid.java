@@ -23,6 +23,7 @@ public class Asteroid extends Character {
         type = CHARACTER_TYPE.ASTEROID;
         status = STATUS.ACTIVE;
         lives = 1;
+        pointsScore = ASTEROID_POINTS_SCORE;
 
         //Load textures
         Array<TextureRegion> frames = R.getEnemiesRegions(ASTEROID);
