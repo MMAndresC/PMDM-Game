@@ -2,6 +2,7 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.MyGame;
@@ -98,7 +99,8 @@ public class LogicManager {
                             }
                         }
                         CHARACTER_TYPE type = returnType(enemy);
-                        explosions.add(new Explosion(enemy.getPosition(), type));
+                        Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
+                        explosions.add(new Explosion(position, type));
                         enemy.dispose();
                     }
                 }
@@ -106,6 +108,12 @@ public class LogicManager {
         }
         ranger.getProjectiles().removeIf(Projectile::isDestroyed);
         enemyManager.getEnemies().removeIf(Character::isDestroyed);
+    }
+
+    public Vector2 getCenterPositionExplosion(Rectangle rect){
+        float centerX = rect.x + rect.width / 2f;
+        float centerY = rect.y + rect.height / 2f;
+        return new Vector2(centerX, centerY);
     }
 
     public CHARACTER_TYPE returnType(Character enemy){
@@ -127,7 +135,8 @@ public class LogicManager {
                 collision = true;
                 ranger.hit(projectile.getDamage());
                 if (ranger.isDestroyed()) {
-                    explosions.add(new Explosion(ranger.getPosition(), CHARACTER_TYPE.RANGER));
+                    Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
+                    explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
                     ranger.dispose();
                     //TODO termina partida
                 }
@@ -164,11 +173,13 @@ public class LogicManager {
             if(hitBox != null && hitBox.overlaps(ranger.getHitBox())) {
                 ranger.lostLife(RANGER_IMMUNITY_DURATION);
                 if (ranger.isDestroyed()) {
-                    explosions.add(new Explosion(ranger.getPosition(), CHARACTER_TYPE.RANGER));
+                    Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
+                    explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
                     ranger.dispose();
                     //TODO termina partida
                 }
-                Vector2 position = enemy.getPosition();
+
+                Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                 CHARACTER_TYPE type = enemy.getType();
 
                 if (enemy instanceof Fighter fighter) {
