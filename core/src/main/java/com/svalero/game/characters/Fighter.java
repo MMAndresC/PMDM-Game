@@ -75,7 +75,7 @@ public class Fighter extends Character {
     public Projectile fireProjectile() {
         Vector2 origin = new Vector2(position.x + (currentFrame.getRegionWidth() / 2f ), position.y);
         TextureRegion frame = R.getEnemyTexture(DEFAULT_ENEMY_PROJECTILE);
-       return new Projectile(this, origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_SPEED, frame) {
+       return new Projectile(this, origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_DAMAGE, frame) {
             @Override
             public void update(float dt) {
                 position.y -= speed * dt;

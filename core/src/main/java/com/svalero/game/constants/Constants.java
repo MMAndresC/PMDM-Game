@@ -65,8 +65,8 @@ public interface Constants {
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;
     float RANGER_SCALE = 2f; //Double size
-    float RANGER_FIRE_RATE = 0.7f;
-    float RANGER_BULLET_DAMAGE = 10f;
+    float RANGER_FIRE_RATE = 0.5f;
+    float RANGER_BULLET_DAMAGE = 20f;
     float RANGER_BULLET_SPEED = 100f;
     float RANGER_HIT_POINTS = 100f;
     float RANGER_IMMUNITY_DURATION = 3f; //2.5 seconds
@@ -74,25 +74,25 @@ public interface Constants {
     int RANGER_LIVES = 3;
     float RANGER_EXPLOSION_SCALE = 5f;
 
-    float ASTEROID_HIT_POINTS = 100;
+    float ASTEROID_HIT_POINTS = 60f;
     float ASTEROID_SPEED = 200f;
     int ASTEROID_SHOWER = 10;
 
     float FIGHTER_HIT_POINTS = 20f;
     float FIGHTER_SPEED = 5f;
     float FIGHTER_FIRE_RATE = 1.5f;
-    float FIGHTER_BEAM_DAMAGE = 5f;
+    float FIGHTER_BEAM_DAMAGE = 20f;
     float FIGHTER_BEAM_SPEED = 100f;
 
     float GUN_TURRET_HIT_POINTS = 40f;
     float GUN_TURRET_FIRE_RATE = 2f;
     float GUN_TURRET_SPEED = 2f;
     float GUN_TURRET_SCALE = 1.5f;
-    float GUN_TURRET_MISSILE_DAMAGE = 40f;
+    float GUN_TURRET_MISSILE_DAMAGE = 90f;
     float GUN_TURRET_MISSILE_SPEED = 200f;
 
-    float KAMIKAZE_SPEED = 90f;
-    float KAMIKAZE_HIT_POINTS = 20f;
+    float KAMIKAZE_SPEED = 120f;
+    float KAMIKAZE_HIT_POINTS = 25f;
     float KAMIKAZE_SCALE = 1.5f;
 
     float ENEMY_SPAWN_DELAY = 5f; //5 seconds

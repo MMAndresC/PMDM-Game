@@ -51,7 +51,6 @@ public abstract class Character implements Disposable {
 
     protected CHARACTER_TYPE type;
 
-
     public Character(float x, float y, float speed) {
         this.position.x = x;
         this.position.y = y;
@@ -69,6 +68,10 @@ public abstract class Character implements Disposable {
         if(hitPoints <= 0) {
             lives--;
         }
+    }
+
+    public boolean noHitPointsLeft(){
+        return hitPoints <= 0;
     }
 
     public void update(float dt) {}

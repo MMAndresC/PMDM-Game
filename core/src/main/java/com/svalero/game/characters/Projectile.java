@@ -81,6 +81,10 @@ public abstract class Projectile implements Disposable {
         return status == STATUS.OUT;
     }
 
+    public boolean isDestroyed(){
+        return status == STATUS.DESTROYED;
+    }
+
     @Override
     public void dispose() {
         rect = null;

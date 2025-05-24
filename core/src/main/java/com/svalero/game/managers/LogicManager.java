@@ -75,13 +75,49 @@ public class LogicManager {
         if(!ranger.isImmune() && !ranger.isDestroyed()){
             checkBodyCollisions();
             checkEnemiesProjectilesCollisions();
+            checkRangerProjectilesCollision();
         }
         for(Explosion explosion: explosions){
             explosion.update(dt);
         }
     }
 
+    public void checkRangerProjectilesCollision(){
+        if(ranger.isDestroyed()) return;
+        for(Projectile projectile: ranger.getProjectiles()){
+            if(projectile.isDestroyed()) continue;
+            for(Character enemy: enemyManager.getEnemies()){
+                if(enemy.isActive() && projectile.getRect() != null && projectile.getRect().overlaps(enemy.getHitBox())){
+                    projectile.setStatus(STATUS.DESTROYED);
+                    enemy.hit(RANGER_BULLET_DAMAGE);
+                    if(enemy.noHitPointsLeft()){
+                        enemy.setStatus(STATUS.DESTROYED);
+                        if(enemy instanceof GunTurret){
+                            if(!((GunTurret) enemy).getMissiles().isEmpty()){
+                                enemy.setStatus(STATUS.INACTIVE);
+                            }
+                        }
+                        CHARACTER_TYPE type = returnType(enemy);
+                        explosions.add(new Explosion(enemy.getPosition(), type));
+                        enemy.dispose();
+                    }
+                }
+            }
+        }
+        ranger.getProjectiles().removeIf(Projectile::isDestroyed);
+        enemyManager.getEnemies().removeIf(Character::isDestroyed);
+    }
+
+    public CHARACTER_TYPE returnType(Character enemy){
+        if(enemy instanceof Fighter) return CHARACTER_TYPE.FIGHTER;
+        if(enemy instanceof Kamikaze) return CHARACTER_TYPE.KAMIKAZE;
+        if(enemy instanceof GunTurret) return CHARACTER_TYPE.GUN_TURRET;
+        if(enemy instanceof Asteroid) return CHARACTER_TYPE.ASTEROID;
+        return CHARACTER_TYPE.FIGHTER;
+    }
+
     public void checkEnemiesProjectilesCollisions(){
+        if(ranger.isDestroyed()) return;
         boolean collision = false;
         int index = 0;
         while(!collision && enemyManager.getProjectiles().size() > index){
@@ -98,6 +134,9 @@ public class LogicManager {
             }else index++;
         }
         if(collision){
+            //EnemyManager has a projectiles copy, remove in copy and in the original
+            //GunTurret & FighterSquadron, that is reason why new projectiles are created sending
+            //shooter parent. Projectile and shooter are related in both ways
             Projectile p = enemyManager.getProjectiles().get(index);
             Character shooter = null;
 
@@ -116,6 +155,7 @@ public class LogicManager {
     }
 
     public void checkBodyCollisions() {
+        if(ranger.isDestroyed()) return;
         boolean collision = false;
         int index = 0;
         while(!collision && enemyManager.getEnemies().size() > index){
