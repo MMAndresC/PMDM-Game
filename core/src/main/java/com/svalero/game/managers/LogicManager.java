@@ -106,7 +106,10 @@ public class LogicManager {
                 if (shooter instanceof GunTurret turret) {
                     turret.removeMissile(missile);
                 }
+            }else if(p.getOriginSquadron() != null){
+                p.getOriginSquadron().getProjectiles().remove(p);
             }
+            p.dispose();
             enemyManager.getProjectiles().get(index).dispose();
             enemyManager.getProjectiles().remove(index);
         }

@@ -32,6 +32,7 @@ public abstract class Projectile implements Disposable {
 
     //Relation with shooter
     protected Character shooter;
+    private FighterSquadron originSquadron;
 
 
     public Projectile(Character shooter, Vector2 position, float speed, float fireRate, float damage) {
@@ -68,6 +69,10 @@ public abstract class Projectile implements Disposable {
         this.status = STATUS.ACTIVE;
         this.currentFrame = currentFrame;
         this.shooter = shooter;
+
+        if (shooter instanceof Fighter fighter) {
+            this.originSquadron = fighter.getSquadron();
+        }
     }
 
     public abstract void update(float dt);

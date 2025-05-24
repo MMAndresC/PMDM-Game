@@ -20,6 +20,7 @@ public class Fighter extends Character {
 
     private float lastMovementTime;
     private FORMATION formation;
+    private FighterSquadron squadron;
 
     public Fighter() {
         //Init
