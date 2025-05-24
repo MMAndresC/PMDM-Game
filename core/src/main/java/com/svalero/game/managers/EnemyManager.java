@@ -62,11 +62,17 @@ public class EnemyManager {
         }
 
         // Update all enemies
+        projectiles.clear();
         for (Character enemy : enemies) {
-            if(enemy instanceof Kamikaze)
+            if(enemy instanceof Kamikaze || enemy instanceof GunTurret)
                 enemy.update(dt, rangerPosition);
             else
                 enemy.update(dt);
+            //TODO a los tipos que disparen pedirles sus listas de disparo
+            if(enemy instanceof GunTurret){
+                projectiles.addAll(((GunTurret) enemy).getMissiles());
+            }else if(enemy instanceof Fighter)
+                projectiles.addAll(fighterSquadronManager.getProjectiles());
         }
 
         // Update fighter squadrons and add their fighters to the general list
@@ -114,6 +120,7 @@ public class EnemyManager {
 
     public void createFightersSquadron() {
         fighterSquadronManager.createSquadron();
+        enemies.addAll(fighterSquadronManager.getAllFighters());
     }
 
     public void createAsteroidShower() {

@@ -38,6 +38,7 @@ public class Ranger extends Character{
     //Immune when lose life
     private boolean isImmune;
     private float immuneTime;
+    private float immuneDuration;
 
 
     public Ranger() {
@@ -49,6 +50,8 @@ public class Ranger extends Character{
         isImmune = false;
         immuneTime = 0;
         lives = RANGER_LIVES;
+        status = STATUS.ACTIVE;
+        immuneDuration = 0;
 
         //Ammo data
         fireRate = RANGER_FIRE_RATE;
@@ -86,6 +89,7 @@ public class Ranger extends Character{
 
     @Override
     public void update(float dt) {
+        if(status == STATUS.DESTROYED) return;
         animationTime += dt;
         //Adjust textures to form ranger, three separate parts
         float overlap =  2f * RANGER_SCALE;
@@ -130,21 +134,50 @@ public class Ranger extends Character{
         //Calculate immunity duration
         if (isImmune) {
             immuneTime += dt;
-            if (immuneTime >= RANGER_IMMUNITY_DURATION) {
+            if (immuneTime >= immuneDuration) {
                 isImmune = false;
                 immuneTime = 0;
             }
         }
     }
 
-    public void lostLife(){
+    public void setNewPosition(float x, float y, boolean isMoving){
+        this.isMoving = isMoving;
+        //Control screen limits so that ranger does not go out of the screen
+        float minX = rangerWidth / 2f;
+        float maxX = Gdx.graphics.getWidth() - rangerWidth / 2f;
+
+        float minY = 0;
+        float maxY = Gdx.graphics.getHeight() - rangerHeight;
+
+        position = new Vector2(
+            Math.max(minX, Math.min(x, maxX)),
+            Math.max(minY, Math.min(y, maxY))
+        );
+    }
+
+    public void createProjectile(){
+        //Spacing out shots
+        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f; // Seconds
+        if (currentTime - lastShot >= fireRate) {
+            lastShot = currentTime;
+            Vector2 posProjectile = new Vector2(
+                position.x - 2f,
+                position.y + (rangerHeight / 2)
+            );
+            projectiles.add(
+                new ProjectileRanger(
+                    posProjectile, bulletSpeed, fireRate, bulletDamage
+                )
+            );
+        }
+    }
+
+    public void lostLife(float immuneDuration){
         lives--;
         if(lives == 0)
             status = STATUS.DESTROYED;
-    }
-
-    public boolean isDestroyed(){
-        return status == STATUS.DESTROYED;
+        else this.immuneDuration = immuneDuration;
     }
 
     public void updateProjectiles(float dt){

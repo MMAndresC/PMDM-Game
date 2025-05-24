@@ -4,14 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.MyGame;
+import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
-import com.svalero.game.characters.Explosion;
-import com.svalero.game.characters.Fighter;
-import com.svalero.game.characters.ProjectileRanger;
-import com.svalero.game.characters.Ranger;
-import com.svalero.game.constants.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +26,6 @@ public class LogicManager {
     private Ranger ranger;
 
     private EnemyManager enemyManager;
-    private FighterSquadronManager fighterSquadronManager;
 
     private List<Explosion> explosions;
 
@@ -40,7 +34,6 @@ public class LogicManager {
         this.game = game;
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
-        this.fighterSquadronManager = new FighterSquadronManager();
         this.explosions = new ArrayList<>();
     }
 
@@ -66,51 +59,21 @@ public class LogicManager {
             y -= RANGER_SPEED * dt;
             isMoving = true;
         }
-        this.ranger.setMoving(isMoving);
+
+        ranger.setNewPosition(x, y, isMoving);
 
         //Shoot
         if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            //Spacing out shots
-            float currentTime = TimeUtils.nanoTime() / 1_000_000_000f; // Seconds
-            if (currentTime - ranger.getLastShot() >= ranger.getFireRate()) {
-                ranger.setLastShot(currentTime);
-                createProjectile();
-            }
+            ranger.createProjectile();
         }
-
-        //Control screen limits so that ranger does not go out of the screen
-        float minX = this.ranger.getRangerWidth() / 2f;
-        float maxX = Gdx.graphics.getWidth() - this.ranger.getRangerWidth() / 2f;
-
-        float minY = 0;
-        float maxY = Gdx.graphics.getHeight() - this.ranger.getRangerHeight();
-
-        Vector2 position = new Vector2(
-            Math.max(minX, Math.min(x, maxX)),
-            Math.max(minY, Math.min(y, maxY))
-        );
-        this.ranger.setPosition(position);
-    }
-
-    private void createProjectile(){
-        Vector2 position = new Vector2(
-            ranger.getPosition().x - 2f,
-            ranger.getPosition().y + (ranger.getRangerHeight() / 2)
-        );
-        ranger.getProjectiles().add(
-            new ProjectileRanger(
-                position, ranger.getBulletSpeed(), ranger.getFireRate(), ranger.getBulletDamage()
-            )
-        );
     }
 
     public void update(float dt) {
-        ranger.updateProjectiles(dt);
         handleInput(dt);
+        ranger.updateProjectiles(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
-        fighterSquadronManager.update(dt, ranger.getPosition());
-        if(!ranger.isImmune()){
+        if(!ranger.isImmune() && !ranger.isDestroyed()){
             checkCollisions();
         }
         for(Explosion explosion: explosions){
@@ -124,13 +87,13 @@ public class LogicManager {
         while(!collision && enemyManager.getEnemies().size() > index){
             Character enemy = enemyManager.getEnemies().get(index);
             Rectangle hitBox = enemy.getHitBox();
-            if(hitBox.overlaps(ranger.getHitBox())){
-                ranger.lostLife();
-                if(!ranger.isDestroyed()){
+            if(hitBox.overlaps(ranger.getHitBox())) {
+                ranger.lostLife(RANGER_IMMUNITY_DURATION);
+                if (!ranger.isDestroyed()) {
                     ranger.setImmune(true);
-                }else{
+                } else {
                     explosions.add(new Explosion(ranger.getPosition(), CHARACTER_TYPE.RANGER));
-                    ranger.setPosition(new Vector2(-200, 0)); //Out of screen
+                    ranger.dispose();
                     //TODO termina partida
                 }
                 Vector2 position = enemy.getPosition();
@@ -138,7 +101,16 @@ public class LogicManager {
 
                 if (enemy instanceof Fighter fighter) {
                     fighter.setStatus(STATUS.DESTROYED);
-                } else {
+                    fighter.dispose();
+                }if(enemy instanceof GunTurret gunTurret) {
+                    if(!gunTurret.getMissiles().isEmpty()) gunTurret.setStatus(STATUS.INACTIVE);
+                    else {
+                        gunTurret.setStatus(STATUS.DESTROYED);
+                        gunTurret.dispose();
+                        enemyManager.getEnemies().remove(index);
+                    }
+                }else {
+                    enemyManager.getEnemies().get(index).dispose();
                     enemyManager.getEnemies().remove(index);
                 }
 

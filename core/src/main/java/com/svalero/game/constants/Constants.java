@@ -46,6 +46,7 @@ public interface Constants {
     AnimationInfo GUN_TURRET_MISSILES = new AnimationInfo("Missile", 16);
     String KAMIKAZE = "Kamikaze";
     AnimationInfo KAMIKAZE_ENGINE_EFFECTS = new AnimationInfo("Kamikaze-Engine-Effect", 10);
+    String DEFAULT_ENEMY_PROJECTILE = "Projectile-Laser-Large";
     //Explosions
     AnimationInfo DEFAULT_ENEMY_EXPLOSION = new AnimationInfo("Explosion", 9);
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
@@ -68,7 +69,8 @@ public interface Constants {
     float RANGER_BULLET_DAMAGE = 10f;
     float RANGER_BULLET_SPEED = 100f;
     float RANGER_HIT_POINTS = 100f;
-    float RANGER_IMMUNITY_DURATION = 2f; //2 seconds
+    float RANGER_IMMUNITY_DURATION = 2.5f; //2.5 seconds
+    float RANGER_IMMUNITY_HIT_DURATION = 0.5f;
     int RANGER_LIVES = 3;
     float RANGER_EXPLOSION_SCALE = 5f;
 
@@ -78,13 +80,16 @@ public interface Constants {
 
     float FIGHTER_HIT_POINTS = 20f;
     float FIGHTER_SPEED = 5f;
+    float FIGHTER_FIRE_RATE = 1.5f;
     float FIGHTER_BEAM_DAMAGE = 5f;
-    float FIGHTER_DELAY_ACTION = 2f; //2 seconds between actions
+    float FIGHTER_BEAM_SPEED = 100f;
 
     float GUN_TURRET_HIT_POINTS = 40f;
-    float GUN_TURRET_FIRE_RATE = 1f;
+    float GUN_TURRET_FIRE_RATE = 2f;
     float GUN_TURRET_SPEED = 2f;
     float GUN_TURRET_SCALE = 1.5f;
+    float GUN_TURRET_MISSILE_DAMAGE = 40f;
+    float GUN_TURRET_MISSILE_SPEED = 200f;
 
     float KAMIKAZE_SPEED = 90f;
     float KAMIKAZE_HIT_POINTS = 20f;
@@ -93,7 +98,7 @@ public interface Constants {
     float ENEMY_SPAWN_DELAY = 5f; //5 seconds
 
     //Enum
-    enum STATUS { OUT, ACTIVE, DESTROYED};
+    enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};
     enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE};
     enum FORMATION {RIGHT, LEFT,FRONT}
     enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE}

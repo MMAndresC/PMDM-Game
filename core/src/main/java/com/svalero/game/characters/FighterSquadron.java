@@ -1,26 +1,38 @@
 package com.svalero.game.characters;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.svalero.game.constants.Constants.FIGHTER_FIRE_RATE;
+
+@Data
 public class FighterSquadron {
 
     private final Fighter front;
     private final Fighter left;
     private final Fighter right;
     private final float targetY;
-    private boolean inPosition = false;
+    private boolean inPosition;
+    private float lastShot;
+    private List<Projectile> projectiles;
 
     public FighterSquadron(Fighter front, Fighter left, Fighter right, float targetY) {
         this.front = front;
         this.left = left;
         this.right = right;
         this.targetY = targetY;
+        this.inPosition = false;
+        this.lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
+        projectiles = new ArrayList<Projectile>();
     }
 
     public void update(float dt, Vector2 rangerPosition) {
+        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         float currentY = front.getPosition().y;
 
         //Spawn out of screen still not in position y obtain random
@@ -41,8 +53,9 @@ public class FighterSquadron {
             getSquadronPosition(newFrontPos);
 
             //Change to animation if moving, only if still alive
-            if (!front.isDestroyed() && direction.len() > 1f) {
-                front.setAnimationByDirection(direction, dt);
+            if (!front.isDestroyed()){
+              if(direction.len() > 1f) front.setAnimationByDirection(direction, dt);
+              else front.setIdle();
             }
             if (!left.isDestroyed()) {
                 if (direction.len() > 1f) left.setAnimationByDirection(direction, dt);
@@ -59,6 +72,22 @@ public class FighterSquadron {
             if (!left.isDestroyed()) left.updateHitBox();
             if (!right.isDestroyed()) right.updateHitBox();
 
+            //Shoot?
+            if (currentTime - lastShot >= FIGHTER_FIRE_RATE) {
+                lastShot = currentTime;
+                if(!front.isDestroyed()) projectiles.add(front.fireProjectile());
+                if(!right.isDestroyed()) projectiles.add(right.fireProjectile());
+                if(!left.isDestroyed()) projectiles.add(left.fireProjectile());
+            }
+
+            //Update position projectiles
+            for(Projectile projectile : projectiles) {
+                projectile.update(dt);
+                if(projectile.isOutOfBounds()) projectile.dispose(); //Free resources
+            }
+
+            //Remove out of screen
+            projectiles.removeIf(Projectile::isOutOfBounds);
         }
     }
 
