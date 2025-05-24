@@ -5,12 +5,13 @@ import com.svalero.game.utils.AnimationInfo;
 public interface Constants {
 
     //Skin
-    String MENU_SKIN = "uiskin.json";
+    String MENU_SKIN = "ui.json";
 
     //Atlas
 
     String RANGER_ATLAS = "ranger.atlas";
     String ENEMIES_ATLAS = "enemies.atlas";
+    String UI_ATLAS = "ui.atlas";
 
     //Resources dir
 
@@ -54,13 +55,26 @@ public interface Constants {
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
     AnimationInfo ASTEROID_EXPLOSION = new AnimationInfo("Asteroid-Explosion", 7);
     AnimationInfo RANGER_EXPLOSION = new AnimationInfo("Explosion", 9);
+    //UI
+    String STATS_BAR = "Stats_Bar";
+    String HEALTH_BAR = "Health_Bar_Table";
+    String SHIP_ICON = "Ship_3_4_BTN";
+    String HEALTH_STAT = "Loading_Bar_1_2";
 
     //Config UI
 
-    int PADDING_BUTTON = 20;
-    int PADDING_TITLE = 50;
-    int WIDTH_BUTTON = 500;
-    int HEIGHT_BUTTON = 120;
+    float PADDING_BUTTON = 20;
+    float PADDING_TITLE = 50;
+    float WIDTH_BUTTON = 500;
+    float HEIGHT_BUTTON = 120;
+    float HEIGHT_STATS_BAR = 50;
+    float WIDTH_STATS_BAR = 630;
+    float HEIGHT_HEALTH_BAR = 50;
+    float WIDTH_HEALTH_BAR = 250;
+    float HEIGHT_SHIP_ICON = 50;
+    float WIDTH_SHIP_ICON = 50;
+    float WIDTH_HEALTH_STAT = 200f;
+    float SPACING = 100f;
 
     //Config game
 
@@ -79,12 +93,14 @@ public interface Constants {
     float ASTEROID_HIT_POINTS = 60f;
     float ASTEROID_SPEED = 200f;
     int ASTEROID_SHOWER = 10;
+    float ASTEROID_POINTS_SCORE = 1000f;
 
     float FIGHTER_HIT_POINTS = 20f;
     float FIGHTER_SPEED = 5f;
     float FIGHTER_FIRE_RATE = 1.5f;
     float FIGHTER_BEAM_DAMAGE = 20f;
     float FIGHTER_BEAM_SPEED = 100f;
+    float FIGHTER_POINTS_SCORE = 100f;
 
     float GUN_TURRET_HIT_POINTS = 40f;
     float GUN_TURRET_FIRE_RATE = 2f;
@@ -92,10 +108,12 @@ public interface Constants {
     float GUN_TURRET_SCALE = 1.5f;
     float GUN_TURRET_MISSILE_DAMAGE = 80f;
     float GUN_TURRET_MISSILE_SPEED = 200f;
+    float GUN_TURRET_POINTS_SCORE = 200f;
 
     float KAMIKAZE_SPEED = 150f;
     float KAMIKAZE_HIT_POINTS = 25f;
     float KAMIKAZE_SCALE = 1.5f;
+    float KAMIKAZE_POINTS_SCORE = 100f;
 
     float ENEMY_SPAWN_DELAY = 5f; //5 seconds
 

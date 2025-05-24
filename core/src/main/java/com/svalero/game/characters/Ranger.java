@@ -24,7 +24,7 @@ import static com.svalero.game.constants.Constants.*;
 public class Ranger extends Character{
 
     private List<ProjectileRanger> projectiles;
-    private int score;
+    private float score;
     private boolean isMoving;
 
     private float rangerHeight;
@@ -46,7 +46,7 @@ public class Ranger extends Character{
     public Ranger() {
         //Init
         projectiles = new ArrayList<ProjectileRanger>();
-        score = 0;
+        score = 0f;
         isMoving = false;
         type = CHARACTER_TYPE.RANGER;
         isImmune = false;
@@ -54,6 +54,7 @@ public class Ranger extends Character{
         lives = RANGER_LIVES;
         status = STATUS.ACTIVE;
         immuneDuration = 0;
+        hitPoints = RANGER_HIT_POINTS;
 
         //Ammo data
         fireRate = RANGER_FIRE_RATE;
@@ -214,5 +215,9 @@ public class Ranger extends Character{
             immuneDuration = RANGER_IMMUNITY_HIT_DURATION;
             isImmune = true;
         }
+    }
+
+    public void sumScore(float points){
+        score += points;
     }
 }

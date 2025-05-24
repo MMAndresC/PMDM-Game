@@ -1,0 +1,201 @@
+ui.png
+size: 2045, 1878
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Armor_Icon
+  rotate: false
+  xy: 435, 91
+  size: 65, 61
+  orig: 65, 61
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 1051, 171
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+button-over
+  rotate: false
+  xy: 1358, 171
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+button-up
+  rotate: false
+  xy: 1665, 171
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+Damage_Icon
+  rotate: false
+  xy: 500, 91
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
+Header
+  rotate: false
+  xy: 0, 91
+  size: 435, 59
+  orig: 435, 59
+  offset: 0, 0
+  index: -1
+Health_Bar_Table
+  rotate: false
+  xy: 565, 91
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+Health_Dot
+  rotate: false
+  xy: 0, 0
+  size: 58, 30
+  orig: 58, 30
+  offset: 0, 0
+  index: -1
+Loading_Bar_1_1
+  rotate: false
+  xy: 58, 0
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: 1
+Loading_Bar_1_2
+  rotate: false
+  xy: 108, 0
+  size: 890, 40
+  orig: 890, 40
+  offset: 0, 0
+  index: 2
+Loading_Bar_1_3
+  rotate: false
+  xy: 998, 0
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: 3
+Loading_Bar_3
+  rotate: false
+  xy: 1048, 0
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: 1
+Loading_Bar_3
+  rotate: false
+  xy: 1098, 0
+  size: 890, 40
+  orig: 890, 40
+  offset: 0, 0
+  index: 2
+Loading_Bar_3
+  rotate: false
+  xy: 1988, 0
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: 3
+Music
+  rotate: false
+  xy: 234, 40
+  size: 217, 46
+  orig: 217, 46
+  offset: 0, 0
+  index: -1
+Music_BTN
+  rotate: false
+  xy: 0, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Ok_BTN
+  rotate: false
+  xy: 210, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Score
+  rotate: false
+  xy: 0, 40
+  size: 234, 45
+  orig: 234, 45
+  offset: 0, 0
+  index: -1
+Settings_BTN
+  rotate: false
+  xy: 420, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Ship_3_4_BTN
+  rotate: false
+  xy: 840, 171
+  size: 211, 211
+  orig: 211, 211
+  offset: 0, 0
+  index: -1
+Sound
+  rotate: false
+  xy: 451, 40
+  size: 236, 46
+  orig: 236, 46
+  offset: 0, 0
+  index: -1
+Sound_BTN
+  rotate: false
+  xy: 630, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Stats_Bar
+  rotate: false
+  xy: 965, 91
+  size: 1080, 80
+  orig: 1080, 80
+  offset: 0, 0
+  index: -1
+Table
+  rotate: false
+  xy: 687, 40
+  size: 1001, 51
+  orig: 1001, 51
+  offset: 0, 0
+  index: -1
+Window
+  rotate: false
+  xy: 0, 478
+  size: 940, 1400
+  orig: 940, 1400
+  offset: 0, 0
+  index: -1
+Window
+  rotate: false
+  xy: 940, 478
+  size: 940, 1400
+  orig: 940, 1400
+  offset: 0, 0
+  index: 2
+progress-bar-bg
+  rotate: false
+  xy: 0, 0
+  size: 10, 20
+  orig: 10, 20
+  offset: 0, 0
+  index: -1
+progress-bar-fill
+  rotate: false
+  xy: 10, 0
+  size: 10, 20
+  orig: 10, 20
+  offset: 0, 0
+  index: -1

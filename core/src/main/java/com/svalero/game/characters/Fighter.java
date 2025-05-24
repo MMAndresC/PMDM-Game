@@ -28,6 +28,7 @@ public class Fighter extends Character {
         type = CHARACTER_TYPE.FIGHTER;
         status = STATUS.ACTIVE;
         lives = 1;
+        pointsScore = FIGHTER_POINTS_SCORE;
 
         // Load textures
         idleFrame = R.getEnemyTexture(FIGHTER_IDLE);
