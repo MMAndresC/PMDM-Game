@@ -24,7 +24,6 @@ public interface Constants {
     //Files
 
     String MENU_BACKGROUND = "Main_menu.png";
-    String LEVEL_1_BACKGROUND = "Level_1.png";
 
     //Regions
 
@@ -58,8 +57,10 @@ public interface Constants {
     //UI
     String STATS_BAR = "Stats_Bar";
     String HEALTH_BAR = "Health_Bar_Table";
-    String SHIP_ICON = "Ship_3_4_BTN";
-    String HEALTH_STAT = "Loading_Bar_1_2";
+    String SHIP_ICON = "Ship-Icon";
+    String HEALTH_STAT = "Loading-Bar-Orange2";
+    String LEVEL_WINDOW = "Level-Window";
+    String WINDOW = "Window";
 
     //Config UI
 
@@ -75,8 +76,18 @@ public interface Constants {
     float WIDTH_SHIP_ICON = 50;
     float WIDTH_HEALTH_STAT = 200f;
     float SPACING = 100f;
+    float WIDTH_LEVEL_WINDOW = 900f;
+    float HEIGHT_LEVEL_WINDOW =450f;
+    float PADDING_GAME_OVER_TABLE = 30;
+    float PADDING_GAME_OVER_TITLE = 40;
+    float PADDING_GAME_OVER_SCORE = 10;
+    float PADDING_GAME_OVER_SCORE_VALUE = 60;
+    float WIDTH_BUTTON_GAME_OVER = 400;
+    float HEIGHT_BUTTON_GAME_OVER = 100;
 
     //Config game
+
+    float LEVEL_DELAY = 5f;
 
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;
@@ -89,6 +100,7 @@ public interface Constants {
     float RANGER_IMMUNITY_HIT_DURATION = 1f;
     int RANGER_LIVES = 3;
     float RANGER_EXPLOSION_SCALE = 5f;
+    float SCORE_BONUS_LIVES = 1000;
 
     float ASTEROID_HIT_POINTS = 60f;
     float ASTEROID_SPEED = 200f;
@@ -115,12 +127,11 @@ public interface Constants {
     float KAMIKAZE_SCALE = 1.5f;
     float KAMIKAZE_POINTS_SCORE = 100f;
 
-    float ENEMY_SPAWN_DELAY = 5f; //5 seconds
-
     //Enum
     enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};
     enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE};
     enum FORMATION {RIGHT, LEFT,FRONT}
     enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE}
+    enum POWER_UP {DAMAGE, HEALTH, SHIELD}
 
 }

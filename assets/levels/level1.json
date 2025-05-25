@@ -1,0 +1,20 @@
+{
+  "background": "bg1.png",
+  "animations": [],
+  "enemies": [
+    { "delay": 5, "type": "ASTEROID" },
+    { "delay": 5, "type": "ASTEROID" },
+    { "delay": 2, "type": "KAMIKAZE" },
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 4, "type": "GUN_TURRET" },
+    { "delay": 4, "type": "GUN_TURRET" },
+    { "delay": 2, "type": "FIGHTER_SQUADRON" },
+    { "delay": 5, "type": "ASTEROID" },
+    { "delay": 2, "type": "FIGHTER_SQUADRON" },
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 5, "type": "GUN_TURRET" }
+  ],
+  "powerUps": []
+}
+
