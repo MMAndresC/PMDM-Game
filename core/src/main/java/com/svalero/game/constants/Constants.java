@@ -60,6 +60,7 @@ public interface Constants {
     String SHIP_ICON = "Ship-Icon";
     String HEALTH_STAT = "Loading-Bar-Orange2";
     String LEVEL_WINDOW = "Level-Window";
+    String WINDOW = "Window";
 
     //Config UI
 
@@ -77,10 +78,16 @@ public interface Constants {
     float SPACING = 100f;
     float WIDTH_LEVEL_WINDOW = 900f;
     float HEIGHT_LEVEL_WINDOW =450f;
+    float PADDING_GAME_OVER_TABLE = 30;
+    float PADDING_GAME_OVER_TITLE = 40;
+    float PADDING_GAME_OVER_SCORE = 10;
+    float PADDING_GAME_OVER_SCORE_VALUE = 60;
+    float WIDTH_BUTTON_GAME_OVER = 400;
+    float HEIGHT_BUTTON_GAME_OVER = 100;
 
     //Config game
 
-    float LEVEL_DELAY = 8f;
+    float LEVEL_DELAY = 5f;
 
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;

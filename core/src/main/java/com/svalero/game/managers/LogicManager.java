@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.MyGame;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.utils.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,7 +62,7 @@ public class LogicManager {
                 Gdx.app.error("LevelManager", "Error al leer nivel: " + numberLevel);
                 Gdx.app.exit();
             }
-            //TODO pantalla game over, you win
+            game.setScreen(new GameOverScreen(game, ranger.getScore()));
             return;
         }
         isLevelOver = false;
@@ -71,7 +72,6 @@ public class LogicManager {
     }
 
     public void checkLevelEnd(float dt){
-        //TODO no debería llegar aquí si es game over
         // All enemies destroyed or out of screen
         if(isLevelOver) levelCompleteTimer += dt;
         if(enemyManager.getEnemies().isEmpty()
@@ -192,7 +192,8 @@ public class LogicManager {
                     Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
                     explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
                     ranger.dispose();
-                    //TODO termina partida
+                    game.setScreen(new GameOverScreen(game, ranger.getScore()));
+                    return;
                 }
             }else index++;
         }
@@ -230,7 +231,8 @@ public class LogicManager {
                     Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                     explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
                     ranger.dispose();
-                    //TODO termina partida
+                    game.setScreen(new GameOverScreen(game, ranger.getScore()));
+                    return;
                 }
 
                 Vector2 position = getCenterPositionExplosion(enemy.getHitBox());

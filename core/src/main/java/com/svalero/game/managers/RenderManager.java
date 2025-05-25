@@ -152,18 +152,23 @@ public class RenderManager {
         float screenWidth = Gdx.graphics.getWidth();
         TextureRegion statsBar = R.getUITexture(STATS_BAR);
         batch.draw(statsBar, 0, 0, WIDTH_STATS_BAR, HEIGHT_STATS_BAR);
+
         int numberLevel = logicManager.getNumberLevel();
         font.draw(batch, "Level " + numberLevel, 30f, HEIGHT_STATS_BAR - 12);
         font.draw(batch, "Score", 255f, HEIGHT_STATS_BAR - 12);
+
         float score = logicManager.getRanger().getScore();
         String formatted = String.format("%06.0f", score);
         font.draw(batch, formatted , 440f, HEIGHT_STATS_BAR - 12);
+
         TextureRegion healthBar = R.getUITexture(HEALTH_BAR);
         batch.draw(healthBar,screenWidth - WIDTH_HEALTH_BAR,0, WIDTH_HEALTH_BAR, HEIGHT_HEALTH_BAR);
+
         TextureRegion shipIcon = R.getUITexture(SHIP_ICON);
         font.draw(batch, "X " + logicManager.getRanger().getLives(), screenWidth - WIDTH_HEALTH_BAR - SPACING, HEIGHT_HEALTH_BAR - 10);
         batch.draw(shipIcon, screenWidth - WIDTH_HEALTH_BAR - SPACING - WIDTH_SHIP_ICON - 10, 0, WIDTH_SHIP_ICON, HEIGHT_SHIP_ICON);
         TextureRegion healthStat = R.getUITexture(HEALTH_STAT);
+
         float healthPercentage = logicManager.getRanger().getHitPoints() / RANGER_HIT_POINTS;
         float width = healthPercentage * WIDTH_HEALTH_STAT;
         batch.draw(healthStat, screenWidth - WIDTH_HEALTH_BAR + 5f, 5f, width, HEIGHT_STATS_BAR - 10f);
@@ -187,7 +192,6 @@ public class RenderManager {
         float lineSpacing = 40f;
         float totalHeight = lineSpacing * 6;
 
-        // Centrado vertical de las 4 líneas
         float startY = y + (HEIGHT_LEVEL_WINDOW + totalHeight) / 1.8f;
 
         String text = "LEVEL " + numberLevel;
@@ -202,17 +206,15 @@ public class RenderManager {
         layout.setText(font, text);
         font.draw(batch, text, centerX - layout.width / 2f, startY - lineSpacing * 2.5f);
 
-        text = "X 1000";
-        layout.setText(font, text);
-
         TextureRegion shipIcon = R.getUITexture(SHIP_ICON);
-        float totalWidth = WIDTH_SHIP_ICON  + SPACING + layout.width;
-        float iconX = centerX - totalWidth / 2f;
         float iconY = startY - lineSpacing * 5f;
+        float iconX = centerX - WIDTH_SHIP_ICON * 2.5f;
 
+        text = logicManager.getRanger().getLives() + "   X 1000";
+        layout.setText(font, text);
         batch.draw(shipIcon, iconX, iconY, WIDTH_SHIP_ICON, HEIGHT_SHIP_ICON);
         float textY = iconY + HEIGHT_SHIP_ICON / 2f + layout.height / 2f;
-        font.draw(batch, text, iconX + WIDTH_SHIP_ICON + SPACING, textY);
+        font.draw(batch, text, iconX + WIDTH_SHIP_ICON + 10f, textY);
 
         text = "SCORE";
         layout.setText(font, text);
