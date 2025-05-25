@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.MyGame;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
 import com.svalero.game.screen.GameOverScreen;
+import com.svalero.game.screen.GameScreen;
+import com.svalero.game.screen.PauseScreen;
 import com.svalero.game.utils.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,9 +44,14 @@ public class LogicManager {
 
     private float levelCompleteTimer;
 
+    private GameScreen gameScreen;
 
-    public LogicManager(MyGame game) {
+    private float freezeTime;
+
+
+    public LogicManager(MyGame game, GameScreen gameScreen) {
         this.game = game;
+        this.gameScreen = gameScreen;
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
         this.levelManager = new LevelManager();
@@ -51,6 +59,7 @@ public class LogicManager {
         this.numberLevel = 1;
         this.isLevelOver = false;
         this.levelCompleteTimer = 0;
+        this.freezeTime = 0;
         initializeLevel();
     }
 
@@ -119,9 +128,16 @@ public class LogicManager {
         if(Gdx.input.isKeyPressed(Input.Keys.S)){
             ranger.createProjectile();
         }
+
+        //Pause
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            game.setScreen(new PauseScreen(game, gameScreen));
+        }
     }
 
     public void update(float dt) {
+
         handleInput(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
@@ -258,5 +274,17 @@ public class LogicManager {
             }else
                 index++;
         }
+    }
+
+    public void adjustFreezeTime(){
+        float now = TimeUtils.nanoTime() / 1_000_000_000f;
+        float pausedDuration = now - freezeTime;
+        ranger.setLastShot(ranger.getLastShot() + pausedDuration);
+        for(Character enemy: enemyManager.getEnemies()){
+            //TODO actualizo a todos aunque no disparen
+            //Pendiente de refactorizar enemymanager
+            enemy.setLastShot(enemy.getLastShot() + pausedDuration);
+        }
+        freezeTime = 0;
     }
 }

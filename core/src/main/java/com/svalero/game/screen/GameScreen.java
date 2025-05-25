@@ -21,12 +21,14 @@ public class GameScreen implements Screen {
     }
 
     private void loadManagers(MyGame game) {
-        logicManager = new LogicManager(game);
+        logicManager = new LogicManager(game, this);
         renderManager = new RenderManager(logicManager);
     }
 
     @Override
     public void show() {
+        if(logicManager.getFreezeTime() > 0)
+            logicManager.adjustFreezeTime();
     }
 
     @Override

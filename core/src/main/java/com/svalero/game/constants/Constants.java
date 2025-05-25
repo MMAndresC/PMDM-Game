@@ -82,8 +82,13 @@ public interface Constants {
     float PADDING_GAME_OVER_TITLE = 40;
     float PADDING_GAME_OVER_SCORE = 10;
     float PADDING_GAME_OVER_SCORE_VALUE = 60;
-    float WIDTH_BUTTON_GAME_OVER = 400;
-    float HEIGHT_BUTTON_GAME_OVER = 100;
+    float WIDTH_BUTTON_GAME_OVER = 660;
+    float HEIGHT_BUTTON_GAME_OVER = 120;
+    float PADDING_SETTING_LABEL = 10;
+    float WIDTH_SLIDER = 200;
+    float HEIGHT_SLIDER = 20;
+    float WIDTH_KNOB = 20;
+    float HEIGHT_KNOB = 40;
 
     //Config game
 

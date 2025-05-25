@@ -44,10 +44,34 @@
     }
   },
 
-  "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
+  "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle" : {
     "default": {
-      "background": "progress-bar-bg",
-      "knobBefore": "progress-bar-fill"
+      "background": "progress-bar-background",
+      "knobBefore": "progress-bar-before"
+    },
+    "signal1": {
+      "background": "progress-bar-background",
+      "knobBefore": "signal-bar-1"
+    },
+    "signal2": {
+      "background": "progress-bar-background",
+      "knobBefore": "signal-bar-2"
+    },
+    "signal3": {
+      "background": "progress-bar-background",
+      "knobBefore": "signal-bar-3"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle" : {
+    "default-horizontal": { "background": "default-slider", "knob": "default-slider-knob" }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+    "default": {
+      "checkboxOff": "check-box-off",
+      "checkboxOn": "check-box",
+      "font": "default-font",
+      "fontColor": "white"
     }
   }
 }
