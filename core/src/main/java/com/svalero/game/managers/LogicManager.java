@@ -2,12 +2,12 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.MyGame;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.utils.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,14 +28,66 @@ public class LogicManager {
 
     private EnemyManager enemyManager;
 
+    private LevelManager levelManager;
+
     private List<Explosion> explosions;
+
+    private int numberLevel;
+
+    private String background;
+
+    private boolean isLevelOver;
+
+    private float levelCompleteTimer;
 
 
     public LogicManager(MyGame game) {
         this.game = game;
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
+        this.levelManager = new LevelManager();
         this.explosions = new ArrayList<>();
+        this.numberLevel = 1;
+        this.isLevelOver = false;
+        this.levelCompleteTimer = 0;
+        initializeLevel();
+    }
+
+    public void initializeLevel(){
+        Level level = levelManager.getCurrentLevel(numberLevel);
+        System.out.println("Level number: " + numberLevel + " " + level);
+        if(level == null){
+            if(numberLevel == 1) {
+                Gdx.app.error("LevelManager", "Error al leer nivel: " + numberLevel);
+                Gdx.app.exit();
+            }
+            //TODO pantalla game over, you win
+            return;
+        }
+        isLevelOver = false;
+        levelCompleteTimer = 0;
+        enemyManager.setLevelEnemies(level.getEnemies());
+        background = level.getBackground();
+    }
+
+    public void checkLevelEnd(float dt){
+        //TODO no debería llegar aquí si es game over
+        // All enemies destroyed or out of screen
+        if(isLevelOver) levelCompleteTimer += dt;
+        if(enemyManager.getEnemies().isEmpty()
+            && enemyManager.getIndexEnemy() >= enemyManager.getLevelEnemies().size()){
+            isLevelOver = true;
+            if(levelCompleteTimer >= LEVEL_DELAY){
+                //Reset enemyManager
+                enemyManager = new EnemyManager();
+                numberLevel++;
+                //Add bonus to score
+                float score = ranger.getScore();
+                float sumBonus = ranger.getLives() * SCORE_BONUS_LIVES;
+                ranger.setScore(score + sumBonus);
+                initializeLevel();
+            }
+        }
     }
 
     private void handleInput(float dt) {
@@ -81,10 +133,11 @@ public class LogicManager {
         for(Explosion explosion: explosions){
             explosion.update(dt);
         }
+        checkLevelEnd(dt);
     }
 
     public void checkRangerProjectilesCollision(){
-        if(ranger.isDestroyed()) return;
+        if(ranger.isDestroyed() || isLevelOver) return;
         for(Projectile projectile: ranger.getProjectiles()){
             if(projectile.isDestroyed()) continue;
             for(Character enemy: enemyManager.getEnemies()){
@@ -126,7 +179,7 @@ public class LogicManager {
     }
 
     public void checkEnemiesProjectilesCollisions(){
-        if(ranger.isDestroyed()) return;
+        if(ranger.isDestroyed() || isLevelOver) return;
         boolean collision = false;
         int index = 0;
         while(!collision && enemyManager.getProjectiles().size() > index){
@@ -165,7 +218,7 @@ public class LogicManager {
     }
 
     public void checkBodyCollisions() {
-        if(ranger.isDestroyed()) return;
+        if(ranger.isDestroyed() || isLevelOver) return;
         boolean collision = false;
         int index = 0;
         while(!collision && enemyManager.getEnemies().size() > index){

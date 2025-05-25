@@ -35,14 +35,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        //TODO ver como paso ese background, cambiara con el level, AQUÍ NO ESTA BIEN
-        background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + LEVEL_1_BACKGROUND));
     }
 
     @Override
     public void render(float dt) {
         logicManager.update(dt);
-        renderManager.render(dt, background);
+        renderManager.render(dt);
     }
 
     @Override

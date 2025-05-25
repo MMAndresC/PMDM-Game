@@ -182,8 +182,10 @@ public class Ranger extends Character{
 
     public void lostLife(float immuneDuration){
         lives--;
-        if(lives == 0)
+        if(lives == 0){
             status = STATUS.DESTROYED;
+            hitPoints = 0;
+        }
         else {
             this.immuneDuration = immuneDuration;
             isImmune = true;
@@ -207,7 +209,10 @@ public class Ranger extends Character{
                 hitPoints = RANGER_HIT_POINTS;
                 immuneDuration = RANGER_IMMUNITY_DURATION;
                 isImmune = true;
-            } else status = STATUS.DESTROYED;
+            } else {
+                status = STATUS.DESTROYED;
+                hitPoints = 0;
+            }
         }else{
             if(hitPoints <= RANGER_HIT_POINTS / 2f){
                 body.setRegion(lowHealth);

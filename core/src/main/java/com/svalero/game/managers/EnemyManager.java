@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.characters.*;
 
 import com.svalero.game.characters.Character;
+import com.svalero.game.utils.LevelEnemies;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,20 +26,8 @@ public class EnemyManager {
 
     private float timeSinceLastSpawn;
 
-    private List<ENEMY_TYPE> level1 = List.of(
-        ENEMY_TYPE.ASTEROID,
-        ENEMY_TYPE.ASTEROID,
-        ENEMY_TYPE.KAMIKAZE,
-        ENEMY_TYPE.GUN_TURRET,
-        ENEMY_TYPE.GUN_TURRET,
-        ENEMY_TYPE.GUN_TURRET,
-        ENEMY_TYPE.FIGHTER_SQUADRON,
-        ENEMY_TYPE.ASTEROID,
-        ENEMY_TYPE.FIGHTER_SQUADRON,
-        ENEMY_TYPE.GUN_TURRET,
-        ENEMY_TYPE.GUN_TURRET,
-        ENEMY_TYPE.GUN_TURRET
-    );
+    private List<LevelEnemies> levelEnemies;
+
     private int indexEnemy;
 
     private Vector2 rangerPosition;
@@ -50,13 +39,14 @@ public class EnemyManager {
         indexEnemy = 0;
         rangerPosition = new Vector2();
         fighterSquadronManager = new FighterSquadronManager();
+        levelEnemies = new ArrayList<>();
     }
 
     public void update(float dt, Vector2 rangerPosition) {
         timeSinceLastSpawn += dt;
         this.rangerPosition.set(rangerPosition);
 
-        if (timeSinceLastSpawn >= ENEMY_SPAWN_DELAY && indexEnemy < level1.size()) {
+        if (indexEnemy < levelEnemies.size() && timeSinceLastSpawn >= levelEnemies.get(indexEnemy).getDelay()) {
             timeSinceLastSpawn = 0;
             generateEnemy();
         }
@@ -88,7 +78,7 @@ public class EnemyManager {
     }
 
     public void generateEnemy() {
-        ENEMY_TYPE enemyType = level1.get(indexEnemy);
+        ENEMY_TYPE enemyType = levelEnemies.get(indexEnemy).getType();
 
         switch (enemyType) {
             case ASTEROID:
