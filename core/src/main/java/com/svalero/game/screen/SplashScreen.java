@@ -41,9 +41,8 @@ public class SplashScreen implements Screen {
         skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
 
         // Crear ProgressBar
-        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
 
-        progressBar = new ProgressBar(0f, 1f, 0.01f, false, style);
+        progressBar = new ProgressBar(0f, 1f, 0.01f, false, skin, "default");
         progressBar.setAnimateDuration(0.25f);
         progressBar.setValue(0);
 

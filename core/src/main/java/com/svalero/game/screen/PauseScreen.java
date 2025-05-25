@@ -1,6 +1,5 @@
 package com.svalero.game.screen;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -19,13 +19,14 @@ import lombok.Data;
 import java.io.File;
 
 import static com.svalero.game.constants.Constants.*;
+import static com.svalero.game.constants.Constants.HEIGHT_BUTTON_GAME_OVER;
 
 @Data
-public class GameOverScreen implements Screen {
+public class PauseScreen implements Screen {
 
     private MyGame game;
 
-    private float score;
+    private GameScreen gameScreen;
 
     private Stage stage;
 
@@ -33,14 +34,13 @@ public class GameOverScreen implements Screen {
 
     private TextureRegion background;
 
-    public GameOverScreen(MyGame game, float score) {
+    public PauseScreen(MyGame game, GameScreen gameScreen) {
         this.game = game;
-        this.score = score;
+        this.gameScreen = gameScreen;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
         this.background = R.getUITexture(WINDOW);
-
     }
 
     @Override
@@ -110,25 +110,46 @@ public class GameOverScreen implements Screen {
         table.pad(PADDING_GAME_OVER_TABLE);
 
         // 60% width, 100% height
-        table.setWidth(Gdx.graphics.getWidth() * 0.6f);
-        table.setHeight(Gdx.graphics.getHeight());
+        float tableWidth = Gdx.graphics.getWidth() * 0.6f;
+        float tableHeight = Gdx.graphics.getHeight();
 
-        Label gameOverLabel = new Label("GAME OVER", skin, "title");
-        gameOverLabel.setAlignment(Align.center);
+        table.setSize(tableWidth, tableHeight);
 
-        Label scoreLabel = new Label("SCORE", skin);
-        String formatted = String.format("%06.0f", score);
-        Label scoreValue = new Label(formatted, skin, "title");
+        TextureRegion pauseHeaderRegion = R.getUITexture("Pause-Header");
+        Image pauseHeader = new Image(new TextureRegionDrawable(pauseHeaderRegion));
+        pauseHeader.setScaling(Scaling.fit);
 
-        TextButton newGameBtn = new TextButton("New Game", skin);
+        float headerWidth = tableWidth * 0.4f;
+        float headerHeight = tableHeight * 0.15f;
+
+        Label settingLabel = new Label("SETTING", skin, "title");
+        settingLabel.setAlignment(Align.left);
+
+        CheckBox musicCheckbox = new CheckBox("", skin, "default");
+        musicCheckbox.setChecked(true);
+        Label musicLabel = new Label("Music", skin);
+
+        Table musicRow = new Table();
+        musicRow.add(musicCheckbox).padRight(10);
+        musicRow.add(musicLabel);
+        musicRow.align(Align.left);
+
+        Label volumeLabel = new Label("Volume", skin);
+        Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, skin, "default-horizontal");
+        volumeSlider.getStyle().background.setMinHeight(20); // Altura mínima
+        volumeSlider.setWidth(WIDTH_SLIDER);
+        volumeSlider.getStyle().knob.setMinWidth(WIDTH_KNOB);
+        volumeSlider.getStyle().knob.setMinHeight(HEIGHT_KNOB);
+
+        TextButton resumeBtn = new TextButton("Resume", skin);
         TextButton menuBtn = new TextButton("Return to Main Menu", skin);
         TextButton exitBtn = new TextButton("Exit", skin);
 
         // Listeners
-        newGameBtn.addListener(new ClickListener() {
+        resumeBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(gameScreen);
             }
         });
 
@@ -146,12 +167,16 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(gameOverLabel).padBottom(PADDING_GAME_OVER_TITLE).row();
-        table.add(scoreLabel).padBottom(PADDING_GAME_OVER_SCORE).row();
-        table.add(scoreValue).padBottom(PADDING_GAME_OVER_SCORE_VALUE).row();
-        table.add(newGameBtn).padBottom(PADDING_BUTTON).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).row();
-        table.add(menuBtn).padBottom(PADDING_BUTTON).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).row();
+        table.add(pauseHeader).width(headerWidth).height(headerHeight)
+            .padBottom(PADDING_BUTTON).center().row();
+        table.add(settingLabel).center().padBottom(PADDING_SETTING_LABEL).row();
+        table.add(musicRow).center().padBottom(PADDING_BUTTON).row();
+        table.add(volumeLabel).padBottom(PADDING_BUTTON).center().row();
+        table.add(volumeSlider).width(WIDTH_SLIDER).height(HEIGHT_SLIDER).padBottom(PADDING_BUTTON).row();
+        table.add(resumeBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).padBottom(PADDING_BUTTON).row();
+        table.add(menuBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).padBottom(PADDING_BUTTON).row();
         table.add(exitBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).row();
+
         return table;
     }
 }
