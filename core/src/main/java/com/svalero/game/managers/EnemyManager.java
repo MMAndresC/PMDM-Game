@@ -7,7 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.characters.*;
 
 import com.svalero.game.characters.Character;
-import com.svalero.game.utils.LevelEnemies;
+import com.svalero.game.projectiles.Projectile;
+import com.svalero.game.levels.LevelEnemies;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -153,5 +154,14 @@ public class EnemyManager {
 
             enemies.add(asteroid);
         }
+    }
+
+    public void clear(){
+        projectiles.clear();
+        enemies.clear();
+        indexEnemy = 0;
+        levelEnemies.clear();
+        timeSinceLastSpawn = 0;
+        fighterSquadronManager.clear();
     }
 }

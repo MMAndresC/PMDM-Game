@@ -8,10 +8,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.MyGame;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.items.PowerUp;
+import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.GameScreen;
 import com.svalero.game.screen.PauseScreen;
-import com.svalero.game.utils.Level;
+import com.svalero.game.levels.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +36,8 @@ public class LogicManager {
 
     private LevelManager levelManager;
 
+    private PowerUpManager powerUpManager;
+
     private List<Explosion> explosions;
 
     private int numberLevel;
@@ -55,6 +59,7 @@ public class LogicManager {
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
         this.levelManager = new LevelManager();
+        this.powerUpManager = new PowerUpManager();
         this.explosions = new ArrayList<>();
         this.numberLevel = 1;
         this.isLevelOver = false;
@@ -76,8 +81,12 @@ public class LogicManager {
         }
         isLevelOver = false;
         levelCompleteTimer = 0;
-        enemyManager.setLevelEnemies(level.getEnemies());
         background = level.getBackground();
+        //Initialize managers
+        enemyManager.clear();
+        enemyManager.setLevelEnemies(level.getEnemies());
+        powerUpManager.clear();
+        powerUpManager.setLevelPowerUps(level.getPowerUps());
     }
 
     public void checkLevelEnd(float dt){
@@ -141,15 +150,31 @@ public class LogicManager {
         handleInput(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
+        powerUpManager.update(dt);
         if(!ranger.isImmune() && !ranger.isDestroyed()){
             checkBodyCollisions();
             checkEnemiesProjectilesCollisions();
             checkRangerProjectilesCollision();
         }
+        if(!ranger.isDestroyed()) //Immune ranger can catch items
+            checkRangerPowerUpsCollision();
         for(Explosion explosion: explosions){
             explosion.update(dt);
         }
         checkLevelEnd(dt);
+    }
+
+    public void checkRangerPowerUpsCollision(){
+        if(ranger.isDestroyed() || isLevelOver) return;
+        //Increase a little ranger rect,
+        Rectangle rangerRect = ranger.setLenientHitBox();
+        for(PowerUp powerUp: powerUpManager.getPowerUps()){
+            if(powerUp.isActive() && powerUp.getRect().overlaps(rangerRect)){
+                powerUp.setStatus(STATUS.DESTROYED);
+                ranger.setPowerUp(powerUp.getType());
+            }
+        }
+        powerUpManager.getPowerUps().removeIf(powerUp -> powerUp.getStatus() == STATUS.DESTROYED);
     }
 
     public void checkRangerProjectilesCollision(){
@@ -197,9 +222,13 @@ public class LogicManager {
             Projectile projectile = enemyManager.getProjectiles().get(index);
             Rectangle rect = projectile.getRect();
             if(rect != null && rect.overlaps(ranger.getHitBox())) {
-                collision = true;
                 projectile.setStatus(STATUS.DESTROYED);
-                ranger.hit(projectile.getDamage());
+                collision = true;
+                if(ranger.isShieldActive())
+                    ranger.hitShield(projectile.getDamage());
+                else
+                    ranger.hit(projectile.getDamage());
+
                 if (ranger.isDestroyed()) {
                     Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
                     explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
@@ -223,13 +252,17 @@ public class LogicManager {
             Character enemy = enemyManager.getEnemies().get(index);
             Rectangle hitBox = enemy.getHitBox();
             if(hitBox != null && hitBox.overlaps(ranger.getHitBox())) {
-                ranger.lostLife(RANGER_IMMUNITY_DURATION);
-                if (ranger.isDestroyed()) {
-                    Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                    explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
-                    ranger.dispose();
-                    game.setScreen(new GameOverScreen(game, ranger.getScore()));
-                    return;
+                if(ranger.isShieldActive()){
+                    ranger.destroyShield();
+                }else{
+                    ranger.lostLife(RANGER_IMMUNITY_DURATION);
+                    if (ranger.isDestroyed()) {
+                        Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
+                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
+                        ranger.dispose();
+                        game.setScreen(new GameOverScreen(game, ranger.getScore()));
+                        return;
+                    }
                 }
 
                 Vector2 position = getCenterPositionExplosion(enemy.getHitBox());

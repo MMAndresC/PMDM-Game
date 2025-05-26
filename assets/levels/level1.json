@@ -15,6 +15,10 @@
     { "delay": 5, "type": "GUN_TURRET" },
     { "delay": 5, "type": "GUN_TURRET" }
   ],
-  "powerUps": []
+  "powerUps": [
+    { "delay": 2, "type": "DAMAGE" },
+    { "delay": 2, "type": "HEALTH" },
+    { "delay": 2, "type": "SHIELD" }
+  ]
 }
 

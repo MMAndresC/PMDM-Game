@@ -3,7 +3,7 @@ size: 1983, 1878
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Armor_Icon
+Shield-Icon
   rotate: false
   xy: 300, 91
   size: 65, 61
@@ -45,7 +45,7 @@ check-box
   orig: 15, 15
   offset: 0, 0
   index: -1
-Damage_Icon
+Damage-Icon
   rotate: false
   xy: 365, 91
   size: 65, 65

@@ -54,13 +54,21 @@ public interface Constants {
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
     AnimationInfo ASTEROID_EXPLOSION = new AnimationInfo("Asteroid-Explosion", 7);
     AnimationInfo RANGER_EXPLOSION = new AnimationInfo("Explosion", 9);
+    //Power Ups
+    String SHIELD = "Powerup-Shield";
+    String DAMAGE = "Powerup-Damage";
+    String HEALTH ="Powerup-Health";
+    AnimationInfo RANGER_SHIELD = new AnimationInfo("Shield", 12);
     //UI
     String STATS_BAR = "Stats_Bar";
     String HEALTH_BAR = "Health_Bar_Table";
     String SHIP_ICON = "Ship-Icon";
     String HEALTH_STAT = "Loading-Bar-Orange2";
+    String HEALTH_SHIELD_STAT = "Loading-Bar-Blue2";
     String LEVEL_WINDOW = "Level-Window";
     String WINDOW = "Window";
+    String SHIELD_ICON = "Shield-Icon";
+    String DAMAGE_ICON = "Damage-Icon";
 
     //Config UI
 
@@ -89,6 +97,8 @@ public interface Constants {
     float HEIGHT_SLIDER = 20;
     float WIDTH_KNOB = 20;
     float HEIGHT_KNOB = 40;
+    float WIDTH_POWER_UP_ICON = 50;
+    float HEIGHT_POWER_UP_ICON = 50;
 
     //Config game
 
@@ -106,6 +116,7 @@ public interface Constants {
     int RANGER_LIVES = 3;
     float RANGER_EXPLOSION_SCALE = 5f;
     float SCORE_BONUS_LIVES = 1000;
+    float RANGER_LENIENT_PERCENTAGE = 0.1f; //Increase rectangle to get items
 
     float ASTEROID_HIT_POINTS = 60f;
     float ASTEROID_SPEED = 200f;
@@ -127,10 +138,15 @@ public interface Constants {
     float GUN_TURRET_MISSILE_SPEED = 200f;
     float GUN_TURRET_POINTS_SCORE = 200f;
 
-    float KAMIKAZE_SPEED = 150f;
+    float KAMIKAZE_SPEED = 250f;
     float KAMIKAZE_HIT_POINTS = 25f;
     float KAMIKAZE_SCALE = 1.5f;
     float KAMIKAZE_POINTS_SCORE = 100f;
+
+    float POWER_UP_SPEED = 200f;
+    float POWER_UP_SCALE = 1.5f;
+    int POWER_UP_DUPLICATED_BONUS_POINTS = 1000;
+
 
     //Enum
     enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};
