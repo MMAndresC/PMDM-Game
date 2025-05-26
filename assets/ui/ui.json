@@ -1,0 +1,77 @@
+{
+  "com.badlogic.gdx.graphics.Color": {
+    "white": [1, 1, 1, 1],
+    "black": [0, 0, 0, 1],
+    "blue": [0, 0, 1, 1]
+  },
+
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "default-font": { "file": "../fonts/font32Default.fnt" },
+    "title-font": { "file": "../fonts/font64Bold.fnt" },
+    "button-font": { "file": "../fonts/font32Option.fnt" }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+    "default": {
+      "font": "default-font"
+    },
+    "title": {
+      "font": "title-font"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "default": {
+      "up": "button-up",
+      "down": "button-down",
+      "over": "button-over",
+      "font": "button-font"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
+    "button-up": {
+      "name": "button-up",
+      "color": "blue"
+    },
+    "button-down": {
+      "name": "button-down",
+      "color": "black"
+    },
+    "button-over": {
+      "name": "button-over",
+      "color": "blue"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle" : {
+    "default": {
+      "background": "progress-bar-background",
+      "knobBefore": "progress-bar-before"
+    },
+    "signal1": {
+      "background": "progress-bar-background",
+      "knobBefore": "signal-bar-1"
+    },
+    "signal2": {
+      "background": "progress-bar-background",
+      "knobBefore": "signal-bar-2"
+    },
+    "signal3": {
+      "background": "progress-bar-background",
+      "knobBefore": "signal-bar-3"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle" : {
+    "default-horizontal": { "background": "default-slider", "knob": "default-slider-knob" }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+    "default": {
+      "checkboxOff": "check-box-off",
+      "checkboxOn": "check-box",
+      "font": "default-font",
+      "fontColor": "white"
+    }
+  }
+}
