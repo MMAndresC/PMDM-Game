@@ -1,14 +1,17 @@
 package com.svalero.game.characters;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.svalero.game.managers.R;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.svalero.game.constants.Constants.FIGHTER_FIRE_RATE;
+import static com.svalero.game.constants.Constants.*;
+import static com.svalero.game.constants.Constants.FIGHTER_BEAM_DAMAGE;
 
 @Data
 public class FighterSquadron {
@@ -19,7 +22,7 @@ public class FighterSquadron {
     private final float targetY;
     private boolean inPosition;
     private float lastShot;
-    private List<Projectile> projectiles;
+
 
     public FighterSquadron(Fighter front, Fighter left, Fighter right, float targetY) {
         this.front = front;
@@ -28,14 +31,13 @@ public class FighterSquadron {
         this.targetY = targetY;
         this.inPosition = false;
         this.lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
-        projectiles = new ArrayList<Projectile>();
+        //projectiles = new ArrayList<Projectile>();
         this.front.setSquadron(this);
         this.left.setSquadron(this);
         this.right.setSquadron(this);
     }
 
     public void update(float dt, Vector2 rangerPosition) {
-        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         float currentY = front.getPosition().y;
 
         //Spawn out of screen still not in position y obtain random
@@ -69,29 +71,33 @@ public class FighterSquadron {
                 else right.setIdle();
             }
 
-
             //Update hit box
             if (!front.isDestroyed()) front.updateHitBox();
             if (!left.isDestroyed()) left.updateHitBox();
             if (!right.isDestroyed()) right.updateHitBox();
-
-            //Shoot?
-            if (currentTime - lastShot >= FIGHTER_FIRE_RATE) {
-                lastShot = currentTime;
-                if(!front.isDestroyed()) projectiles.add(front.fireProjectile());
-                if(!right.isDestroyed()) projectiles.add(right.fireProjectile());
-                if(!left.isDestroyed()) projectiles.add(left.fireProjectile());
-            }
-
-            //Update position projectiles
-            for(Projectile projectile : projectiles) {
-                projectile.update(dt);
-                if(projectile.isOutOfBounds()) projectile.dispose(); //Free resources
-            }
-
-            //Remove out of screen
-            projectiles.removeIf(Projectile::isOutOfBounds);
         }
+    }
+
+    public List<Projectile> createProjectile(){
+        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
+        //Not yet
+        if (currentTime - lastShot < FIGHTER_FIRE_RATE) return null;
+        lastShot = currentTime;
+        List<Projectile> beams = new ArrayList<>();
+        TextureRegion frame = R.getEnemyTexture(DEFAULT_ENEMY_PROJECTILE);
+        if(!front.isDestroyed()){
+            Vector2 origin = new Vector2(front.getPosition().x + (front.getCurrentFrame().getRegionWidth() / 2f ), front.getPosition().y);
+            beams.add(new BeamDefault(origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_DAMAGE, frame));
+        }
+        if(!right.isDestroyed()){
+            Vector2 origin = new Vector2(right.getPosition().x + (right.getCurrentFrame().getRegionWidth() / 2f ), right.getPosition().y);
+            beams.add(new BeamDefault(origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_DAMAGE, frame));
+        }
+        if(!left.isDestroyed()){
+            Vector2 origin = new Vector2(left.getPosition().x + (left.getCurrentFrame().getRegionWidth() / 2f ), left.getPosition().y);
+            beams.add(new BeamDefault(origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_DAMAGE, frame));
+        }
+        return beams;
     }
 
     private void getSquadronPosition(Vector2 newFrontPos) {

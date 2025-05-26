@@ -72,11 +72,11 @@ public class FighterSquadronManager {
             .collect(Collectors.toList());
     }
 
-    public List<Projectile> getProjectiles() {
-        return squadrons.stream()
-            .flatMap(s -> s.getProjectiles().stream())
-            .collect(Collectors.toList());
+    public List<Projectile> createProjectiles() {
+        List<Projectile> projectiles = new ArrayList<>();
+        for(FighterSquadron squadron : squadrons) {
+            projectiles.addAll(squadron.createProjectile());
+        }
+        return projectiles;
     }
-
-
 }

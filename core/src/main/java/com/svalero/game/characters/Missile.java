@@ -15,12 +15,11 @@ public class Missile extends Projectile {
 
     private final Vector2 velocity;
 
-    public Missile(Character shooter, Vector2 origin, float speed, float damage, Vector2 rangerPosition) {
+    public Missile(Vector2 origin, float speed, float damage, Vector2 rangerPosition) {
         this.position = new Vector2(origin);
         this.speed = speed;
         this.damage = damage;
         this.animationTime = 0;
-        this.shooter = shooter;
 
         //Vector from origin to target
         Vector2 direction = new Vector2(rangerPosition).sub(origin).nor();

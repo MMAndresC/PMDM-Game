@@ -72,6 +72,7 @@ public abstract class Character implements Disposable {
         }
     }
 
+
     public boolean noHitPointsLeft(){
         return hitPoints <= 0;
     }

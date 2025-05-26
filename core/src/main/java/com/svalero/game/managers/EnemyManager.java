@@ -46,35 +46,45 @@ public class EnemyManager {
         timeSinceLastSpawn += dt;
         this.rangerPosition.set(rangerPosition);
 
+        //Create new enemy
         if (indexEnemy < levelEnemies.size() && timeSinceLastSpawn >= levelEnemies.get(indexEnemy).getDelay()) {
             timeSinceLastSpawn = 0;
             generateEnemy();
         }
 
         // Update all enemies
-        projectiles.clear();
         for (Character enemy : enemies) {
-            if(enemy instanceof Kamikaze || enemy instanceof GunTurret)
+            if(enemy instanceof Kamikaze)
                 enemy.update(dt, rangerPosition);
             else
                 enemy.update(dt);
-            //TODO a los tipos que disparen pedirles sus listas de disparo
-            if(enemy instanceof GunTurret){
-                projectiles.addAll(((GunTurret) enemy).getMissiles());
-            }else if(enemy instanceof Fighter)
-                projectiles.addAll(fighterSquadronManager.getProjectiles());
         }
-
         // Update fighter squadrons and add their fighters to the general list
         fighterSquadronManager.update(dt, rangerPosition);
         enemies.removeIf(enemy -> enemy instanceof Fighter); // Remove fighter references
         enemies.addAll(fighterSquadronManager.getAllFighters()); //Load new with updates to synchronize
-
+        //Update projectiles
+        for(Projectile projectile : projectiles) {
+            projectile.update(dt);
+        }
+        // Check if enemies have to create projectiles
+        for(Character enemy: enemies){
+            if(enemy instanceof GunTurret){
+                Projectile missile = ((GunTurret) enemy).createMissile(rangerPosition);
+                if(missile != null)
+                    projectiles.add(missile);
+            }else if(enemy instanceof Fighter){
+                List<Projectile> beams = ((Fighter) enemy).getSquadron().createProjectile();
+                if(beams != null)
+                    projectiles.addAll(beams);
+            }
+        }
         removeElementsOutScreen();
     }
 
     public void removeElementsOutScreen() {
         enemies.removeIf(enemy -> enemy.getStatus() == STATUS.OUT);
+        projectiles.removeIf(projectile -> projectile.getStatus() == STATUS.OUT);
     }
 
     public void generateEnemy() {
