@@ -10,7 +10,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.items.PowerUp;
+import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.utils.DrawInfo;
+import com.svalero.game.utils.DrawInfoEffect;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,6 +54,7 @@ public class RenderManager {
         batch.begin();
         drawBackground(dt);
         drawUI();
+        drawPowerUps();
         drawRanger();
         drawRangerProjectile();
         drawEnemies(dt);
@@ -67,6 +71,16 @@ public class RenderManager {
             logicManager.getRanger().getHitBox().y,
             logicManager.getRanger().getHitBox().width,
             logicManager.getRanger().getHitBox().height);*/
+    }
+
+    public void drawPowerUps(){
+        List<PowerUp> powerUps = logicManager.getPowerUpManager().getPowerUps();
+        for(PowerUp powerUp : powerUps){
+            DrawInfoEffect effect = powerUp.drawWithRotationEffect();
+            batch.draw(effect.getRegion(), effect.getX(), effect.getY(), effect.getOriginX(), effect.getOriginY(),
+                effect.getWidth(), effect.getHeight(), effect.getScaleX(), effect.getScaleY(), effect.getRotation()
+            );
+        }
     }
 
     public void drawExplosions() {

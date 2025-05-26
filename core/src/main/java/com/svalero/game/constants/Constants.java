@@ -54,6 +54,10 @@ public interface Constants {
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
     AnimationInfo ASTEROID_EXPLOSION = new AnimationInfo("Asteroid-Explosion", 7);
     AnimationInfo RANGER_EXPLOSION = new AnimationInfo("Explosion", 9);
+    //Power Ups
+    String SHIELD = "Powerup-Shield";
+    String DAMAGE = "Powerup-Damage";
+    String HEALTH ="Powerup-Health";
     //UI
     String STATS_BAR = "Stats_Bar";
     String HEALTH_BAR = "Health_Bar_Table";
@@ -127,10 +131,14 @@ public interface Constants {
     float GUN_TURRET_MISSILE_SPEED = 200f;
     float GUN_TURRET_POINTS_SCORE = 200f;
 
-    float KAMIKAZE_SPEED = 150f;
+    float KAMIKAZE_SPEED = 250f;
     float KAMIKAZE_HIT_POINTS = 25f;
     float KAMIKAZE_SCALE = 1.5f;
     float KAMIKAZE_POINTS_SCORE = 100f;
+
+    float POWER_UP_SPEED = 200f;
+    float POWER_UP_SCALE = 1.5f;
+
 
     //Enum
     enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};

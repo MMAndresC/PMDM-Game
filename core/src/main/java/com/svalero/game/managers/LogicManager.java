@@ -8,10 +8,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.MyGame;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.GameScreen;
 import com.svalero.game.screen.PauseScreen;
-import com.svalero.game.utils.Level;
+import com.svalero.game.levels.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,8 @@ public class LogicManager {
 
     private LevelManager levelManager;
 
+    private PowerUpManager powerUpManager;
+
     private List<Explosion> explosions;
 
     private int numberLevel;
@@ -55,6 +58,7 @@ public class LogicManager {
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
         this.levelManager = new LevelManager();
+        this.powerUpManager = new PowerUpManager();
         this.explosions = new ArrayList<>();
         this.numberLevel = 1;
         this.isLevelOver = false;
@@ -76,8 +80,12 @@ public class LogicManager {
         }
         isLevelOver = false;
         levelCompleteTimer = 0;
-        enemyManager.setLevelEnemies(level.getEnemies());
         background = level.getBackground();
+        //Initialize managers
+        enemyManager.clear();
+        enemyManager.setLevelEnemies(level.getEnemies());
+        powerUpManager.clear();
+        powerUpManager.setLevelPowerUps(level.getPowerUps());
     }
 
     public void checkLevelEnd(float dt){
@@ -141,6 +149,7 @@ public class LogicManager {
         handleInput(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
+        powerUpManager.update(dt);
         if(!ranger.isImmune() && !ranger.isDestroyed()){
             checkBodyCollisions();
             checkEnemiesProjectilesCollisions();
