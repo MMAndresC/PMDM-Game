@@ -110,6 +110,10 @@ public class RenderManager {
             batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
             batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
             batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+            if(ranger.isShieldActive()){
+                DrawInfo shield = ranger.getShield();
+                batch.draw(shield.getRegion(), shield.getX(), shield.getY(), shield.getWidth(), shield.getHeight());
+            }
         }
     }
 
@@ -181,11 +185,28 @@ public class RenderManager {
         TextureRegion shipIcon = R.getUITexture(SHIP_ICON);
         font.draw(batch, "X " + logicManager.getRanger().getLives(), screenWidth - WIDTH_HEALTH_BAR - SPACING, HEIGHT_HEALTH_BAR - 10);
         batch.draw(shipIcon, screenWidth - WIDTH_HEALTH_BAR - SPACING - WIDTH_SHIP_ICON - 10, 0, WIDTH_SHIP_ICON, HEIGHT_SHIP_ICON);
-        TextureRegion healthStat = R.getUITexture(HEALTH_STAT);
 
-        float healthPercentage = logicManager.getRanger().getHitPoints() / RANGER_HIT_POINTS;
+        float healthPercentage;
+        TextureRegion healthStat;
+        if(logicManager.getRanger().isShieldActive()){
+            healthStat = R.getUITexture(HEALTH_SHIELD_STAT);
+            healthPercentage = logicManager.getRanger().getPointsLifeShield() / RANGER_HIT_POINTS;
+        }else{
+            healthStat = R.getUITexture(HEALTH_STAT);
+            healthPercentage = logicManager.getRanger().getHitPoints() / RANGER_HIT_POINTS;
+        }
         float width = healthPercentage * WIDTH_HEALTH_STAT;
         batch.draw(healthStat, screenWidth - WIDTH_HEALTH_BAR + 5f, 5f, width, HEIGHT_STATS_BAR - 10f);
+
+        if(logicManager.getRanger().isShieldActive()){
+            TextureRegion shieldIcon = R.getUITexture(SHIELD_ICON);
+            batch.draw(shieldIcon, (screenWidth / 2f) - WIDTH_POWER_UP_ICON + 5, 0, WIDTH_POWER_UP_ICON, HEIGHT_POWER_UP_ICON);
+        }
+
+        if(logicManager.getRanger().isDoubleCannonActive()){
+            TextureRegion damageIcon = R.getUITexture(DAMAGE_ICON);
+            batch.draw(damageIcon, (screenWidth / 2f) + WIDTH_POWER_UP_ICON - 5, 0, WIDTH_POWER_UP_ICON, HEIGHT_POWER_UP_ICON);
+        }
     }
 
     private void drawLevelUI() {

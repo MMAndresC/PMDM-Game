@@ -75,4 +75,16 @@ public class PowerUp {
             width, height, POWER_UP_SCALE, POWER_UP_SCALE, rotation
         );
     }
+
+    public boolean isDestroyed(){
+        return status == STATUS.DESTROYED;
+    }
+
+    public boolean isActive(){
+        return status == STATUS.ACTIVE;
+    }
+
+    public boolean isOut(){
+        return status == STATUS.OUT;
+    }
 }

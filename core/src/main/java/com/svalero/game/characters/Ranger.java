@@ -31,10 +31,11 @@ public class Ranger extends Character{
     private float rangerHeight;
     private float rangerWidth;
 
-    private DrawInfo body, engine, engineEffect;
+    private DrawInfo body, engine, engineEffect, shield;
 
     private Animation<TextureRegion> engineEffectAnimation;
     private Animation<TextureRegion> engineEffectPoweringAnimation;
+    private Animation<TextureRegion> shieldAnimation;
 
     private TextureRegion fullHealth, mediumHealth, lowHealth;
 
@@ -43,6 +44,10 @@ public class Ranger extends Character{
     private float immuneTime;
     private float immuneDuration;
 
+    //Power ups
+    private boolean shieldActive;
+    private float pointsLifeShield;
+    private boolean doubleCannonActive;
 
     public Ranger() {
         //Init
@@ -56,6 +61,9 @@ public class Ranger extends Character{
         status = STATUS.ACTIVE;
         immuneDuration = 0;
         hitPoints = RANGER_HIT_POINTS;
+        shieldActive = false;
+        pointsLifeShield = RANGER_HIT_POINTS;
+        doubleCannonActive = false;
 
         //Ammo data
         fireRate = RANGER_FIRE_RATE;
@@ -70,6 +78,7 @@ public class Ranger extends Character{
         body = new DrawInfo();
         engine = new DrawInfo();
         engineEffect = new DrawInfo();
+        shield = new DrawInfo();
         body.setRegion(fullHealth);
         engine.setRegion(R.getRangerTexture(RANGER_ENGINE));
         //Load animations
@@ -80,6 +89,10 @@ public class Ranger extends Character{
         frames = R.getRangerRegions(RANGER_ENGINE_EFFECTS_POWERING);
         engineEffectPoweringAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
         animationTime = 0f;
+
+        frames = R.getRangerRegions(RANGER_SHIELD);
+        shieldAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+        shield.setRegion(engineEffectAnimation.getKeyFrame(0f));
 
         //Set ranger in screen
         this.position = new Vector2(
@@ -132,6 +145,12 @@ public class Ranger extends Character{
         // 3. Body
         body.update(body.getRegion(),x, yOffset,rangerWidth,bodyHeight);
 
+        // 4. Shield animation
+        if (shieldActive && shieldAnimation != null) {
+            TextureRegion shieldFrame = shieldAnimation.getKeyFrame(animationTime);
+            shield.update(shieldFrame, x, yOffset, rangerWidth, bodyHeight);
+        }
+
         //Calculate rectangle hit box, small, adjust to body
         float hitBoxY = position.y + engineEffectHeight + (10f * RANGER_SCALE);
         float hitBoxHeight = (engineHeight + bodyHeight - (40f * RANGER_SCALE)) * 0.62f; //Init in 2/3 and down number adjusting
@@ -169,15 +188,29 @@ public class Ranger extends Character{
         float currentTime = TimeUtils.nanoTime() / 1_000_000_000f; // Seconds
         if (currentTime - lastShot >= fireRate) {
             lastShot = currentTime;
-            Vector2 posProjectile = new Vector2(
-                position.x - 2f,
-                position.y + (rangerHeight / 2)
-            );
-            projectiles.add(
-                new ProjectileRanger(
-                    posProjectile, bulletSpeed, fireRate, bulletDamage
-                )
-            );
+
+            float posX = position.x - 2f;
+            float posY = position.y + (rangerHeight / 2);
+
+            if(doubleCannonActive){
+                int OFFSET = 10;
+                projectiles.add(
+                    new ProjectileRanger(
+                        new Vector2(posX - OFFSET, posY), bulletSpeed, fireRate, bulletDamage
+                    )
+                );
+                projectiles.add(
+                    new ProjectileRanger(
+                        new Vector2(posX + OFFSET, posY), bulletSpeed, fireRate, bulletDamage
+                    )
+                );
+            }else{
+                projectiles.add(
+                    new ProjectileRanger(
+                        new Vector2(posX, posY), bulletSpeed, fireRate, bulletDamage
+                    )
+                );
+            }
         }
     }
 
@@ -223,7 +256,63 @@ public class Ranger extends Character{
         }
     }
 
+    public void hitShield(float damage){
+        pointsLifeShield -= damage;
+        if(pointsLifeShield <= 0)
+            destroyShield();
+    }
+
     public void sumScore(float points){
         score += points;
+    }
+
+    public Rectangle setLenientHitBox(){
+        float expandX = hitBox.width * RANGER_LENIENT_PERCENTAGE;
+        float expandY = hitBox.height * RANGER_LENIENT_PERCENTAGE;
+
+        return new Rectangle(
+            hitBox.x - expandX / 2f,
+            hitBox.y - expandY / 2f,
+            hitBox.width + expandX,
+            hitBox.height + expandY
+        );
+    }
+
+    public void setPowerUp(POWER_UP type){
+        //Duplicated items give extra score points
+        switch(type){
+            case HEALTH -> { //Recover all health points
+                if(hitPoints == RANGER_HIT_POINTS){
+                    score += POWER_UP_DUPLICATED_BONUS_POINTS;
+                }else{
+                    hitPoints = RANGER_HIT_POINTS;
+                    body.setRegion(fullHealth);
+                }
+            }
+            case SHIELD -> { //Double health
+                //Shield active and full health -> extra score points
+                if(shieldActive && pointsLifeShield == RANGER_HIT_POINTS){
+                    score += POWER_UP_DUPLICATED_BONUS_POINTS;
+                    return;
+                }
+                //Shield active and damaged -> Shield recover full health
+                if(shieldActive && pointsLifeShield < RANGER_HIT_POINTS){
+                    pointsLifeShield = RANGER_HIT_POINTS;
+                    return;
+                }
+                //Not shield yet -> Active shield
+                shieldActive = true;
+            }
+            case DAMAGE -> { // Double shoot
+                if(doubleCannonActive)
+                    score += POWER_UP_DUPLICATED_BONUS_POINTS;
+                doubleCannonActive = true;
+            }
+        }
+    }
+
+    public void destroyShield(){
+        shieldActive = false;
+        pointsLifeShield = RANGER_HIT_POINTS;
     }
 }

@@ -1,271 +1,355 @@
 ranger.png
-size: 466, 159
+size: 252, 539
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Explosion1
   rotate: false
-  xy: 336, 31
+  xy: 96, 91
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion2
   rotate: false
-  xy: 401, 31
+  xy: 161, 91
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion3
   rotate: false
-  xy: 0, 95
+  xy: 0, 155
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion4
   rotate: false
-  xy: 65, 95
+  xy: 65, 155
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion5
   rotate: false
-  xy: 130, 95
+  xy: 130, 155
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion6
   rotate: false
-  xy: 195, 95
+  xy: 0, 219
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion7
   rotate: false
-  xy: 260, 95
+  xy: 65, 219
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion8
   rotate: false
-  xy: 325, 95
+  xy: 130, 219
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion9
   rotate: false
-  xy: 390, 95
+  xy: 0, 283
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Main-Ship-Damaged
   rotate: false
-  xy: 48, 31
+  xy: 57, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Base-Idle1
   rotate: false
-  xy: 129, 0
+  xy: 102, 0
   size: 24, 8
   orig: 24, 8
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Base-Idle2
   rotate: false
-  xy: 153, 0
+  xy: 126, 0
   size: 25, 8
   orig: 25, 8
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Base-Idle3
   rotate: false
-  xy: 186, 0
+  xy: 151, 0
   size: 24, 9
   orig: 24, 9
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Idle1
   rotate: false
-  xy: 44, 0
+  xy: 24, 0
   size: 26, 6
   orig: 26, 6
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Idle2
   rotate: false
-  xy: 70, 0
+  xy: 50, 0
   size: 26, 6
   orig: 26, 6
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Idle3
   rotate: false
-  xy: 13, 0
+  xy: 0, 0
   size: 24, 5
   orig: 24, 5
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Idle4
   rotate: false
-  xy: 96, 0
+  xy: 76, 0
   size: 26, 6
   orig: 26, 6
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Powering1
   rotate: false
-  xy: 333, 0
+  xy: 30, 14
   size: 30, 16
   orig: 30, 16
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Powering2
   rotate: false
-  xy: 303, 0
+  xy: 0, 14
   size: 30, 15
   orig: 30, 15
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Powering3
   rotate: false
-  xy: 247, 0
+  xy: 175, 0
   size: 28, 12
   orig: 28, 12
   offset: 0, 0
   index: -1
 Main-Ship-Engine-Effect-Powering4
   rotate: false
-  xy: 275, 0
+  xy: 203, 0
   size: 28, 14
   orig: 28, 14
   offset: 0, 0
   index: -1
 Main-Ship-Engines-Base
   rotate: false
-  xy: 96, 31
+  xy: 105, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Engines-Supercharged
   rotate: false
-  xy: 144, 31
+  xy: 153, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Full-health
   rotate: false
-  xy: 192, 31
+  xy: 201, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Slight-damage
   rotate: false
-  xy: 240, 31
+  xy: 0, 91
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Very-damaged
   rotate: false
-  xy: 288, 31
+  xy: 48, 91
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Powerup-Damage
   rotate: false
-  xy: 363, 0
+  xy: 123, 14
   size: 48, 29
   orig: 48, 29
   offset: 0, 0
   index: -1
 Powerup-Health
   rotate: false
-  xy: 411, 0
+  xy: 171, 14
   size: 48, 29
   orig: 48, 29
   offset: 0, 0
   index: -1
 Powerup-Shield
   rotate: false
-  xy: 0, 31
+  xy: 0, 43
   size: 48, 29
   orig: 48, 29
   offset: 0, 0
   index: -1
 Projectile-Laser-Large
   rotate: false
-  xy: 210, 0
+  xy: 115, 14
   size: 8, 28
   orig: 8, 28
   offset: 0, 0
   index: -1
 Projectile-Laser-Medium
   rotate: false
-  xy: 37, 0
+  xy: 73, 14
   size: 7, 21
   orig: 7, 21
   offset: 0, 0
   index: -1
 Projectile-Laser-Small
   rotate: false
-  xy: 0, 0
+  xy: 67, 14
   size: 6, 18
   orig: 6, 18
   offset: 0, 0
   index: -1
 Projectile-Minigun-Large
   rotate: false
-  xy: 229, 0
+  xy: 106, 14
   size: 9, 27
   orig: 9, 27
   offset: 0, 0
   index: -1
 Projectile-Minigun-Medium
   rotate: false
-  xy: 218, 0
+  xy: 80, 14
   size: 11, 21
   orig: 11, 21
   offset: 0, 0
   index: -1
 Projectile-Minigun-Small
   rotate: false
-  xy: 6, 0
+  xy: 60, 14
   size: 7, 17
   orig: 7, 17
   offset: 0, 0
   index: -1
 Projectile-Plasma-Large
   rotate: false
-  xy: 238, 0
+  xy: 48, 43
   size: 9, 31
   orig: 9, 31
   offset: 0, 0
   index: -1
 Projectile-Plasma-Medium
   rotate: false
-  xy: 178, 0
+  xy: 98, 14
   size: 8, 26
   orig: 8, 26
   offset: 0, 0
   index: -1
 Projectile-Plasma-Small
   rotate: false
-  xy: 122, 0
+  xy: 91, 14
   size: 7, 24
   orig: 7, 24
+  offset: 0, 0
+  index: -1
+Shield1
+  rotate: false
+  xy: 65, 283
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield2
+  rotate: false
+  xy: 129, 283
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield3
+  rotate: false
+  xy: 0, 347
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield4
+  rotate: false
+  xy: 64, 347
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield5
+  rotate: false
+  xy: 128, 347
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield6
+  rotate: false
+  xy: 0, 411
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield7
+  rotate: false
+  xy: 64, 411
+  size: 60, 64
+  orig: 60, 64
+  offset: 0, 0
+  index: -1
+Shield8
+  rotate: false
+  xy: 124, 411
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield9
+  rotate: false
+  xy: 188, 411
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield10
+  rotate: false
+  xy: 0, 475
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield11
+  rotate: false
+  xy: 64, 475
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield12
+  rotate: false
+  xy: 128, 475
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1

@@ -1,0 +1,18 @@
+{
+  "background": "bg1.png",
+  "animations": [],
+  "enemies": [
+    { "delay": 2, "type": "KAMIKAZE" },
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 2, "type": "FIGHTER_SQUADRON" },
+    { "delay": 25, "type": "ASTEROID" }
+  ],
+  "powerUps": [
+    { "delay": 2, "type": "DAMAGE" },
+    { "delay": 8, "type": "HEALTH" },
+    { "delay": 2, "type": "SHIELD" },
+    { "delay": 4, "type": "SHIELD" },
+    { "delay": 2, "type": "SHIELD" }
+  ]
+}
+
