@@ -1,4 +1,4 @@
-package com.svalero.game.characters;
+package com.svalero.game.projectiles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;

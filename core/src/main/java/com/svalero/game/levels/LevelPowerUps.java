@@ -1,4 +1,4 @@
-package com.svalero.game.utils;
+package com.svalero.game.levels;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,5 +12,5 @@ import static com.svalero.game.constants.Constants.POWER_UP;
 public class LevelPowerUps {
 
     private float delay;
-    private POWER_UP powerUp;
+    private POWER_UP type;
 }

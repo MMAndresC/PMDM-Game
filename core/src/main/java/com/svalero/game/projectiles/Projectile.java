@@ -1,10 +1,13 @@
-package com.svalero.game.characters;
+package com.svalero.game.projectiles;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import com.svalero.game.characters.Character;
+import com.svalero.game.characters.Fighter;
+import com.svalero.game.characters.FighterSquadron;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

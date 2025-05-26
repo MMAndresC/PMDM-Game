@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.projectiles.ProjectileRanger;
 import com.svalero.game.utils.DrawInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;

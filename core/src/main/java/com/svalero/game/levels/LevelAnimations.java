@@ -1,5 +1,6 @@
-package com.svalero.game.utils;
+package com.svalero.game.levels;
 
+import com.svalero.game.utils.AnimationInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

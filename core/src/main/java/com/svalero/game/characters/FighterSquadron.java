@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.projectiles.BeamDefault;
+import com.svalero.game.projectiles.Projectile;
 import lombok.Data;
 
 import java.util.ArrayList;

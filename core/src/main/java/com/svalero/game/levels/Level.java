@@ -1,4 +1,4 @@
-package com.svalero.game.utils;
+package com.svalero.game.levels;
 
 
 import lombok.AllArgsConstructor;
