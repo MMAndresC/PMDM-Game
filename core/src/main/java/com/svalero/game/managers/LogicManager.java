@@ -163,11 +163,6 @@ public class LogicManager {
                     if(enemy.noHitPointsLeft()){
                         ranger.sumScore(enemy.getPointsScore());
                         enemy.setStatus(STATUS.DESTROYED);
-                        if(enemy instanceof GunTurret){
-                            if(!((GunTurret) enemy).getMissiles().isEmpty()){
-                                enemy.setStatus(STATUS.INACTIVE);
-                            }
-                        }
                         CHARACTER_TYPE type = returnType(enemy);
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                         explosions.add(new Explosion(position, type));
@@ -203,6 +198,7 @@ public class LogicManager {
             Rectangle rect = projectile.getRect();
             if(rect != null && rect.overlaps(ranger.getHitBox())) {
                 collision = true;
+                projectile.setStatus(STATUS.DESTROYED);
                 ranger.hit(projectile.getDamage());
                 if (ranger.isDestroyed()) {
                     Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
@@ -214,21 +210,6 @@ public class LogicManager {
             }else index++;
         }
         if(collision){
-            //EnemyManager has a projectiles copy, remove in copy and in the original
-            //GunTurret & FighterSquadron, that is reason why new projectiles are created sending
-            //shooter parent. Projectile and shooter are related in both ways
-            Projectile p = enemyManager.getProjectiles().get(index);
-            Character shooter = null;
-
-            if (p instanceof Missile missile) {
-                shooter = missile.getShooter();
-                if (shooter instanceof GunTurret turret) {
-                    turret.removeMissile(missile);
-                }
-            }else if(p.getOriginSquadron() != null){
-                p.getOriginSquadron().getProjectiles().remove(p);
-            }
-            p.dispose();
             enemyManager.getProjectiles().get(index).dispose();
             enemyManager.getProjectiles().remove(index);
         }
@@ -257,13 +238,6 @@ public class LogicManager {
                 if (enemy instanceof Fighter fighter) {
                     fighter.setStatus(STATUS.DESTROYED);
                     fighter.dispose();
-                }if(enemy instanceof GunTurret gunTurret) {
-                    if(!gunTurret.getMissiles().isEmpty()) gunTurret.setStatus(STATUS.INACTIVE);
-                    else {
-                        gunTurret.setStatus(STATUS.DESTROYED);
-                        gunTurret.dispose();
-                        enemyManager.getEnemies().remove(index);
-                    }
                 }else {
                     enemyManager.getEnemies().get(index).dispose();
                     enemyManager.getEnemies().remove(index);
@@ -281,8 +255,6 @@ public class LogicManager {
         float pausedDuration = now - freezeTime;
         ranger.setLastShot(ranger.getLastShot() + pausedDuration);
         for(Character enemy: enemyManager.getEnemies()){
-            //TODO actualizo a todos aunque no disparen
-            //Pendiente de refactorizar enemymanager
             enemy.setLastShot(enemy.getLastShot() + pausedDuration);
         }
         freezeTime = 0;

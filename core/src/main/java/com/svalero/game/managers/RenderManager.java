@@ -128,8 +128,8 @@ public class RenderManager {
         List<Character> enemies = logicManager.getEnemyManager().getEnemies();
         for(Character enemy: enemies) {
 
-            //Not render inactives or destroyed enemies
-            if(enemy.isInactive() || enemy.isDestroyed()) continue;
+            //Not render destroyed enemies
+            if(enemy.isDestroyed()) continue;
 
             if(enemy instanceof GunTurret) {
                 DrawInfo body = ((GunTurret) enemy).getBody();

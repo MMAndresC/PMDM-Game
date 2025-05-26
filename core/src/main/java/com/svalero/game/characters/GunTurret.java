@@ -11,9 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.svalero.game.constants.Constants.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -22,9 +19,9 @@ import static com.svalero.game.constants.Constants.*;
 public class GunTurret extends Character{
 
     DrawInfo body, gun, mount;
+
     int direction;
-    float lastShot;
-    List<Missile> missiles;
+
 
     public GunTurret(){
         //Init
@@ -32,7 +29,7 @@ public class GunTurret extends Character{
         type = CHARACTER_TYPE.GUN_TURRET;
         animationTime = 0;
         fireRate = GUN_TURRET_FIRE_RATE;
-        missiles = new ArrayList<>();
+        //missiles = new ArrayList<>();
         lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
         bulletDamage = GUN_TURRET_MISSILE_DAMAGE;
         bulletSpeed = GUN_TURRET_MISSILE_SPEED;
@@ -77,22 +74,13 @@ public class GunTurret extends Character{
     }
 
     @Override
-    public void update(float dt, Vector2 rangerPosition) {
-        updateMissilePosition(dt);
-        //Not active only want update missiles
-        if(!isActive()) {
-            updateMissilePosition(dt);
-            if(missiles.isEmpty()) status = STATUS.OUT;
-            return;
-        }
-        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
+    public void update(float dt) {
         animationTime += dt;
         //Update position, only y movement
         position.y -= GUN_TURRET_SPEED;
-        //if turret is out of screen mark to be removed
+
         if(position.y < -mount.getRegion().getRegionHeight()){
-            if(missiles.isEmpty()) status = STATUS.OUT;
-            else status = STATUS.INACTIVE;
+            status = STATUS.OUT;
             return;
         }
         mount.setX(position.x);
@@ -131,7 +119,10 @@ public class GunTurret extends Character{
 
         //Update hit box
         hitBox.set(left, bottom, right - left, top - bottom);
+    }
 
+    public Projectile createMissile(Vector2 rangerPosition){
+        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         //Shoot?
         if (currentTime - lastShot >= fireRate) {
             lastShot = currentTime;
@@ -141,23 +132,8 @@ public class GunTurret extends Character{
             float originY = gun.getY() + gun.getHeight() / 2f - 10f;
 
             Vector2 origin = new Vector2(originX, originY);
-            missiles.add(new Missile(this, origin, bulletSpeed, bulletDamage, rangerPosition));
+            return new Missile(origin, bulletSpeed, bulletDamage, rangerPosition);
         }
+        return null;
     }
-
-    private void updateMissilePosition(float dt){
-        //Update missile position
-        for(Projectile missile: missiles){
-            missile.update(dt);
-            if(missile.isOutOfBounds()) missile.dispose();
-        }
-
-        //Remove out of screen missiles
-        missiles.removeIf(Projectile::isOutOfBounds);
-    }
-
-    public void removeMissile(Projectile p) {
-        missiles.remove(p);
-    }
-
 }
