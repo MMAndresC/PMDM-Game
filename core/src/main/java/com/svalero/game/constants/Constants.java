@@ -69,7 +69,10 @@ public interface Constants {
     String WINDOW = "Window";
     String SHIELD_ICON = "Shield-Icon";
     String DAMAGE_ICON = "Damage-Icon";
-
+    String KEYS_MOVE = "Keys-Move";
+    String KEYS_PAUSE = "Keys-Pause";
+    String KEYS_SHOOT = "Keys-Shoot";
+    String DIVIDER = "slider-fancy";
     //Config UI
 
     float PADDING_BUTTON = 20;
@@ -99,6 +102,11 @@ public interface Constants {
     float HEIGHT_KNOB = 40;
     float WIDTH_POWER_UP_ICON = 50;
     float HEIGHT_POWER_UP_ICON = 50;
+    float MENU_BACKGROUND_SPEED = 20;
+    float WIDTH_KEYS = 80;
+    float HEIGHT_KEYS = 50;
+    float HEIGHT_KEY = 40;
+    float WIDTH_KEY = 40;
 
     //Config game
 

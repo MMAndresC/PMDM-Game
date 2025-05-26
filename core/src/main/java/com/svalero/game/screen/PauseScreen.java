@@ -76,11 +76,7 @@ public class PauseScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-        if (stage != null) {
-            stage.getViewport().update(width, height, true);
-        }
-    }
+    public void resize(int width, int height) {}
 
     @Override
     public void pause() {
@@ -135,11 +131,7 @@ public class PauseScreen implements Screen {
         musicRow.align(Align.left);
 
         Label volumeLabel = new Label("Volume", skin);
-        Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, skin, "default-horizontal");
-        volumeSlider.getStyle().background.setMinHeight(20); // Altura mínima
-        volumeSlider.setWidth(WIDTH_SLIDER);
-        volumeSlider.getStyle().knob.setMinWidth(WIDTH_KNOB);
-        volumeSlider.getStyle().knob.setMinHeight(HEIGHT_KNOB);
+        Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, skin, "fancy");
 
         TextButton resumeBtn = new TextButton("Resume", skin);
         TextButton menuBtn = new TextButton("Return to Main Menu", skin);

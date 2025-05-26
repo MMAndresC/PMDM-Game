@@ -42,7 +42,7 @@ public class SplashScreen implements Screen {
 
         // Crear ProgressBar
 
-        progressBar = new ProgressBar(0f, 1f, 0.01f, false, skin, "default");
+        progressBar = new ProgressBar(0f, 1f, 0.01f, false, skin, "fancy");
         progressBar.setAnimateDuration(0.25f);
         progressBar.setValue(0);
 
