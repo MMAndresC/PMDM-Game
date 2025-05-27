@@ -21,7 +21,7 @@ import static com.svalero.game.constants.Constants.*;
 
 public class MainMenuScreen implements Screen {
 
-    private Stage stage = null;
+    private final Stage stage;
 
     private final MyGame game;
 
@@ -37,13 +37,10 @@ public class MainMenuScreen implements Screen {
         this.background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + MENU_BACKGROUND));
         // Initialize stage in constructor
         stage = new Stage(new ScreenViewport());
-        loadStage();
-    }
-
-    private void loadStage() {
         Table table = createOptionsTable();
         stage.addActor(table);
     }
+
 
     @Override
     public void show() {
@@ -59,7 +56,6 @@ public class MainMenuScreen implements Screen {
 
         //Set background
         batch.begin();
-        //batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         drawBackground(dt);
         batch.end();
 
@@ -77,19 +73,13 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {

@@ -24,6 +24,7 @@ public interface Constants {
     //Files
 
     String MENU_BACKGROUND = "Main_menu.png";
+    String SPLASH_SCREEN_BACKGROUND = "Splash_screen.png";
 
     //Regions
 
@@ -114,6 +115,9 @@ public interface Constants {
     float PADDING_CHECKBOX = 20;
     float SCALE_CHECKBOX = 1.5f;
     float SCALE_TABLE = 0.6f;
+    float DELAY_SPLASH_SCREEN = 5f;
+    float WIDTH_PROGRESS_BAR = 400;
+    float HEIGHT_PROGRESS_BAR = 40;
 
     //Config game
 
