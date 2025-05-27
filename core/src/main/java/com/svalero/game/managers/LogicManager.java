@@ -222,6 +222,7 @@ public class LogicManager {
         if(enemy instanceof Kamikaze) return CHARACTER_TYPE.KAMIKAZE;
         if(enemy instanceof GunTurret) return CHARACTER_TYPE.GUN_TURRET;
         if(enemy instanceof Asteroid) return CHARACTER_TYPE.ASTEROID;
+        if(enemy instanceof Frigate) return CHARACTER_TYPE.FRIGATE;
         return CHARACTER_TYPE.FIGHTER;
     }
 

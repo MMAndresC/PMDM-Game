@@ -125,7 +125,7 @@ public interface Constants {
     float PADDING_CHECKBOX = 20;
     float SCALE_CHECKBOX = 1.5f;
     float SCALE_TABLE = 0.6f;
-    float DELAY_SPLASH_SCREEN = 4f;
+    float DELAY_SPLASH_SCREEN = 2f;
     float WIDTH_PROGRESS_BAR = 400;
     float HEIGHT_PROGRESS_BAR = 40;
 
