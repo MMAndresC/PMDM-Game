@@ -50,11 +50,21 @@ public interface Constants {
     String KAMIKAZE = "Kamikaze";
     AnimationInfo KAMIKAZE_ENGINE_EFFECTS = new AnimationInfo("Kamikaze-Engine-Effect", 10);
     String DEFAULT_ENEMY_PROJECTILE = "Projectile-Laser-Large";
+    String FRIGATE = "Frigate-Base";
+    AnimationInfo FRIGATE_ENGINE = new AnimationInfo("Frigate-Engine", 8);
+    AnimationInfo FRIGATE_WEAPON = new AnimationInfo("Frigate-Weapon", 5);
+    AnimationInfo FRIGATE_RAY = new AnimationInfo("Ray", 4);
+    String DREADNOUGHT = "Dreadnought-Base";
+    AnimationInfo DREADNOUGHT_ENGINE = new AnimationInfo("Dreadnought-Engine", 8);
+    AnimationInfo DREADNOUGHT_WEAPON = new AnimationInfo("Dreadnought-Weapon", 34);
+    AnimationInfo DREADNOUGHT_PROTON = new AnimationInfo("Proton", 6);
     //Explosions
     AnimationInfo DEFAULT_ENEMY_EXPLOSION = new AnimationInfo("Explosion", 9);
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
     AnimationInfo ASTEROID_EXPLOSION = new AnimationInfo("Asteroid-Explosion", 7);
     AnimationInfo RANGER_EXPLOSION = new AnimationInfo("Explosion", 9);
+    AnimationInfo FRIGATE_EXPLOSION = new AnimationInfo("Frigate-Explosion", 16);
+    AnimationInfo DREADNOUGHT_EXPLOSION = new AnimationInfo("Dreadnought-Explosion", 18);
     //Power Ups
     String SHIELD = "Powerup-Shield";
     String DAMAGE = "Powerup-Damage";
@@ -115,7 +125,7 @@ public interface Constants {
     float PADDING_CHECKBOX = 20;
     float SCALE_CHECKBOX = 1.5f;
     float SCALE_TABLE = 0.6f;
-    float DELAY_SPLASH_SCREEN = 5f;
+    float DELAY_SPLASH_SCREEN = 4f;
     float WIDTH_PROGRESS_BAR = 400;
     float HEIGHT_PROGRESS_BAR = 40;
 
@@ -162,6 +172,16 @@ public interface Constants {
     float KAMIKAZE_SCALE = 1.5f;
     float KAMIKAZE_POINTS_SCORE = 100f;
 
+    float FRIGATE_SPEED = 200f;
+    float FRIGATE_HIT_POINTS = 60f;
+    float FRIGATE_SCALE = 1.5f;
+    float FRIGATE_RAY_DAMAGE = 20f;
+    float FRIGATE_RAY_SPEED = 200f;
+    float FRIGATE_POINTS_SCORE = 200f;
+    float FRIGATE_FIRE_RATE = 6f;
+    float RAY_HOLD_DURATION = 4f;
+
+
     float POWER_UP_SPEED = 200f;
     float POWER_UP_SCALE = 1.5f;
     int POWER_UP_DUPLICATED_BONUS_POINTS = 1000;
@@ -169,9 +189,10 @@ public interface Constants {
 
     //Enum
     enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};
-    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE};
+    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE, FRIGATE, DREADNOUGHT};
     enum FORMATION {RIGHT, LEFT,FRONT}
-    enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE}
+    enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE, FRIGATE, DREADNOUGHT}
     enum POWER_UP {DAMAGE, HEALTH, SHIELD}
+    enum RAY_STATE { GROWING, HOLDING }
 
 }

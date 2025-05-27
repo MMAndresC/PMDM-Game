@@ -33,10 +33,6 @@ public abstract class Projectile implements Disposable {
 
     protected Rectangle rect;
 
-    //Relation with shooter
-    protected Character shooter;
-    private FighterSquadron originSquadron;
-
 
     public Projectile(Vector2 position, float speed, float fireRate, float damage) {
         this.position = position;
@@ -60,15 +56,11 @@ public abstract class Projectile implements Disposable {
         this.rect = new Rectangle();
         this.status = STATUS.ACTIVE;
         this.currentFrame = currentFrame;
-
-        if (shooter instanceof Fighter fighter) {
-            this.originSquadron = fighter.getSquadron();
-        }
     }
 
     public abstract void update(float dt);
 
-    public boolean isOutOfBounds(){
+    public boolean isOut(){
         return status == STATUS.OUT;
     }
 

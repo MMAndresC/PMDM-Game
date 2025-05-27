@@ -50,14 +50,14 @@ public class Kamikaze extends Character{
     }
 
     @Override
-    public void update(float delta, Vector2 rangerPosition) {
-        animationTime += delta;
+    public void update(float dt, Vector2 rangerPosition) {
+        animationTime += dt;
         engineEffect.setRegion(animation.getKeyFrame(animationTime));
 
         //Normalize direction, value less than 1
         Vector2 direction = new Vector2(rangerPosition).sub(position).nor();
         //Update position going against ranger
-        position.mulAdd(direction, speed * delta);
+        position.mulAdd(direction, speed * dt);
 
         //Update body position
         body.setX(position.x);

@@ -78,6 +78,10 @@ public class EnemyManager {
                 List<Projectile> beams = ((Fighter) enemy).getSquadron().createProjectile();
                 if(beams != null)
                     projectiles.addAll(beams);
+            }else if(enemy instanceof Frigate) {
+                Projectile ray = ((Frigate) enemy).createProjectile(rangerPosition);
+                if(ray != null)
+                    projectiles.add(ray);
             }
         }
         removeElementsOutScreen();
@@ -85,28 +89,28 @@ public class EnemyManager {
 
     public void removeElementsOutScreen() {
         enemies.removeIf(enemy -> enemy.getStatus() == STATUS.OUT);
-        projectiles.removeIf(projectile -> projectile.getStatus() == STATUS.OUT);
+        projectiles.removeIf(projectile -> projectile.getStatus() == STATUS.OUT
+            || projectile.getStatus() == STATUS.DESTROYED
+        );
     }
 
     public void generateEnemy() {
         ENEMY_TYPE enemyType = levelEnemies.get(indexEnemy).getType();
 
         switch (enemyType) {
-            case ASTEROID:
-                createAsteroidShower();
-                break;
-            case FIGHTER_SQUADRON:
-                createFightersSquadron();
-                break;
-            case GUN_TURRET:
-                createGunTurret();
-                break;
-            case KAMIKAZE:
-                createKamikaze();
-                break;
+            case ASTEROID -> createAsteroidShower();
+            case FIGHTER_SQUADRON -> createFightersSquadron();
+            case GUN_TURRET -> createGunTurret();
+            case KAMIKAZE -> createKamikaze();
+            case FRIGATE -> createFrigate();
         }
 
         indexEnemy++;
+    }
+
+    public void createFrigate(){
+        Frigate frigate = new Frigate();
+        enemies.add(frigate);
     }
 
     public void createKamikaze(){

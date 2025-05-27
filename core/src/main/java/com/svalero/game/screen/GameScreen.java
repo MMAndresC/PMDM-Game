@@ -29,8 +29,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        if(logicManager.getFreezeTime() > 0)
-            logicManager.adjustFreezeTime();
+       /* if(logicManager.getFreezeTime() > 0)
+            logicManager.adjustFreezeTime();*/
     }
 
     @Override
@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        if(logicManager == null) return;
+      /*  if(logicManager == null) return;
         if(logicManager.getRanger() == null) return;
         if(logicManager.getRanger().getPosition() == null) return;
 
@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
             Vector2 zeroPosition = new Vector2(logicManager.getRanger().getRangerWidth(), 0);
             if(!logicManager.getRanger().getPosition().equals(zeroPosition)) return;
             logicManager.getRanger().setPosition(rangerPosition);
-        }
+        }*/
 
     }
 

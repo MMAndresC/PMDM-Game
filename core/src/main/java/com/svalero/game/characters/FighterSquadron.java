@@ -33,7 +33,6 @@ public class FighterSquadron {
         this.targetY = targetY;
         this.inPosition = false;
         this.lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
-        //projectiles = new ArrayList<Projectile>();
         this.front.setSquadron(this);
         this.left.setSquadron(this);
         this.right.setSquadron(this);
