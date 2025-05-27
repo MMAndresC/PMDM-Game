@@ -17,19 +17,14 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.R;
-import lombok.Data;
 
 import java.io.File;
 
 import static com.svalero.game.constants.Constants.*;
-import static com.svalero.game.constants.Constants.HEIGHT_BUTTON_GAME_OVER;
 
-@Data
-public class PauseScreen implements Screen {
+public class SettingsScreen implements Screen {
 
     private MyGame game;
-
-    private GameScreen gameScreen;
 
     private Stage stage;
 
@@ -37,9 +32,8 @@ public class PauseScreen implements Screen {
 
     private TextureRegion background;
 
-    public PauseScreen(MyGame game, GameScreen gameScreen) {
+    public SettingsScreen(MyGame game) {
         this.game = game;
-        this.gameScreen = gameScreen;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
@@ -83,22 +77,16 @@ public class PauseScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int i, int i1) {}
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
@@ -106,7 +94,7 @@ public class PauseScreen implements Screen {
         skin.dispose();
     }
 
-    public Table createContentTable(boolean soundEnabled, float musicVolume){
+    public Table createContentTable(boolean soundEnabled, float musicVolume) {
         Table table = new Table();
         table.setFillParent(true);
         table.center();
@@ -115,15 +103,7 @@ public class PauseScreen implements Screen {
         // 60% width, 100% height
         float tableWidth = Gdx.graphics.getWidth() * SCALE_TABLE;
         float tableHeight = Gdx.graphics.getHeight();
-
         table.setSize(tableWidth, tableHeight);
-
-        TextureRegion pauseHeaderRegion = R.getUITexture(PAUSE);
-        Image pauseHeader = new Image(new TextureRegionDrawable(pauseHeaderRegion));
-        pauseHeader.setScaling(Scaling.fit);
-
-        float headerWidth = tableWidth * 0.4f;
-        float headerHeight = tableHeight * 0.15f;
 
         Label settingLabel = new Label("SETTING", skin, "title");
         settingLabel.setAlignment(Align.left);
@@ -146,10 +126,6 @@ public class PauseScreen implements Screen {
         Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, skin, "fancy");
         volumeSlider.setValue(musicVolume);
 
-        TextButton resumeBtn = new TextButton("Resume", skin);
-        TextButton menuBtn = new TextButton("Return to Main Menu", skin);
-        TextButton exitBtn = new TextButton("Exit", skin);
-
         // Save preferences listener
         soundCheckbox.addListener(new ChangeListener() {
             @Override
@@ -169,38 +145,71 @@ public class PauseScreen implements Screen {
             }
         });
 
-        //Button listeners
-        resumeBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(gameScreen);
-            }
-        });
+        // Divider
+        Image divider1 = new Image(new TextureRegionDrawable(R.getUITexture(DIVIDER)));
+        divider1.setWidth(tableWidth);
+        divider1.setHeight(HEIGHT_DIVIDER);
 
-        menuBtn.addListener(new ClickListener() {
+        Label controlsLabel = new Label("CONTROLS", skin, "title");
+        controlsLabel.setAlignment(Align.left);
+
+        // Control mappings
+        Table controlMove = createControlRow(KEYS_MOVE, "Move");
+        Table controlShoot = createControlRow(KEYS_SHOOT, "Shoot");
+        Table controlPause = createControlRow(KEYS_PAUSE, "Pause");
+
+        Image divider2 = new Image(new TextureRegionDrawable(R.getUITexture(DIVIDER)));
+        divider2.setWidth(tableWidth);
+        divider2.setHeight(HEIGHT_DIVIDER);
+
+        // Back Button
+        TextButton backBtn = new TextButton("Back", skin);
+        backBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
 
-        exitBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-
-        table.add(pauseHeader).width(headerWidth).height(headerHeight)
-            .padBottom(PADDING_BUTTON).center().row();
+        // Build layout
         table.add(settingLabel).center().padBottom(PADDING_SETTING_LABEL).row();
         table.add(musicRow).center().padBottom(PADDING_BUTTON).row();
         table.add(volumeLabel).padBottom(PADDING_BUTTON).center().row();
-        table.add(volumeSlider).width(WIDTH_SLIDER).height(HEIGHT_SLIDER).padBottom(PADDING_BUTTON).row();
-        table.add(resumeBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).padBottom(PADDING_BUTTON).row();
-        table.add(menuBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).padBottom(PADDING_BUTTON).row();
-        table.add(exitBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).row();
+        table.add(volumeSlider).width(WIDTH_SLIDER).height(HEIGHT_SLIDER).center().padBottom(PADDING_BUTTON).row();
+
+        table.add(divider1).width(Gdx.graphics.getWidth() * WIDTH_SCALE_DIVIDER).height(HEIGHT_DIVIDER).center().padBottom(PADDING_BUTTON).row();
+        table.add(controlsLabel).padBottom(PADDING_BUTTON).row();
+        table.add(controlMove).center().padBottom(PADDING_BUTTON).row();
+        table.add(controlShoot).center().padBottom(PADDING_BUTTON).row();
+        table.add(controlPause).center().padBottom(PADDING_BUTTON).row();
+        table.add(divider2).width(Gdx.graphics.getWidth() * WIDTH_SCALE_DIVIDER).height(HEIGHT_DIVIDER).center().padBottom(PADDING_BUTTON * 2).row();
+
+        table.add(backBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).padBottom(PADDING_BUTTON).row();
 
         return table;
     }
+
+    private Table createControlRow(String textureName, String labelText) {
+        Table row = new Table();
+
+        Image keyImage = new Image(new TextureRegionDrawable(R.getUITexture(textureName)));
+        keyImage.setScaling(Scaling.fit);
+
+        Container<Image> imageContainer = new Container<>(keyImage);
+        imageContainer.size(WIDTH_KEYS, HEIGHT_KEYS);
+        imageContainer.fill();
+
+        if (!labelText.equals(KEYS_MOVE)) {
+            keyImage.setScaling(Scaling.fit);
+        }
+
+        row.add(imageContainer).padRight(PADDING_IMAGE).center();
+
+        Label actionLabel = new Label(labelText, skin);
+        row.add(actionLabel).center().left();
+
+        row.align(Align.left);
+        return row;
+    }
+
 }

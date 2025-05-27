@@ -21,27 +21,26 @@ import static com.svalero.game.constants.Constants.*;
 
 public class MainMenuScreen implements Screen {
 
-    private Stage stage = null;
+    private final Stage stage;
 
     private final MyGame game;
 
-    private final Texture backgroundTexture;
+    private final Texture background;
 
     private final SpriteBatch batch;
+
+    private float bgX;
 
     public MainMenuScreen(MyGame game) {
         this.game = game;
         batch = new SpriteBatch();
-        this.backgroundTexture = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + MENU_BACKGROUND));
+        this.background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + MENU_BACKGROUND));
         // Initialize stage in constructor
         stage = new Stage(new ScreenViewport());
-        loadStage();
-    }
-
-    private void loadStage() {
         Table table = createOptionsTable();
         stage.addActor(table);
     }
+
 
     @Override
     public void show() {
@@ -57,7 +56,7 @@ public class MainMenuScreen implements Screen {
 
         //Set background
         batch.begin();
-        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        drawBackground(dt);
         batch.end();
 
         if (stage != null) {
@@ -74,25 +73,19 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
         if (stage != null) stage.dispose();
         if (batch != null) batch.dispose();
-        if (backgroundTexture != null) backgroundTexture.dispose();
+        if (background != null) background.dispose();
     }
 
     private Table createOptionsTable() {
@@ -116,6 +109,12 @@ public class MainMenuScreen implements Screen {
         });
 
         TextButton settingsBtn = new TextButton("Settings", skin);
+        settingsBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new SettingsScreen(game));
+            }
+        });
 
         TextButton exitBtn = new TextButton("Exit", skin);
         exitBtn.addListener(new ClickListener() {
@@ -131,5 +130,18 @@ public class MainMenuScreen implements Screen {
         table.add(exitBtn).width(WIDTH_BUTTON).height(HEIGHT_BUTTON).row();
 
         return table;
+    }
+
+    private void updateBackground(float dt, float bgWidth) {
+        bgX -= MENU_BACKGROUND_SPEED * dt;
+        if (bgX <= -bgWidth) {
+            bgX = 0;
+        }
+    }
+
+    private void drawBackground(float dt) {
+        updateBackground(dt, background.getWidth());
+        batch.draw(background, bgX, 0,  background.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(background, bgX + background.getWidth(), 0, background.getWidth(), Gdx.graphics.getHeight());
     }
 }
