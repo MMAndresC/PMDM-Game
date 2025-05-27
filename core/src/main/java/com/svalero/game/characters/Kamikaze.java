@@ -54,6 +54,14 @@ public class Kamikaze extends Character{
         animationTime += dt;
         engineEffect.setRegion(animation.getKeyFrame(animationTime));
 
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
+
         //Normalize direction, value less than 1
         Vector2 direction = new Vector2(rangerPosition).sub(position).nor();
         //Update position going against ranger

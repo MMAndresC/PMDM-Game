@@ -176,6 +176,13 @@ public class RenderManager {
             //Not render destroyed enemies
             if(enemy.isDestroyed()) continue;
 
+            boolean shouldDraw = true;
+            if (enemy.isHitEffect()) {
+                float time = TimeUtils.nanoTime() / 1_000_000_000f;
+                shouldDraw = ((int)(time * 10) % 2 != 0);  // Draw in odd frames
+            }
+            if(!shouldDraw) continue;
+
             if(enemy instanceof GunTurret) {
                 DrawInfo body = ((GunTurret) enemy).getBody();
                 DrawInfo gun = ((GunTurret) enemy).getGun();

@@ -80,6 +80,14 @@ public class GunTurret extends Character{
         //Update position, only y movement
         position.y -= GUN_TURRET_SPEED;
 
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
+
         if(position.y < -mount.getRegion().getRegionHeight()){
             status = STATUS.OUT;
             return;

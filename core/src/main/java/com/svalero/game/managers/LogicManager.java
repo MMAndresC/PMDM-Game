@@ -200,6 +200,9 @@ public class LogicManager {
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                         explosions.add(new Explosion(position, type));
                         enemy.dispose();
+                    }else{
+                        enemy.setHitEffect(true);
+                        enemy.setHitEffectTime(0);
                     }
                 }
             }

@@ -73,9 +73,18 @@ public class FighterSquadron {
             }
 
             //Update hit box
-            if (!front.isDestroyed()) front.updateHitBox();
-            if (!left.isDestroyed()) left.updateHitBox();
-            if (!right.isDestroyed()) right.updateHitBox();
+            if (!front.isDestroyed()) {
+                front.updateHitBox();
+                front.updateHitEffect(dt);
+            }
+            if (!left.isDestroyed()) {
+                left.updateHitBox();
+                left.updateHitEffect(dt);
+            }
+            if (!right.isDestroyed()) {
+                right.updateHitBox();
+                right.updateHitEffect(dt);
+            }
         }
     }
 

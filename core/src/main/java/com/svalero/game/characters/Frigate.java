@@ -79,6 +79,14 @@ public class Frigate extends Character{
 
         engine.setRegion(engineAnimation.getKeyFrame(animationTime));
 
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
+
         if (!inPosition) {
             position.y -= dt * speed;
 

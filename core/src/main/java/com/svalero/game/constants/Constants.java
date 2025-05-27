@@ -132,6 +132,7 @@ public interface Constants {
     //Config game
 
     float LEVEL_DELAY = 5f;
+    float ENEMY_HIT_EFFECT_DURATION = 0.1f;
 
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;
@@ -147,19 +148,19 @@ public interface Constants {
     float SCORE_BONUS_LIVES = 1000;
     float RANGER_LENIENT_PERCENTAGE = 0.1f; //Increase rectangle to get items
 
-    float ASTEROID_HIT_POINTS = 60f;
+    float ASTEROID_HIT_POINTS = 70f;
     float ASTEROID_SPEED = 200f;
     int ASTEROID_SHOWER = 10;
     float ASTEROID_POINTS_SCORE = 1000f;
 
-    float FIGHTER_HIT_POINTS = 20f;
+    float FIGHTER_HIT_POINTS = 25f;
     float FIGHTER_SPEED = 5f;
     float FIGHTER_FIRE_RATE = 1.5f;
     float FIGHTER_BEAM_DAMAGE = 20f;
     float FIGHTER_BEAM_SPEED = 100f;
     float FIGHTER_POINTS_SCORE = 100f;
 
-    float GUN_TURRET_HIT_POINTS = 40f;
+    float GUN_TURRET_HIT_POINTS = 50f;
     float GUN_TURRET_FIRE_RATE = 2f;
     float GUN_TURRET_SPEED = 2f;
     float GUN_TURRET_SCALE = 1.5f;
@@ -168,7 +169,7 @@ public interface Constants {
     float GUN_TURRET_POINTS_SCORE = 200f;
 
     float KAMIKAZE_SPEED = 250f;
-    float KAMIKAZE_HIT_POINTS = 25f;
+    float KAMIKAZE_HIT_POINTS = 40f;
     float KAMIKAZE_SCALE = 1.5f;
     float KAMIKAZE_POINTS_SCORE = 100f;
 

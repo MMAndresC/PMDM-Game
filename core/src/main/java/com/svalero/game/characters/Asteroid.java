@@ -40,6 +40,15 @@ public class Asteroid extends Character {
     public void update(float dt) {
         animationTime += dt;
         position.y -= BACKGROUND_SPEED * dt;
+
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
+
         if (direction == 0) {
             position.x += speed * dt; // left → right
         } else if (direction == 1) {
