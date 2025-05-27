@@ -73,8 +73,9 @@ public interface Constants {
     String KEYS_PAUSE = "Keys-Pause";
     String KEYS_SHOOT = "Keys-Shoot";
     String DIVIDER = "slider-fancy";
-    //Config UI
+    String PAUSE = "Pause-Header";
 
+    //Config UI
     float PADDING_BUTTON = 20;
     float PADDING_TITLE = 50;
     float WIDTH_BUTTON = 500;
@@ -96,8 +97,8 @@ public interface Constants {
     float WIDTH_BUTTON_GAME_OVER = 660;
     float HEIGHT_BUTTON_GAME_OVER = 120;
     float PADDING_SETTING_LABEL = 10;
-    float WIDTH_SLIDER = 200;
-    float HEIGHT_SLIDER = 20;
+    float WIDTH_SLIDER = 300;
+    float HEIGHT_SLIDER = 40;
     float WIDTH_KNOB = 20;
     float HEIGHT_KNOB = 40;
     float WIDTH_POWER_UP_ICON = 50;
@@ -107,6 +108,12 @@ public interface Constants {
     float HEIGHT_KEYS = 50;
     float HEIGHT_KEY = 40;
     float WIDTH_KEY = 40;
+    float HEIGHT_DIVIDER = 10;
+    float WIDTH_SCALE_DIVIDER = 0.4f;
+    float PADDING_IMAGE = 10;
+    float PADDING_CHECKBOX = 20;
+    float SCALE_CHECKBOX = 1.5f;
+    float SCALE_TABLE = 0.6f;
 
     //Config game
 

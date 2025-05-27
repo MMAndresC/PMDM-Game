@@ -1,12 +1,15 @@
 package com.svalero.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -47,8 +50,12 @@ public class PauseScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
+        Preferences prefs = Gdx.app.getPreferences("game_settings");
+        boolean soundEnabled = prefs.getBoolean("sounds_enabled", true);
+        float musicVolume = prefs.getFloat("music_volume", 1f);
+
         // Create content table
-        Table table = createContentTable();
+        Table table = createContentTable(soundEnabled, musicVolume);
 
         // Background table
         Image backgroundImage = new Image(background);
@@ -99,19 +106,19 @@ public class PauseScreen implements Screen {
         skin.dispose();
     }
 
-    public Table createContentTable(){
+    public Table createContentTable(boolean soundEnabled, float musicVolume){
         Table table = new Table();
         table.setFillParent(true);
         table.center();
         table.pad(PADDING_GAME_OVER_TABLE);
 
         // 60% width, 100% height
-        float tableWidth = Gdx.graphics.getWidth() * 0.6f;
+        float tableWidth = Gdx.graphics.getWidth() * SCALE_TABLE;
         float tableHeight = Gdx.graphics.getHeight();
 
         table.setSize(tableWidth, tableHeight);
 
-        TextureRegion pauseHeaderRegion = R.getUITexture("Pause-Header");
+        TextureRegion pauseHeaderRegion = R.getUITexture(PAUSE);
         Image pauseHeader = new Image(new TextureRegionDrawable(pauseHeaderRegion));
         pauseHeader.setScaling(Scaling.fit);
 
@@ -121,23 +128,48 @@ public class PauseScreen implements Screen {
         Label settingLabel = new Label("SETTING", skin, "title");
         settingLabel.setAlignment(Align.left);
 
-        CheckBox musicCheckbox = new CheckBox("", skin, "default");
-        musicCheckbox.setChecked(true);
-        Label musicLabel = new Label("Music", skin);
+        // Music Checkbox
+        CheckBox soundCheckbox = new CheckBox("", skin, "default");
+        soundCheckbox.setChecked(soundEnabled);
+        soundCheckbox.setTransform(true);
+        soundCheckbox.setScale(SCALE_CHECKBOX);
+        Label musicLabel = new Label("Sound VFX", skin);
 
         Table musicRow = new Table();
-        musicRow.add(musicCheckbox).padRight(10);
-        musicRow.add(musicLabel);
-        musicRow.align(Align.left);
+        musicRow.add(soundCheckbox).padRight(PADDING_CHECKBOX).padTop(PADDING_CHECKBOX).center();
+        musicRow.add(musicLabel).center();
+        musicRow.align(Align.center);
 
-        Label volumeLabel = new Label("Volume", skin);
+        // Volume Slider
+        int volume = Math.round(musicVolume * 100);
+        Label volumeLabel = new Label("Volume: " + volume, skin);
         Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, skin, "fancy");
+        volumeSlider.setValue(musicVolume);
 
         TextButton resumeBtn = new TextButton("Resume", skin);
         TextButton menuBtn = new TextButton("Return to Main Menu", skin);
         TextButton exitBtn = new TextButton("Exit", skin);
 
-        // Listeners
+        // Save preferences listener
+        soundCheckbox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                boolean isChecked = soundCheckbox.isChecked();
+                Gdx.app.getPreferences("game_settings").putBoolean("sound_enabled", isChecked).flush();
+            }
+        });
+
+        volumeSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                float currentValue = volumeSlider.getValue();
+                int volume = Math.round(currentValue * 100);
+                volumeLabel.setText("Volume: " + volume);
+                Gdx.app.getPreferences("game_settings").putFloat("music_volume", currentValue).flush();
+            }
+        });
+
+        //Button listeners
         resumeBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

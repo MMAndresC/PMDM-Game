@@ -45,11 +45,11 @@ public class SettingsScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
         Preferences prefs = Gdx.app.getPreferences("game_settings");
-        boolean musicEnabled = prefs.getBoolean("music_enabled", true);
+        boolean soundEnabled = prefs.getBoolean("sounds_enabled", true);
         float musicVolume = prefs.getFloat("music_volume", 1f);
 
         // Create content table
-        Table table = createContentTable(musicEnabled, musicVolume);
+        Table table = createContentTable(soundEnabled, musicVolume);
 
         // Background table
         Image backgroundImage = new Image(background);
@@ -94,13 +94,14 @@ public class SettingsScreen implements Screen {
         skin.dispose();
     }
 
-    public Table createContentTable(boolean musicEnabled, float musicVolume) {
+    public Table createContentTable(boolean soundEnabled, float musicVolume) {
         Table table = new Table();
         table.setFillParent(true);
         table.center();
         table.pad(PADDING_GAME_OVER_TABLE);
 
-        float tableWidth = Gdx.graphics.getWidth() * 0.6f;
+        // 60% width, 100% height
+        float tableWidth = Gdx.graphics.getWidth() * SCALE_TABLE;
         float tableHeight = Gdx.graphics.getHeight();
         table.setSize(tableWidth, tableHeight);
 
@@ -108,14 +109,14 @@ public class SettingsScreen implements Screen {
         settingLabel.setAlignment(Align.left);
 
         // Music Checkbox
-        CheckBox musicCheckbox = new CheckBox("", skin, "default");
-        musicCheckbox.setChecked(musicEnabled);
-        musicCheckbox.setTransform(true);
-        musicCheckbox.setScale(1.5f);
-        Label musicLabel = new Label("Music", skin);
+        CheckBox soundCheckbox = new CheckBox("", skin, "default");
+        soundCheckbox.setChecked(soundEnabled);
+        soundCheckbox.setTransform(true);
+        soundCheckbox.setScale(SCALE_CHECKBOX);
+        Label musicLabel = new Label("Sound VFX", skin);
 
         Table musicRow = new Table();
-        musicRow.add(musicCheckbox).padRight(20).padTop(20).center();
+        musicRow.add(soundCheckbox).padRight(PADDING_CHECKBOX).padTop(PADDING_CHECKBOX).center();
         musicRow.add(musicLabel).center();
         musicRow.align(Align.center);
 
@@ -126,11 +127,11 @@ public class SettingsScreen implements Screen {
         volumeSlider.setValue(musicVolume);
 
         // Save preferences listener
-        musicCheckbox.addListener(new ChangeListener() {
+        soundCheckbox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                boolean isChecked = musicCheckbox.isChecked();
-                Gdx.app.getPreferences("game_settings").putBoolean("music_enabled", isChecked).flush();
+                boolean isChecked = soundCheckbox.isChecked();
+                Gdx.app.getPreferences("game_settings").putBoolean("sound_enabled", isChecked).flush();
             }
         });
 
@@ -147,7 +148,7 @@ public class SettingsScreen implements Screen {
         // Divider
         Image divider1 = new Image(new TextureRegionDrawable(R.getUITexture(DIVIDER)));
         divider1.setWidth(tableWidth);
-        divider1.setHeight(10f);
+        divider1.setHeight(HEIGHT_DIVIDER);
 
         Label controlsLabel = new Label("CONTROLS", skin, "title");
         controlsLabel.setAlignment(Align.left);
@@ -159,7 +160,7 @@ public class SettingsScreen implements Screen {
 
         Image divider2 = new Image(new TextureRegionDrawable(R.getUITexture(DIVIDER)));
         divider2.setWidth(tableWidth);
-        divider2.setHeight(10f);
+        divider2.setHeight(HEIGHT_DIVIDER);
 
         // Back Button
         TextButton backBtn = new TextButton("Back", skin);
@@ -174,14 +175,14 @@ public class SettingsScreen implements Screen {
         table.add(settingLabel).center().padBottom(PADDING_SETTING_LABEL).row();
         table.add(musicRow).center().padBottom(PADDING_BUTTON).row();
         table.add(volumeLabel).padBottom(PADDING_BUTTON).center().row();
-        table.add(volumeSlider).width(300).height(40).center().padBottom(PADDING_BUTTON).row();
+        table.add(volumeSlider).width(WIDTH_SLIDER).height(HEIGHT_SLIDER).center().padBottom(PADDING_BUTTON).row();
 
-        table.add(divider1).width(Gdx.graphics.getWidth() * 0.4f).height(10).center().padBottom(PADDING_BUTTON).row();
+        table.add(divider1).width(Gdx.graphics.getWidth() * WIDTH_SCALE_DIVIDER).height(HEIGHT_DIVIDER).center().padBottom(PADDING_BUTTON).row();
         table.add(controlsLabel).padBottom(PADDING_BUTTON).row();
         table.add(controlMove).center().padBottom(PADDING_BUTTON).row();
         table.add(controlShoot).center().padBottom(PADDING_BUTTON).row();
         table.add(controlPause).center().padBottom(PADDING_BUTTON).row();
-        table.add(divider2).width(Gdx.graphics.getWidth() * 0.4f).height(10).center().padBottom(PADDING_BUTTON * 2).row();
+        table.add(divider2).width(Gdx.graphics.getWidth() * WIDTH_SCALE_DIVIDER).height(HEIGHT_DIVIDER).center().padBottom(PADDING_BUTTON * 2).row();
 
         table.add(backBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).padBottom(PADDING_BUTTON).row();
 
@@ -202,7 +203,7 @@ public class SettingsScreen implements Screen {
             keyImage.setScaling(Scaling.fit);
         }
 
-        row.add(imageContainer).padRight(10).center();
+        row.add(imageContainer).padRight(PADDING_IMAGE).center();
 
         Label actionLabel = new Label(labelText, skin);
         row.add(actionLabel).center().left();
