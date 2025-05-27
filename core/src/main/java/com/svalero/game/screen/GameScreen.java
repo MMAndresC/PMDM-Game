@@ -14,11 +14,9 @@ public class GameScreen implements Screen {
 
     private LogicManager logicManager;
 
-    private Vector2 rangerPosition;
 
     public GameScreen(MyGame game) {
         this.game = game;
-        rangerPosition = new Vector2();
         loadManagers(game);
     }
 
@@ -29,37 +27,33 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-       /* if(logicManager.getFreezeTime() > 0)
-            logicManager.adjustFreezeTime();*/
+        logicManager.setPaused(false);
+        if(logicManager.getFreezeTime() > 0)
+            logicManager.adjustFreezeTime();
     }
 
     @Override
     public void render(float dt) {
+        if (logicManager.isPaused()) return;
         logicManager.update(dt);
         renderManager.render(dt);
     }
 
     @Override
     public void resize(int width, int height) {
-      /*  if(logicManager == null) return;
+        if(logicManager == null) return;
         if(logicManager.getRanger() == null) return;
         if(logicManager.getRanger().getPosition() == null) return;
 
         //Resize changes position of ranger, when come back of pause, reposition it
         if (height == 0) {
-            rangerPosition = new Vector2(logicManager.getRanger().getPosition());
-            game.setScreen(new PauseScreen(game, this));
+            logicManager.setPaused(true);
 
-        } else{
-            Vector2 zeroPosition = new Vector2(logicManager.getRanger().getRangerWidth(), 0);
-            if(!logicManager.getRanger().getPosition().equals(zeroPosition)) return;
-            logicManager.getRanger().setPosition(rangerPosition);
-        }*/
-
+        }
     }
 
-    @Override public void pause() {}
-    @Override public void resume() {}
+    @Override public void pause() {logicManager.setPaused(true);}
+    @Override public void resume() {logicManager.setPaused(false);}
     @Override public void hide() {}
     @Override public void dispose() {}
 }

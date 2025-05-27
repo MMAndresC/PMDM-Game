@@ -55,6 +55,8 @@ public class LogicManager {
 
     private float freezeTime;
 
+    private boolean isPaused;
+
 
     public LogicManager(MyGame game, GameScreen gameScreen) {
         this.game = game;
@@ -68,6 +70,7 @@ public class LogicManager {
         this.isLevelOver = false;
         this.levelCompleteTimer = 0;
         this.freezeTime = 0;
+        this.isPaused = false;
         initializeLevel();
     }
 
@@ -144,12 +147,12 @@ public class LogicManager {
         //Pause
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            isPaused = true;
             game.setScreen(new PauseScreen(game, gameScreen));
         }
     }
 
     public void update(float dt) {
-
         handleInput(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
@@ -182,8 +185,10 @@ public class LogicManager {
 
     public void checkRangerProjectilesCollision(){
         if(ranger.isDestroyed() || isLevelOver) return;
+
         for(Projectile projectile: ranger.getProjectiles()){
             if(projectile.isDestroyed()) continue;
+
             for(Character enemy: enemyManager.getEnemies()){
                 if(enemy.isActive() && projectile.getRect() != null && projectile.getRect().overlaps(enemy.getHitBox())){
                     projectile.setStatus(STATUS.DESTROYED);
