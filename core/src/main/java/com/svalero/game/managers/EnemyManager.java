@@ -9,6 +9,7 @@ import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
 import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.levels.LevelEnemies;
+import com.svalero.game.projectiles.Proton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -82,6 +83,10 @@ public class EnemyManager {
                 Projectile ray = ((Frigate) enemy).createProjectile(rangerPosition);
                 if(ray != null)
                     projectiles.add(ray);
+            }else if(enemy instanceof Dreadnought){
+                List<Proton> protons = ((Dreadnought) enemy).createProjectile();
+                if(protons != null)
+                    projectiles.addAll(protons);
             }
         }
         removeElementsOutScreen();
@@ -103,9 +108,15 @@ public class EnemyManager {
             case GUN_TURRET -> createGunTurret();
             case KAMIKAZE -> createKamikaze();
             case FRIGATE -> createFrigate();
+            case DREADNOUGHT -> createDreadnought();
         }
 
         indexEnemy++;
+    }
+
+    public void createDreadnought() {
+        Dreadnought dreadnought = new Dreadnought();
+        enemies.add(dreadnought);
     }
 
     public void createFrigate(){

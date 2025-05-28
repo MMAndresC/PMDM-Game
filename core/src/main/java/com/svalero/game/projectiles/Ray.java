@@ -27,8 +27,8 @@ public class Ray extends Projectile {
     private final DrawInfoEffect drawInfo;
     private Polygon polygon; //Rect not work with angles
 
-    public Ray(Vector2 origin, float speed, float fireRate, float damage, Vector2 rangerPosition) {
-        super(origin, speed, fireRate, damage);
+    public Ray(Vector2 origin, float speed, float damage, Vector2 rangerPosition) {
+        super(origin, speed, damage);
         this.origin = origin.cpy();
         this.target = rangerPosition.cpy();
         this.direction = new Vector2(target).sub(origin).nor();

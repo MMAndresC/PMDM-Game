@@ -33,11 +33,21 @@ public abstract class Projectile implements Disposable {
 
     protected Rectangle rect;
 
+    protected float scale = 1f;
+
 
     public Projectile(Vector2 position, float speed, float fireRate, float damage) {
         this.position = position;
         this.speed = speed;
         this.fireRate = fireRate;
+        this.damage = damage;
+        this.rect = new Rectangle();
+        this.status = STATUS.ACTIVE;
+    }
+
+    public Projectile(Vector2 position, float speed, float damage) {
+        this.position = position;
+        this.speed = speed;
         this.damage = damage;
         this.rect = new Rectangle();
         this.status = STATUS.ACTIVE;

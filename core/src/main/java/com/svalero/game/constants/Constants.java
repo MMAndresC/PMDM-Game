@@ -1,5 +1,6 @@
 package com.svalero.game.constants;
 
+import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.utils.AnimationInfo;
 
 public interface Constants {
@@ -52,11 +53,10 @@ public interface Constants {
     String DEFAULT_ENEMY_PROJECTILE = "Projectile-Laser-Large";
     String FRIGATE = "Frigate-Base";
     AnimationInfo FRIGATE_ENGINE = new AnimationInfo("Frigate-Engine", 8);
-    AnimationInfo FRIGATE_WEAPON = new AnimationInfo("Frigate-Weapon", 5);
+    AnimationInfo FRIGATE_BODY = new AnimationInfo("Frigate-Body", 5);
     AnimationInfo FRIGATE_RAY = new AnimationInfo("Ray", 4);
-    String DREADNOUGHT = "Dreadnought-Base";
     AnimationInfo DREADNOUGHT_ENGINE = new AnimationInfo("Dreadnought-Engine", 8);
-    AnimationInfo DREADNOUGHT_WEAPON = new AnimationInfo("Dreadnought-Weapon", 34);
+    AnimationInfo DREADNOUGHT_BODY = new AnimationInfo("Dreadnought-body", 34);
     AnimationInfo DREADNOUGHT_PROTON = new AnimationInfo("Proton", 6);
     //Explosions
     AnimationInfo DEFAULT_ENEMY_EXPLOSION = new AnimationInfo("Explosion", 9);
@@ -182,6 +182,19 @@ public interface Constants {
     float FRIGATE_FIRE_RATE = 6f;
     float RAY_HOLD_DURATION = 4f;
 
+    float DREADNOUGHT_SPEED = 300f;
+    float DREADNOUGHT_HIT_POINTS = 300f;
+    float DREADNOUGHT_SCALE = 2f;
+    float DREADNOUGHT_PROTON_DAMAGE = 5f;
+    float DREADNOUGHT_PROTON_SPEED = 200f;
+    float DREADNOUGHT_PROTON_SCALE = 1.5f;
+    float DREADNOUGHT_POINTS_SCORE = 600f;
+    float DREADNOUGHT_FIRE_RATE = 1.5f;
+    float DREADNOUGHT_LIMIT_POSITION_Y = 300f;
+    Vector2 DIRECTION_CENTER = new Vector2(0, -1).nor();
+    Vector2 DIRECTION_LEFT = new Vector2(-1, -1).nor();
+    Vector2 DIRECTION_RIGHT = new Vector2(1, -1).nor();
+
 
     float POWER_UP_SPEED = 200f;
     float POWER_UP_SCALE = 1.5f;
@@ -189,8 +202,8 @@ public interface Constants {
 
 
     //Enum
-    enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};
-    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE, FRIGATE, DREADNOUGHT};
+    enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE}
+    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE, FRIGATE, DREADNOUGHT}
     enum FORMATION {RIGHT, LEFT,FRONT}
     enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE, FRIGATE, DREADNOUGHT}
     enum POWER_UP {DAMAGE, HEALTH, SHIELD}

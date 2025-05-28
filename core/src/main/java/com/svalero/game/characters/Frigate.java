@@ -43,13 +43,14 @@ public class Frigate extends Character{
         bodyIdle = R.getEnemyTexture(FRIGATE);
         inPosition = false;
         lastShot = 0;
+        scale = FRIGATE_SCALE;
 
         //Load textures
         engine = new DrawInfo();
 
         Array<TextureRegion> frames = R.getEnemiesRegions(FRIGATE_ENGINE);
         engineAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
-        frames = R.getEnemiesRegions(FRIGATE_WEAPON);
+        frames = R.getEnemiesRegions(FRIGATE_BODY);
         bodyAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
 
         //Random coordinate x, y out of screen
@@ -131,7 +132,7 @@ public class Frigate extends Character{
                 position.y
             );
             lastShot = currentTime;
-            return new Ray(origin, bulletSpeed, fireRate, bulletDamage, rangerPosition);
+            return new Ray(origin, bulletSpeed, bulletDamage, rangerPosition);
         }
         return null;
     }

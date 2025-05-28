@@ -29,6 +29,7 @@ public class Kamikaze extends Character{
         status = STATUS.ACTIVE;
         lives = 1;
         pointsScore = KAMIKAZE_POINTS_SCORE;
+        scale = KAMIKAZE_SCALE;
 
         //Load textures
         TextureRegion texture =  R.getEnemyTexture(KAMIKAZE);

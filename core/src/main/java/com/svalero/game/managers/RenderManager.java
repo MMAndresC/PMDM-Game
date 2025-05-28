@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
@@ -16,7 +15,6 @@ import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.projectiles.Ray;
 import com.svalero.game.utils.DrawInfo;
 import com.svalero.game.utils.DrawInfoEffect;
-import com.svalero.game.utils.ShowRectangleDebug;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -67,31 +65,20 @@ public class RenderManager {
             drawLevelUI();
         batch.end();
 
-        //DEBUG tool to show rectangle border
+        /**
+         * DEBUG tool to show rectangle border
+         */
+
         //Ranger
-       /* if(logicManager.getRanger().getHitBox() != null){
-            ShowRectangleDebug.inRed(
-                logicManager.getRanger().getHitBox().x,
-                logicManager.getRanger().getHitBox().y,
-                logicManager.getRanger().getHitBox().width,
-                logicManager.getRanger().getHitBox().height);
+        /*if(logicManager.getRanger().getHitBox() != null){
+            DEBUG_showRangerRectangle(logicManager.getRanger().getHitBox());
         }*/
+        //Enemies
+        //DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
         //Ray
-        /*for (Projectile p : logicManager.getEnemyManager().getProjectiles()) {
-            if (p instanceof Ray ray) {
-                Polygon poly = ray.getPolygon();
-                if (poly != null) {
-                    float[] vertices = poly.getTransformedVertices();
-                    for (int i = 0; i < vertices.length; i += 2) {
-                        float x1 = vertices[i];
-                        float y1 = vertices[i + 1];
-                        float x2 = vertices[(i + 2) % vertices.length];
-                        float y2 = vertices[(i + 3) % vertices.length];
-                        ShowRectangleDebug.drawRedLine(x1, y1, x2, y2);
-                    }
-                }
-            }
-        }*/
+        //DEBUG_showRaysPolygon(logicManager.getEnemyManager().getProjectiles());
+        //Projectiles
+        //DEBUG_showProjectilesRectangle(logicManager.getEnemyManager().getProjectiles());
     }
 
     public void drawPowerUps(){
@@ -151,8 +138,13 @@ public class RenderManager {
                 batch.draw(drawInfo.getRegion(), drawInfo.getX(), drawInfo.getY(), drawInfo.getOriginX(),
                     drawInfo.getOriginY(), drawInfo.getWidth(), drawInfo.getHeight(), drawInfo.getScaleX(),
                     drawInfo.getScaleY(), drawInfo.getRotation());
-            } else
-                batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y);
+            } else{
+                float scale = projectile.getScale();
+                float width = projectile.getCurrentFrame().getRegionWidth() * scale;
+                float height = projectile.getCurrentFrame().getRegionHeight() * scale;
+                batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y,
+                    width, height);
+            }
         }
     }
 
@@ -198,6 +190,11 @@ public class RenderManager {
             }else if(enemy instanceof Frigate) {
                 DrawInfo body = ((Frigate) enemy).getBody();
                 DrawInfo engine = ((Frigate) enemy).getEngine();
+                batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+                batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
+            }else if(enemy instanceof Dreadnought){
+                DrawInfo body = ((Dreadnought) enemy).getBody();
+                DrawInfo engine = ((Dreadnought) enemy).getEngine();
                 batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
                 batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
             }else

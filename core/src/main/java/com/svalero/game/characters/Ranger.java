@@ -64,6 +64,7 @@ public class Ranger extends Character{
         shieldActive = false;
         pointsLifeShield = RANGER_HIT_POINTS;
         doubleCannonActive = false;
+        scale = RANGER_SCALE;
 
         //Ammo data
         fireRate = RANGER_FIRE_RATE;

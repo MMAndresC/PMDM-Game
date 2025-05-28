@@ -37,6 +37,7 @@ public class GunTurret extends Character{
         status = STATUS.ACTIVE;
         lives = 1;
         pointsScore = GUN_TURRET_POINTS_SCORE;
+        scale = GUN_TURRET_SCALE;
 
         //Load textures
         //Random side of screen, 0 left, 1 right

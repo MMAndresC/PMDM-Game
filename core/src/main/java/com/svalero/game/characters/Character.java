@@ -53,6 +53,8 @@ public abstract class Character implements Disposable {
 
     protected float pointsScore;
 
+    protected float scale = 1f;
+
     protected boolean hitEffect = false;
     protected float hitEffectTime = 0;
 

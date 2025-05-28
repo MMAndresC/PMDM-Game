@@ -196,9 +196,8 @@ public class LogicManager {
                     if(enemy.noHitPointsLeft()){
                         ranger.sumScore(enemy.getPointsScore());
                         enemy.setStatus(STATUS.DESTROYED);
-                        CHARACTER_TYPE type = returnType(enemy);
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, type));
+                        explosions.add(new Explosion(position, enemy.getType(), enemy.getScale()));
                         enemy.dispose();
                     }else{
                         enemy.setHitEffect(true);
@@ -215,15 +214,6 @@ public class LogicManager {
         float centerX = rect.x + rect.width / 2f;
         float centerY = rect.y + rect.height / 2f;
         return new Vector2(centerX, centerY);
-    }
-
-    public CHARACTER_TYPE returnType(Character enemy){
-        if(enemy instanceof Fighter) return CHARACTER_TYPE.FIGHTER;
-        if(enemy instanceof Kamikaze) return CHARACTER_TYPE.KAMIKAZE;
-        if(enemy instanceof GunTurret) return CHARACTER_TYPE.GUN_TURRET;
-        if(enemy instanceof Asteroid) return CHARACTER_TYPE.ASTEROID;
-        if(enemy instanceof Frigate) return CHARACTER_TYPE.FRIGATE;
-        return CHARACTER_TYPE.FIGHTER;
     }
 
     public void checkEnemiesProjectilesCollisions() {
@@ -287,7 +277,7 @@ public class LogicManager {
 
         if (ranger.isDestroyed()) {
             Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
-            explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
+            explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, ranger.getScale()));
             return true;
         }
         return false;
@@ -307,7 +297,7 @@ public class LogicManager {
                     ranger.lostLife(RANGER_IMMUNITY_DURATION);
                     if (ranger.isDestroyed()) {
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
+                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, ranger.getScale()));
                         ranger.dispose();
                         game.setScreen(new GameOverScreen(game, ranger.getScore()));
                         return;
@@ -317,15 +307,24 @@ public class LogicManager {
                 Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                 CHARACTER_TYPE type = enemy.getType();
 
+                boolean destroyed = true;
+                if(enemy instanceof Dreadnought)
+                    destroyed = ((Dreadnought) enemy).destroyedByCollision();
+
                 if (enemy instanceof Fighter fighter) {
                     fighter.setStatus(STATUS.DESTROYED);
                     fighter.dispose();
-                }else {
+                }else if(destroyed){
                     enemyManager.getEnemies().get(index).dispose();
                     enemyManager.getEnemies().remove(index);
                 }
 
-                explosions.add(new Explosion(position, type));
+                if(destroyed)
+                    explosions.add(new Explosion(position, type, enemy.getScale()));
+                else{
+                    enemy.setHitEffect(true);
+                    enemy.setHitEffectTime(0);
+                }
                 collision = true;
             }else
                 index++;

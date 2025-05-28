@@ -19,7 +19,7 @@ public class Explosion {
     private Vector2 position;
 
 
-    public Explosion(Vector2 position, CHARACTER_TYPE type) {
+    public Explosion(Vector2 position, CHARACTER_TYPE type, float scale) {
         this.position = new Vector2(position);
         animationTime = 0;
         Array<TextureRegion> frames = switch (type) {
@@ -27,17 +27,14 @@ public class Explosion {
             case KAMIKAZE -> R.getEnemiesRegions(KAMIKAZE_EXPLOSION);
             case ASTEROID -> R.getEnemiesRegions(ASTEROID_EXPLOSION);
             case FRIGATE -> R.getEnemiesRegions(FRIGATE_EXPLOSION);
+            case DREADNOUGHT -> R.getEnemiesRegions(DREADNOUGHT_EXPLOSION);
             default -> R.getEnemiesRegions(DEFAULT_ENEMY_EXPLOSION);
         };
         animation = new Animation<>(0.1f, frames, Animation.PlayMode.NORMAL);
         TextureRegion texture = animation.getKeyFrame(animationTime);
-        if(type == CHARACTER_TYPE.RANGER){
             explosion = new DrawInfo(texture, position.x, position.y,
-                texture.getRegionWidth() * RANGER_EXPLOSION_SCALE,
-                texture.getRegionHeight() * RANGER_EXPLOSION_SCALE);
-        }else{
-            explosion = new DrawInfo(texture, position.x, position.y, texture.getRegionWidth(), texture.getRegionHeight());
-        }
+                texture.getRegionWidth() * scale,
+                texture.getRegionHeight() * scale);
     }
 
     public void update(float dt) {
