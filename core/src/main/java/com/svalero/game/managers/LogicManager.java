@@ -2,6 +2,7 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,6 +50,8 @@ public class LogicManager {
 
     private boolean isLevelOver;
 
+    private boolean isLevelOverMusicSounding;
+
     private float levelCompleteTimer;
 
     private GameScreen gameScreen;
@@ -56,6 +59,8 @@ public class LogicManager {
     private float freezeTime;
 
     private boolean isPaused;
+
+    private Music levelMusic;
 
 
     public LogicManager(MyGame game, GameScreen gameScreen) {
@@ -71,10 +76,12 @@ public class LogicManager {
         this.levelCompleteTimer = 0;
         this.freezeTime = 0;
         this.isPaused = false;
+        this.levelMusic = R.getMusic(DEFAULT_MUSIC);
         initializeLevel();
     }
 
     public void initializeLevel(){
+        isLevelOverMusicSounding = false;
         Level level = levelManager.getCurrentLevel(numberLevel);
         System.out.println("Level number: " + numberLevel + " " + level);
         if(level == null){
@@ -84,6 +91,10 @@ public class LogicManager {
             }
             game.setScreen(new GameOverScreen(game, ranger.getScore()));
             return;
+        }else{
+            if(R.isLoadedMusic(level.getMusic())){
+               levelMusic = R.getMusic(level.getMusic());
+            }
         }
         isLevelOver = false;
         levelCompleteTimer = 0;
@@ -93,6 +104,10 @@ public class LogicManager {
         enemyManager.setLevelEnemies(level.getEnemies());
         powerUpManager.clear();
         powerUpManager.setLevelPowerUps(level.getPowerUps());
+        //Remove ranger projectiles
+        ranger.getProjectiles().clear();
+        //Play music
+        game.getMusicManager().play(levelMusic, true, ConfigurationManager.getMusicVolume());
     }
 
     public void checkLevelEnd(float dt){
@@ -101,9 +116,17 @@ public class LogicManager {
         if(enemyManager.getEnemies().isEmpty()
             && enemyManager.getIndexEnemy() >= enemyManager.getLevelEnemies().size()){
             isLevelOver = true;
+            //Play music level over
+            if(!isLevelOverMusicSounding){
+                game.getMusicManager().stop();
+                if(R.isLoadedMusic(LEVEL_OVER_MUSIC)){
+                    Music music = R.getMusic(LEVEL_OVER_MUSIC);
+                    game.getMusicManager().play(music, false, ConfigurationManager.getMusicVolume());
+                }
+                isLevelOverMusicSounding = true;
+            }
             if(levelCompleteTimer >= LEVEL_DELAY){
-                //Reset enemyManager
-                enemyManager = new EnemyManager();
+                levelMusic.stop();
                 numberLevel++;
                 //Add bonus to score
                 float score = ranger.getScore();

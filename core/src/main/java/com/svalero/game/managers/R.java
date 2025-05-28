@@ -1,6 +1,7 @@
 package com.svalero.game.managers;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -18,11 +19,35 @@ public class R {
     private static final String RANGER_ATLAS_PATH = RANGER + File.separator + RANGER_ATLAS;
     private static final String ENEMIES_ATLAS_PATH = ENEMIES + File.separator + ENEMIES_ATLAS;
     private static final String UI_ATLAS_PATH = UI + File.separator + UI_ATLAS;
+    private static final String MUSIC_PATH = MUSIC + File.separator;
 
     public static void loadAllResources() {
         assetManager.load(RANGER_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(ENEMIES_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
+        loadMusic();
+    }
+
+    private static void loadMusic(){
+        assetManager.load(MUSIC_PATH + DEFAULT_MUSIC, Music.class);
+        assetManager.load(MUSIC_PATH + INTRO_MUSIC, Music.class);
+        assetManager.load(MUSIC_PATH + LUNAR_RAMPAGE, Music.class);
+        assetManager.load(MUSIC_PATH + SUFFOCATION, Music.class);
+        assetManager.load(MUSIC_PATH + GOD_OF_DARKNESS, Music.class);
+        assetManager.load(MUSIC_PATH + LEVEL_OVER_MUSIC, Music.class);
+        assetManager.load(MUSIC_PATH + GAME_OVER_MUSIC, Music.class);
+    }
+
+    public static void loadNewMusic(String fileName) {
+        assetManager.load(MUSIC_PATH + fileName, Music.class);
+    }
+
+    public static boolean isLoadedMusic(String fileName) {
+        return assetManager.isLoaded(MUSIC_PATH + fileName, Music.class);
+    }
+
+    public static Music getMusic(String fileName) {
+        return assetManager.get(MUSIC_PATH + fileName, Music.class);
     }
 
     public static TextureRegion getRangerTexture(String name) {

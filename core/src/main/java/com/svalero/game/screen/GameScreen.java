@@ -1,9 +1,9 @@
 package com.svalero.game.screen;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.LogicManager;
+import com.svalero.game.managers.MusicManager;
 import com.svalero.game.managers.RenderManager;
 
 public class GameScreen implements Screen {
@@ -48,7 +48,6 @@ public class GameScreen implements Screen {
         //Resize changes position of ranger, when come back of pause, reposition it
         if (height == 0) {
             logicManager.setPaused(true);
-
         }
     }
 

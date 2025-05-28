@@ -55,7 +55,7 @@ public class SplashScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
+        skin = game.getSkin();
 
         Table table = createTable();
 

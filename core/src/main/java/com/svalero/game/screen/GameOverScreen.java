@@ -3,6 +3,7 @@ package com.svalero.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
+import com.svalero.game.managers.ConfigurationManager;
 import com.svalero.game.managers.R;
 import lombok.Data;
 
@@ -38,9 +40,12 @@ public class GameOverScreen implements Screen {
         this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        this.skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
+        this.skin = game.getSkin();
         this.background = R.getUITexture(WINDOW);
-
+        if(R.isLoadedMusic(GAME_OVER_MUSIC)){
+            Music music = R.getMusic(GAME_OVER_MUSIC);
+            game.getMusicManager().play(music, true, ConfigurationManager.getMusicVolume());
+        }
     }
 
     @Override

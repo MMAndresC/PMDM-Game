@@ -19,5 +19,6 @@
     { "delay": 8, "type": "DAMAGE" },
     { "delay": 15, "type": "HEALTH" },
     { "delay": 20, "type": "SHIELD" }
-  ]
+  ],
+  "music": "DavidKBD-Eternity-Pack-06-God-of-darkness-loop.ogg"
 }

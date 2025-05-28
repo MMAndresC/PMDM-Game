@@ -21,6 +21,8 @@ public interface Constants {
     String RANGER = "ranger";
     String FONTS = "fonts";
     String ENEMIES = "enemies";
+    String MUSIC = "music";
+    String SOUNDS = "sounds";
 
     //Files
 
@@ -85,6 +87,20 @@ public interface Constants {
     String KEYS_SHOOT = "Keys-Shoot";
     String DIVIDER = "slider-fancy";
     String PAUSE = "Pause-Header";
+
+    //Music
+    String INTRO_MUSIC = "DavidKBD-Cosmic-Pack-01-Cosmic-Journey-full.ogg";
+    String DEFAULT_MUSIC = "DavidKBD-Cosmic-Pack-05-Stellar-Confrontation-full.ogg";
+    String LUNAR_RAMPAGE = "DavidKBD-Cosmic-Pack-06-Lunar-Rampage-full.ogg";
+    String GOD_OF_DARKNESS = "DavidKBD-Eternity-Pack-06-God-of-darkness-loop.ogg";
+    String SUFFOCATION = "DavidKBD-Eternity-Pack-07-Suffocation-loop.ogg";
+    String GAME_OVER_MUSIC = "DavidKBD-Eternity-Pack-02-Agony-Space-deep-loop.ogg";
+    String LEVEL_OVER_MUSIC = "DavidKBD-Cosmic-Pack-04-Orbit-Oddyseey-variation1.ogg";
+
+    //Configuration
+    String GAME_SETTINGS = "game-settings";
+    String SOUND_ENABLED = "sound_enabled";
+    String MUSIC_VOLUME = "music_volume";
 
     //Config UI
     float PADDING_BUTTON = 20;

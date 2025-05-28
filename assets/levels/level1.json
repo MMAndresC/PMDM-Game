@@ -19,6 +19,7 @@
     { "delay": 2, "type": "DAMAGE" },
     { "delay": 2, "type": "HEALTH" },
     { "delay": 2, "type": "SHIELD" }
-  ]
+  ],
+  "music": "DavidKBD-Cosmic-Pack-05-Stellar-Confrontation-full.ogg"
 }
 
