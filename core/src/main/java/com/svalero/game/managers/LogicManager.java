@@ -2,6 +2,8 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -10,6 +12,7 @@ import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
 import com.svalero.game.items.PowerUp;
 import com.svalero.game.projectiles.Projectile;
+import com.svalero.game.projectiles.Ray;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.GameScreen;
 import com.svalero.game.screen.PauseScreen;
@@ -52,6 +55,8 @@ public class LogicManager {
 
     private float freezeTime;
 
+    private boolean isPaused;
+
 
     public LogicManager(MyGame game, GameScreen gameScreen) {
         this.game = game;
@@ -65,6 +70,7 @@ public class LogicManager {
         this.isLevelOver = false;
         this.levelCompleteTimer = 0;
         this.freezeTime = 0;
+        this.isPaused = false;
         initializeLevel();
     }
 
@@ -141,12 +147,12 @@ public class LogicManager {
         //Pause
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            isPaused = true;
             game.setScreen(new PauseScreen(game, gameScreen));
         }
     }
 
     public void update(float dt) {
-
         handleInput(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
@@ -179,8 +185,10 @@ public class LogicManager {
 
     public void checkRangerProjectilesCollision(){
         if(ranger.isDestroyed() || isLevelOver) return;
+
         for(Projectile projectile: ranger.getProjectiles()){
             if(projectile.isDestroyed()) continue;
+
             for(Character enemy: enemyManager.getEnemies()){
                 if(enemy.isActive() && projectile.getRect() != null && projectile.getRect().overlaps(enemy.getHitBox())){
                     projectile.setStatus(STATUS.DESTROYED);
@@ -188,10 +196,12 @@ public class LogicManager {
                     if(enemy.noHitPointsLeft()){
                         ranger.sumScore(enemy.getPointsScore());
                         enemy.setStatus(STATUS.DESTROYED);
-                        CHARACTER_TYPE type = returnType(enemy);
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, type));
+                        explosions.add(new Explosion(position, enemy.getType(), enemy.getScale()));
                         enemy.dispose();
+                    }else{
+                        enemy.setHitEffect(true);
+                        enemy.setHitEffectTime(0);
                     }
                 }
             }
@@ -206,42 +216,71 @@ public class LogicManager {
         return new Vector2(centerX, centerY);
     }
 
-    public CHARACTER_TYPE returnType(Character enemy){
-        if(enemy instanceof Fighter) return CHARACTER_TYPE.FIGHTER;
-        if(enemy instanceof Kamikaze) return CHARACTER_TYPE.KAMIKAZE;
-        if(enemy instanceof GunTurret) return CHARACTER_TYPE.GUN_TURRET;
-        if(enemy instanceof Asteroid) return CHARACTER_TYPE.ASTEROID;
-        return CHARACTER_TYPE.FIGHTER;
-    }
+    public void checkEnemiesProjectilesCollisions() {
+        if (ranger.isDestroyed() || isLevelOver) return;
 
-    public void checkEnemiesProjectilesCollisions(){
-        if(ranger.isDestroyed() || isLevelOver) return;
         boolean collision = false;
         int index = 0;
-        while(!collision && enemyManager.getProjectiles().size() > index){
-            Projectile projectile = enemyManager.getProjectiles().get(index);
-            Rectangle rect = projectile.getRect();
-            if(rect != null && rect.overlaps(ranger.getHitBox())) {
-                projectile.setStatus(STATUS.DESTROYED);
-                collision = true;
-                if(ranger.isShieldActive())
-                    ranger.hitShield(projectile.getDamage());
-                else
-                    ranger.hit(projectile.getDamage());
 
-                if (ranger.isDestroyed()) {
-                    Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
-                    explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
-                    ranger.dispose();
-                    game.setScreen(new GameOverScreen(game, ranger.getScore()));
-                    return;
-                }
-            }else index++;
+        while (!collision && enemyManager.getProjectiles().size() > index) {
+            Projectile projectile = enemyManager.getProjectiles().get(index);
+
+            if (projectile instanceof Ray) {
+                if (overlapProjectilePolygon((Ray) projectile)) {
+                    collision = true;
+                } else index++;
+            } else {
+                Rectangle rect = projectile.getRect();
+                if (rect != null && rect.overlaps(ranger.getHitBox())) {
+                    projectile.setStatus(STATUS.DESTROYED);
+                    collision = true;
+                } else index++;
+            }
         }
-        if(collision){
-            enemyManager.getProjectiles().get(index).dispose();
-            enemyManager.getProjectiles().remove(index);
+
+        if (collision) {
+            Projectile projectile = enemyManager.getProjectiles().get(index);
+
+            if (!(projectile instanceof Ray)) {
+                projectile.dispose();
+                enemyManager.getProjectiles().remove(index);
+            }
+
+            if (isRangerDestroyed(projectile)) {
+                ranger.dispose();
+                game.setScreen(new GameOverScreen(game, ranger.getScore()));
+            }
         }
+    }
+
+    public boolean overlapProjectilePolygon(Ray projectile){
+        Polygon polygon = projectile.getPolygon();
+        Rectangle hitBox = ranger.getHitBox();
+        Polygon rPoly = new Polygon(new float[] {
+            0, 0,
+            hitBox.width, 0,
+            hitBox.width, hitBox.height,
+            0, hitBox.height
+        });
+        rPoly.setPosition(hitBox.x, hitBox.y);
+        if(polygon != null && Intersector.overlapConvexPolygons(polygon, rPoly)) {
+            return isRangerDestroyed(projectile);
+        }
+        return false;
+    }
+
+    public boolean isRangerDestroyed(Projectile projectile){
+        if(ranger.isShieldActive())
+            ranger.hitShield(projectile.getDamage());
+        else
+            ranger.hit(projectile.getDamage());
+
+        if (ranger.isDestroyed()) {
+            Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
+            explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, ranger.getScale()));
+            return true;
+        }
+        return false;
     }
 
     public void checkBodyCollisions() {
@@ -258,7 +297,7 @@ public class LogicManager {
                     ranger.lostLife(RANGER_IMMUNITY_DURATION);
                     if (ranger.isDestroyed()) {
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
+                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, ranger.getScale()));
                         ranger.dispose();
                         game.setScreen(new GameOverScreen(game, ranger.getScore()));
                         return;
@@ -268,15 +307,24 @@ public class LogicManager {
                 Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                 CHARACTER_TYPE type = enemy.getType();
 
+                boolean destroyed = true;
+                if(enemy instanceof Dreadnought)
+                    destroyed = ((Dreadnought) enemy).destroyedByCollision();
+
                 if (enemy instanceof Fighter fighter) {
                     fighter.setStatus(STATUS.DESTROYED);
                     fighter.dispose();
-                }else {
+                }else if(destroyed){
                     enemyManager.getEnemies().get(index).dispose();
                     enemyManager.getEnemies().remove(index);
                 }
 
-                explosions.add(new Explosion(position, type));
+                if(destroyed)
+                    explosions.add(new Explosion(position, type, enemy.getScale()));
+                else{
+                    enemy.setHitEffect(true);
+                    enemy.setHitEffectTime(0);
+                }
                 collision = true;
             }else
                 index++;

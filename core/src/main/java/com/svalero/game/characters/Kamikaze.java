@@ -29,6 +29,7 @@ public class Kamikaze extends Character{
         status = STATUS.ACTIVE;
         lives = 1;
         pointsScore = KAMIKAZE_POINTS_SCORE;
+        scale = KAMIKAZE_SCALE;
 
         //Load textures
         TextureRegion texture =  R.getEnemyTexture(KAMIKAZE);
@@ -50,14 +51,22 @@ public class Kamikaze extends Character{
     }
 
     @Override
-    public void update(float delta, Vector2 rangerPosition) {
-        animationTime += delta;
+    public void update(float dt, Vector2 rangerPosition) {
+        animationTime += dt;
         engineEffect.setRegion(animation.getKeyFrame(animationTime));
+
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
 
         //Normalize direction, value less than 1
         Vector2 direction = new Vector2(rangerPosition).sub(position).nor();
         //Update position going against ranger
-        position.mulAdd(direction, speed * delta);
+        position.mulAdd(direction, speed * dt);
 
         //Update body position
         body.setX(position.x);

@@ -9,6 +9,7 @@ import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
 import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.levels.LevelEnemies;
+import com.svalero.game.projectiles.Proton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -78,6 +79,14 @@ public class EnemyManager {
                 List<Projectile> beams = ((Fighter) enemy).getSquadron().createProjectile();
                 if(beams != null)
                     projectiles.addAll(beams);
+            }else if(enemy instanceof Frigate) {
+                Projectile ray = ((Frigate) enemy).createProjectile(rangerPosition);
+                if(ray != null)
+                    projectiles.add(ray);
+            }else if(enemy instanceof Dreadnought){
+                List<Proton> protons = ((Dreadnought) enemy).createProjectile();
+                if(protons != null)
+                    projectiles.addAll(protons);
             }
         }
         removeElementsOutScreen();
@@ -85,28 +94,34 @@ public class EnemyManager {
 
     public void removeElementsOutScreen() {
         enemies.removeIf(enemy -> enemy.getStatus() == STATUS.OUT);
-        projectiles.removeIf(projectile -> projectile.getStatus() == STATUS.OUT);
+        projectiles.removeIf(projectile -> projectile.getStatus() == STATUS.OUT
+            || projectile.getStatus() == STATUS.DESTROYED
+        );
     }
 
     public void generateEnemy() {
         ENEMY_TYPE enemyType = levelEnemies.get(indexEnemy).getType();
 
         switch (enemyType) {
-            case ASTEROID:
-                createAsteroidShower();
-                break;
-            case FIGHTER_SQUADRON:
-                createFightersSquadron();
-                break;
-            case GUN_TURRET:
-                createGunTurret();
-                break;
-            case KAMIKAZE:
-                createKamikaze();
-                break;
+            case ASTEROID -> createAsteroidShower();
+            case FIGHTER_SQUADRON -> createFightersSquadron();
+            case GUN_TURRET -> createGunTurret();
+            case KAMIKAZE -> createKamikaze();
+            case FRIGATE -> createFrigate();
+            case DREADNOUGHT -> createDreadnought();
         }
 
         indexEnemy++;
+    }
+
+    public void createDreadnought() {
+        Dreadnought dreadnought = new Dreadnought();
+        enemies.add(dreadnought);
+    }
+
+    public void createFrigate(){
+        Frigate frigate = new Frigate();
+        enemies.add(frigate);
     }
 
     public void createKamikaze(){

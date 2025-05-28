@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.svalero.game.constants.Constants;
 import com.svalero.game.managers.R;
 import com.svalero.game.utils.DrawInfo;
 import lombok.Data;
@@ -20,24 +19,22 @@ public class Explosion {
     private Vector2 position;
 
 
-    public Explosion(Vector2 position, Constants.CHARACTER_TYPE type) {
+    public Explosion(Vector2 position, CHARACTER_TYPE type, float scale) {
         this.position = new Vector2(position);
         animationTime = 0;
         Array<TextureRegion> frames = switch (type) {
             case RANGER -> R.getRangerRegions(RANGER_EXPLOSION);
             case KAMIKAZE -> R.getEnemiesRegions(KAMIKAZE_EXPLOSION);
             case ASTEROID -> R.getEnemiesRegions(ASTEROID_EXPLOSION);
+            case FRIGATE -> R.getEnemiesRegions(FRIGATE_EXPLOSION);
+            case DREADNOUGHT -> R.getEnemiesRegions(DREADNOUGHT_EXPLOSION);
             default -> R.getEnemiesRegions(DEFAULT_ENEMY_EXPLOSION);
         };
-        animation = new Animation<>(0.2f, frames, Animation.PlayMode.NORMAL);
+        animation = new Animation<>(0.1f, frames, Animation.PlayMode.NORMAL);
         TextureRegion texture = animation.getKeyFrame(animationTime);
-        if(type == Constants.CHARACTER_TYPE.RANGER){
             explosion = new DrawInfo(texture, position.x, position.y,
-                texture.getRegionWidth() * RANGER_EXPLOSION_SCALE,
-                texture.getRegionHeight() * RANGER_EXPLOSION_SCALE);
-        }else{
-            explosion = new DrawInfo(texture, position.x, position.y, texture.getRegionWidth(), texture.getRegionHeight());
-        }
+                texture.getRegionWidth() * scale,
+                texture.getRegionHeight() * scale);
     }
 
     public void update(float dt) {

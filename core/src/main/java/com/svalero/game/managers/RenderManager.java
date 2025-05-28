@@ -12,6 +12,7 @@ import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
 import com.svalero.game.items.PowerUp;
 import com.svalero.game.projectiles.Projectile;
+import com.svalero.game.projectiles.Ray;
 import com.svalero.game.utils.DrawInfo;
 import com.svalero.game.utils.DrawInfoEffect;
 import lombok.AllArgsConstructor;
@@ -64,13 +65,20 @@ public class RenderManager {
             drawLevelUI();
         batch.end();
 
-        //DEBUG tool to show rectangle border
+        /**
+         * DEBUG tool to show rectangle border
+         */
+
         //Ranger
-       /* ShowRectangleDebug.inRed(
-            logicManager.getRanger().getHitBox().x,
-            logicManager.getRanger().getHitBox().y,
-            logicManager.getRanger().getHitBox().width,
-            logicManager.getRanger().getHitBox().height);*/
+        /*if(logicManager.getRanger().getHitBox() != null){
+            DEBUG_showRangerRectangle(logicManager.getRanger().getHitBox());
+        }*/
+        //Enemies
+        //DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
+        //Ray
+        //DEBUG_showRaysPolygon(logicManager.getEnemyManager().getProjectiles());
+        //Projectiles
+        //DEBUG_showProjectilesRectangle(logicManager.getEnemyManager().getProjectiles());
     }
 
     public void drawPowerUps(){
@@ -125,7 +133,18 @@ public class RenderManager {
 
     public void drawEnemiesProjectiles(){
         for(Projectile projectile: logicManager.getEnemyManager().getProjectiles()) {
-            batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y);
+            if(projectile instanceof Ray){
+                DrawInfoEffect drawInfo = ((Ray) projectile).getDrawInfo();
+                batch.draw(drawInfo.getRegion(), drawInfo.getX(), drawInfo.getY(), drawInfo.getOriginX(),
+                    drawInfo.getOriginY(), drawInfo.getWidth(), drawInfo.getHeight(), drawInfo.getScaleX(),
+                    drawInfo.getScaleY(), drawInfo.getRotation());
+            } else{
+                float scale = projectile.getScale();
+                float width = projectile.getCurrentFrame().getRegionWidth() * scale;
+                float height = projectile.getCurrentFrame().getRegionHeight() * scale;
+                batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y,
+                    width, height);
+            }
         }
     }
 
@@ -149,6 +168,13 @@ public class RenderManager {
             //Not render destroyed enemies
             if(enemy.isDestroyed()) continue;
 
+            boolean shouldDraw = true;
+            if (enemy.isHitEffect()) {
+                float time = TimeUtils.nanoTime() / 1_000_000_000f;
+                shouldDraw = ((int)(time * 10) % 2 != 0);  // Draw in odd frames
+            }
+            if(!shouldDraw) continue;
+
             if(enemy instanceof GunTurret) {
                 DrawInfo body = ((GunTurret) enemy).getBody();
                 DrawInfo gun = ((GunTurret) enemy).getGun();
@@ -161,6 +187,16 @@ public class RenderManager {
                 DrawInfo engineEffect = ((Kamikaze) enemy).getEngineEffect();
                 batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
                 batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+            }else if(enemy instanceof Frigate) {
+                DrawInfo body = ((Frigate) enemy).getBody();
+                DrawInfo engine = ((Frigate) enemy).getEngine();
+                batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+                batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
+            }else if(enemy instanceof Dreadnought){
+                DrawInfo body = ((Dreadnought) enemy).getBody();
+                DrawInfo engine = ((Dreadnought) enemy).getEngine();
+                batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+                batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
             }else
                 batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
         }

@@ -59,6 +59,16 @@ public class Fighter extends Character {
         );
     }
 
+    public void updateHitEffect(float dt){
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
+    }
+
     public void setAnimationByDirection(Vector2 direction, float dt) {
         animationTime += dt;
 

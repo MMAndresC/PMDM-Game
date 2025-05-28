@@ -31,13 +31,13 @@ public class GunTurret extends Character{
         type = CHARACTER_TYPE.GUN_TURRET;
         animationTime = 0;
         fireRate = GUN_TURRET_FIRE_RATE;
-        //missiles = new ArrayList<>();
         lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
         bulletDamage = GUN_TURRET_MISSILE_DAMAGE;
         bulletSpeed = GUN_TURRET_MISSILE_SPEED;
         status = STATUS.ACTIVE;
         lives = 1;
         pointsScore = GUN_TURRET_POINTS_SCORE;
+        scale = GUN_TURRET_SCALE;
 
         //Load textures
         //Random side of screen, 0 left, 1 right
@@ -80,6 +80,14 @@ public class GunTurret extends Character{
         animationTime += dt;
         //Update position, only y movement
         position.y -= GUN_TURRET_SPEED;
+
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
 
         if(position.y < -mount.getRegion().getRegionHeight()){
             status = STATUS.OUT;

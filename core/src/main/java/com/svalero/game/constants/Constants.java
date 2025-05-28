@@ -1,5 +1,6 @@
 package com.svalero.game.constants;
 
+import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.utils.AnimationInfo;
 
 public interface Constants {
@@ -50,11 +51,20 @@ public interface Constants {
     String KAMIKAZE = "Kamikaze";
     AnimationInfo KAMIKAZE_ENGINE_EFFECTS = new AnimationInfo("Kamikaze-Engine-Effect", 10);
     String DEFAULT_ENEMY_PROJECTILE = "Projectile-Laser-Large";
+    String FRIGATE = "Frigate-Base";
+    AnimationInfo FRIGATE_ENGINE = new AnimationInfo("Frigate-Engine", 8);
+    AnimationInfo FRIGATE_BODY = new AnimationInfo("Frigate-Body", 5);
+    AnimationInfo FRIGATE_RAY = new AnimationInfo("Ray", 4);
+    AnimationInfo DREADNOUGHT_ENGINE = new AnimationInfo("Dreadnought-Engine", 8);
+    AnimationInfo DREADNOUGHT_BODY = new AnimationInfo("Dreadnought-body", 34);
+    AnimationInfo DREADNOUGHT_PROTON = new AnimationInfo("Proton", 6);
     //Explosions
     AnimationInfo DEFAULT_ENEMY_EXPLOSION = new AnimationInfo("Explosion", 9);
     AnimationInfo KAMIKAZE_EXPLOSION = new AnimationInfo("Kamikaze-Explosion", 8);
     AnimationInfo ASTEROID_EXPLOSION = new AnimationInfo("Asteroid-Explosion", 7);
     AnimationInfo RANGER_EXPLOSION = new AnimationInfo("Explosion", 9);
+    AnimationInfo FRIGATE_EXPLOSION = new AnimationInfo("Frigate-Explosion", 16);
+    AnimationInfo DREADNOUGHT_EXPLOSION = new AnimationInfo("Dreadnought-Explosion", 18);
     //Power Ups
     String SHIELD = "Powerup-Shield";
     String DAMAGE = "Powerup-Damage";
@@ -115,13 +125,14 @@ public interface Constants {
     float PADDING_CHECKBOX = 20;
     float SCALE_CHECKBOX = 1.5f;
     float SCALE_TABLE = 0.6f;
-    float DELAY_SPLASH_SCREEN = 5f;
+    float DELAY_SPLASH_SCREEN = 2f;
     float WIDTH_PROGRESS_BAR = 400;
     float HEIGHT_PROGRESS_BAR = 40;
 
     //Config game
 
     float LEVEL_DELAY = 5f;
+    float ENEMY_HIT_EFFECT_DURATION = 0.1f;
 
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;
@@ -137,19 +148,19 @@ public interface Constants {
     float SCORE_BONUS_LIVES = 1000;
     float RANGER_LENIENT_PERCENTAGE = 0.1f; //Increase rectangle to get items
 
-    float ASTEROID_HIT_POINTS = 60f;
+    float ASTEROID_HIT_POINTS = 70f;
     float ASTEROID_SPEED = 200f;
     int ASTEROID_SHOWER = 10;
     float ASTEROID_POINTS_SCORE = 1000f;
 
-    float FIGHTER_HIT_POINTS = 20f;
+    float FIGHTER_HIT_POINTS = 25f;
     float FIGHTER_SPEED = 5f;
     float FIGHTER_FIRE_RATE = 1.5f;
     float FIGHTER_BEAM_DAMAGE = 20f;
     float FIGHTER_BEAM_SPEED = 100f;
     float FIGHTER_POINTS_SCORE = 100f;
 
-    float GUN_TURRET_HIT_POINTS = 40f;
+    float GUN_TURRET_HIT_POINTS = 50f;
     float GUN_TURRET_FIRE_RATE = 2f;
     float GUN_TURRET_SPEED = 2f;
     float GUN_TURRET_SCALE = 1.5f;
@@ -158,9 +169,32 @@ public interface Constants {
     float GUN_TURRET_POINTS_SCORE = 200f;
 
     float KAMIKAZE_SPEED = 250f;
-    float KAMIKAZE_HIT_POINTS = 25f;
+    float KAMIKAZE_HIT_POINTS = 40f;
     float KAMIKAZE_SCALE = 1.5f;
     float KAMIKAZE_POINTS_SCORE = 100f;
+
+    float FRIGATE_SPEED = 200f;
+    float FRIGATE_HIT_POINTS = 60f;
+    float FRIGATE_SCALE = 1.5f;
+    float FRIGATE_RAY_DAMAGE = 20f;
+    float FRIGATE_RAY_SPEED = 200f;
+    float FRIGATE_POINTS_SCORE = 200f;
+    float FRIGATE_FIRE_RATE = 6f;
+    float RAY_HOLD_DURATION = 4f;
+
+    float DREADNOUGHT_SPEED = 300f;
+    float DREADNOUGHT_HIT_POINTS = 300f;
+    float DREADNOUGHT_SCALE = 2f;
+    float DREADNOUGHT_PROTON_DAMAGE = 5f;
+    float DREADNOUGHT_PROTON_SPEED = 200f;
+    float DREADNOUGHT_PROTON_SCALE = 1.5f;
+    float DREADNOUGHT_POINTS_SCORE = 600f;
+    float DREADNOUGHT_FIRE_RATE = 1.5f;
+    float DREADNOUGHT_LIMIT_POSITION_Y = 300f;
+    Vector2 DIRECTION_CENTER = new Vector2(0, -1).nor();
+    Vector2 DIRECTION_LEFT = new Vector2(-1, -1).nor();
+    Vector2 DIRECTION_RIGHT = new Vector2(1, -1).nor();
+
 
     float POWER_UP_SPEED = 200f;
     float POWER_UP_SCALE = 1.5f;
@@ -168,10 +202,11 @@ public interface Constants {
 
 
     //Enum
-    enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE};
-    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE};
+    enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE}
+    enum ENEMY_TYPE {ASTEROID, GUN_TURRET, FIGHTER_SQUADRON, KAMIKAZE, FRIGATE, DREADNOUGHT}
     enum FORMATION {RIGHT, LEFT,FRONT}
-    enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE}
+    enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE, FRIGATE, DREADNOUGHT}
     enum POWER_UP {DAMAGE, HEALTH, SHIELD}
+    enum RAY_STATE { GROWING, HOLDING }
 
 }

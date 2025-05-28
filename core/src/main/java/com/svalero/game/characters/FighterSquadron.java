@@ -33,7 +33,6 @@ public class FighterSquadron {
         this.targetY = targetY;
         this.inPosition = false;
         this.lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
-        //projectiles = new ArrayList<Projectile>();
         this.front.setSquadron(this);
         this.left.setSquadron(this);
         this.right.setSquadron(this);
@@ -74,9 +73,18 @@ public class FighterSquadron {
             }
 
             //Update hit box
-            if (!front.isDestroyed()) front.updateHitBox();
-            if (!left.isDestroyed()) left.updateHitBox();
-            if (!right.isDestroyed()) right.updateHitBox();
+            if (!front.isDestroyed()) {
+                front.updateHitBox();
+                front.updateHitEffect(dt);
+            }
+            if (!left.isDestroyed()) {
+                left.updateHitBox();
+                left.updateHitEffect(dt);
+            }
+            if (!right.isDestroyed()) {
+                right.updateHitBox();
+                right.updateHitEffect(dt);
+            }
         }
     }
 
