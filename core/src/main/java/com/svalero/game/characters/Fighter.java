@@ -52,11 +52,10 @@ public class Fighter extends Character {
         float height = currentFrame.getRegionHeight();
 
         hitBox.set(
-            position.x - width / 2f,
-            position.y - height / 2f,
+            position.x ,
+            position.y ,
             width,
-            height
-        );
+            height);
     }
 
     public void updateHitEffect(float dt){

@@ -88,7 +88,15 @@ public class Kamikaze extends Character{
         engineEffect.setHeight(engineHeight);
 
         //Update hit box
-        hitBox.set(position.x, position.y, body.getWidth(), body.getHeight());
+        float adjust = 8;
+        float diffX = body.getWidth() - body.getRegion().getRegionWidth() - adjust;
+        float diffY = body.getHeight() - body.getRegion().getRegionHeight() - overlap;
+        hitBox.set(
+            position.x + diffX,
+            position.y + diffY,
+            body.getRegion().getRegionWidth() - overlap * 2,
+            body.getRegion().getRegionHeight()
+        );
     }
 
 

@@ -307,7 +307,7 @@ public class LogicManager {
             SoundManager.play(SHIELD_HIT_SOUND, MEDIUM_SOUND_VOLUME);
             ranger.hitShield(projectile.getDamage());
         }else{
-            SoundManager.play(RANGER_HIT_SOUND, MEDIUM_SOUND_VOLUME);
+            SoundManager.play(RANGER_HIT_SOUND, HIGH_SOUND_VOLUME);
             ranger.hit(projectile.getDamage());
         }
 

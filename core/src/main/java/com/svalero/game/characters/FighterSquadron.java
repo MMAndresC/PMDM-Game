@@ -95,7 +95,7 @@ public class FighterSquadron {
         if (currentTime - lastShot < FIGHTER_FIRE_RATE) return null;
 
         //Sound
-        SoundManager.play(SQUADRON_BEAM_SOUND, LOW_SOUND_VOLUME);
+        SoundManager.play(SQUADRON_BEAM_SOUND, MINIMUM_SOUND_VOLUME);
 
         lastShot = currentTime;
         List<Projectile> beams = new ArrayList<>();

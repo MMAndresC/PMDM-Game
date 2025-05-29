@@ -120,7 +120,14 @@ public class Dreadnought extends Character{
         engine.setWidth(engineWidth);
         engine.setHeight(engineHeight);
 
-        hitBox.set(position.x, position.y, body.getWidth(), body.getHeight());
+        //Update hit box
+        float adjust = 10;
+        hitBox.set(
+            position.x + adjust * 4,
+            position.y + adjust * 2,
+            body.getWidth() - adjust * 8f,
+            body.getHeight() - adjust * 2
+        );
     }
 
     public boolean destroyedByCollision(){
