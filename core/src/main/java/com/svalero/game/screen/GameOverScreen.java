@@ -42,10 +42,7 @@ public class GameOverScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         this.skin = game.getSkin();
         this.background = R.getUITexture(WINDOW);
-        if(R.isLoadedMusic(GAME_OVER_MUSIC)){
-            Music music = R.getMusic(GAME_OVER_MUSIC);
-            game.getMusicManager().play(music, true, ConfigurationManager.getMusicVolume());
-        }
+        game.getMusicManager().play(GAME_OVER_MUSIC, true, ConfigurationManager.getMusicVolume());
     }
 
     @Override

@@ -132,7 +132,7 @@ public class PauseScreen implements Screen {
         soundCheckbox.setChecked(soundEnabled);
         soundCheckbox.setTransform(true);
         soundCheckbox.setScale(SCALE_CHECKBOX);
-        Label musicLabel = new Label("Sound VFX", skin);
+        Label musicLabel = new Label("Sound SFX", skin);
 
         Table musicRow = new Table();
         musicRow.add(soundCheckbox).padRight(PADDING_CHECKBOX).padTop(PADDING_CHECKBOX).center();

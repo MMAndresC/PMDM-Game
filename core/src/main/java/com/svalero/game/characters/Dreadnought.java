@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.managers.SoundManager;
 import com.svalero.game.projectiles.Proton;
 import com.svalero.game.utils.DrawInfo;
 import lombok.Data;
@@ -131,6 +132,9 @@ public class Dreadnought extends Character{
         float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         //Shoot?
         if (currentTime - lastShot >= fireRate) {
+            //Sound
+            SoundManager.play(PROTON_SOUND, MEDIUM_SOUND_VOLUME);
+
             float centerX = body.getWidth() / 2f;
             Vector2 origin = new Vector2(
                 position.x + centerX,

@@ -2,7 +2,6 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -60,7 +59,10 @@ public class LogicManager {
 
     private boolean isPaused;
 
-    private Music levelMusic;
+    private String levelMusic;
+
+    private boolean transitioningToGameOver = false;
+    private float gameOverTimer = 0f;
 
 
     public LogicManager(MyGame game, GameScreen gameScreen) {
@@ -76,7 +78,6 @@ public class LogicManager {
         this.levelCompleteTimer = 0;
         this.freezeTime = 0;
         this.isPaused = false;
-        this.levelMusic = R.getMusic(DEFAULT_MUSIC);
         initializeLevel();
     }
 
@@ -91,11 +92,8 @@ public class LogicManager {
             }
             game.setScreen(new GameOverScreen(game, ranger.getScore()));
             return;
-        }else{
-            if(R.isLoadedMusic(level.getMusic())){
-               levelMusic = R.getMusic(level.getMusic());
-            }
         }
+        levelMusic = level.getMusic();
         isLevelOver = false;
         levelCompleteTimer = 0;
         background = level.getBackground();
@@ -119,14 +117,11 @@ public class LogicManager {
             //Play music level over
             if(!isLevelOverMusicSounding){
                 game.getMusicManager().stop();
-                if(R.isLoadedMusic(LEVEL_OVER_MUSIC)){
-                    Music music = R.getMusic(LEVEL_OVER_MUSIC);
-                    game.getMusicManager().play(music, false, ConfigurationManager.getMusicVolume());
-                }
+                game.getMusicManager().play(LEVEL_OVER_MUSIC, false, ConfigurationManager.getMusicVolume());
                 isLevelOverMusicSounding = true;
             }
             if(levelCompleteTimer >= LEVEL_DELAY){
-                levelMusic.stop();
+                game.getMusicManager().stop();
                 numberLevel++;
                 //Add bonus to score
                 float score = ranger.getScore();
@@ -191,16 +186,25 @@ public class LogicManager {
             explosion.update(dt);
         }
         checkLevelEnd(dt);
+
+        //Give a delay before change to game over screen
+        if (transitioningToGameOver) {
+            gameOverTimer += dt;
+            if (gameOverTimer >= DELAY_GAME_OVER) {
+                game.setScreen(new GameOverScreen(game, ranger.getScore()));
+            }
+        }
     }
 
     public void checkRangerPowerUpsCollision(){
         if(ranger.isDestroyed() || isLevelOver) return;
-        //Increase a little ranger rect,
+        //Increase a little ranger rect
         Rectangle rangerRect = ranger.setLenientHitBox();
         for(PowerUp powerUp: powerUpManager.getPowerUps()){
             if(powerUp.isActive() && powerUp.getRect().overlaps(rangerRect)){
                 powerUp.setStatus(STATUS.DESTROYED);
                 ranger.setPowerUp(powerUp.getType());
+                SoundManager.play(POWER_UP_SOUND, HIGH_SOUND_VOLUME);
             }
         }
         powerUpManager.getPowerUps().removeIf(powerUp -> powerUp.getStatus() == STATUS.DESTROYED);
@@ -220,7 +224,12 @@ public class LogicManager {
                         ranger.sumScore(enemy.getPointsScore());
                         enemy.setStatus(STATUS.DESTROYED);
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, enemy.getType(), enemy.getScale()));
+                        explosions.add(new Explosion(position, enemy.getType(), enemy.getScale(), DEFAULT_FRAME_DURATION));
+                        //Explosion sounds
+                        if(enemy.getType() == CHARACTER_TYPE.DREADNOUGHT)
+                            SoundManager.play(DREADNOUGHT_EXPLODING, HIGH_SOUND_VOLUME);
+                        else
+                            SoundManager.play(DEFAULT_EXPLOSION_SOUND, HIGH_SOUND_VOLUME);
                         enemy.dispose();
                     }else{
                         enemy.setHitEffect(true);
@@ -271,7 +280,7 @@ public class LogicManager {
 
             if (isRangerDestroyed(projectile)) {
                 ranger.dispose();
-                game.setScreen(new GameOverScreen(game, ranger.getScore()));
+                triggerGameOverTransition();
             }
         }
     }
@@ -293,14 +302,20 @@ public class LogicManager {
     }
 
     public boolean isRangerDestroyed(Projectile projectile){
-        if(ranger.isShieldActive())
+
+        if(ranger.isShieldActive()){
+            SoundManager.play(SHIELD_HIT_SOUND, MEDIUM_SOUND_VOLUME);
             ranger.hitShield(projectile.getDamage());
-        else
+        }else{
+            SoundManager.play(RANGER_HIT_SOUND, MEDIUM_SOUND_VOLUME);
             ranger.hit(projectile.getDamage());
+        }
 
         if (ranger.isDestroyed()) {
             Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
-            explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, ranger.getScale()));
+            //Sound ranger explosion
+            SoundManager.play(RANGER_EXPLODING, HIGH_SOUND_VOLUME);
+            explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, RANGER_EXPLOSION_SCALE, RANGER_EXPLOSION_FRAME_DURATION));
             return true;
         }
         return false;
@@ -320,9 +335,11 @@ public class LogicManager {
                     ranger.lostLife(RANGER_IMMUNITY_DURATION);
                     if (ranger.isDestroyed()) {
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, ranger.getScale()));
+                        //Sound ranger explosion
+                        SoundManager.play(RANGER_EXPLODING, HIGH_SOUND_VOLUME);
+                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, RANGER_EXPLOSION_SCALE, RANGER_EXPLOSION_FRAME_DURATION));
                         ranger.dispose();
-                        game.setScreen(new GameOverScreen(game, ranger.getScore()));
+                        triggerGameOverTransition();
                         return;
                     }
                 }
@@ -342,9 +359,14 @@ public class LogicManager {
                     enemyManager.getEnemies().remove(index);
                 }
 
-                if(destroyed)
-                    explosions.add(new Explosion(position, type, enemy.getScale()));
-                else{
+                if(destroyed){
+                    //Explosion sound
+                    if(enemy.getType() == CHARACTER_TYPE.DREADNOUGHT)
+                        SoundManager.play(DREADNOUGHT_EXPLODING, HIGH_SOUND_VOLUME);
+                    else
+                        SoundManager.play(DEFAULT_EXPLOSION_SOUND, HIGH_SOUND_VOLUME);
+                    explosions.add(new Explosion(position, type, enemy.getScale(), DEFAULT_FRAME_DURATION));
+                }else{
                     enemy.setHitEffect(true);
                     enemy.setHitEffectTime(0);
                 }
@@ -362,5 +384,11 @@ public class LogicManager {
             enemy.setLastShot(enemy.getLastShot() + pausedDuration);
         }
         freezeTime = 0;
+    }
+
+    public void triggerGameOverTransition() {
+        transitioningToGameOver = true;
+        gameOverTimer = 0f;
+        game.getMusicManager().stop();
     }
 }

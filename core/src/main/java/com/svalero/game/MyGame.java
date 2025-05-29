@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.svalero.game.managers.MusicManager;
+import com.svalero.game.managers.SoundManager;
 import com.svalero.game.screen.SplashScreen;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ public class MyGame extends Game {
     private Skin skin;
 
     private MusicManager musicManager;
+
 
     @Override
     public void create() {

@@ -6,7 +6,10 @@ public class MusicManager {
 
     private Music currentMusic;
 
-    public void play(Music music, boolean looping, float volume) {
+    public void play(String fileName, boolean looping, float volume) {
+        System.out.println("Playing music " + fileName);
+        if(!R.isLoadedMusic(fileName)) return;
+        Music music = R.getMusic(fileName);
         if (currentMusic != null) {
             currentMusic.stop();
             currentMusic.dispose();

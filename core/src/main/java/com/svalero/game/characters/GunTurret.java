@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.managers.SoundManager;
 import com.svalero.game.projectiles.Missile;
 import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.utils.DrawInfo;
@@ -135,6 +136,10 @@ public class GunTurret extends Character{
         float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         //Shoot?
         if (currentTime - lastShot >= fireRate) {
+
+            //Sound Missile
+            SoundManager.play(MISSILE_SOUND, LOW_SOUND_VOLUME);
+
             lastShot = currentTime;
             float originX = (direction == 0)
                 ? gun.getX() + (gun.getWidth() / 2f)

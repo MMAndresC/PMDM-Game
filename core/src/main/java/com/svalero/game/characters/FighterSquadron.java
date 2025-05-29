@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.managers.SoundManager;
 import com.svalero.game.projectiles.BeamDefault;
 import com.svalero.game.projectiles.Projectile;
 import lombok.Data;
@@ -92,6 +93,10 @@ public class FighterSquadron {
         float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         //Not yet
         if (currentTime - lastShot < FIGHTER_FIRE_RATE) return null;
+
+        //Sound
+        SoundManager.play(SQUADRON_BEAM_SOUND, LOW_SOUND_VOLUME);
+
         lastShot = currentTime;
         List<Projectile> beams = new ArrayList<>();
         TextureRegion frame = R.getEnemyTexture(DEFAULT_ENEMY_PROJECTILE);

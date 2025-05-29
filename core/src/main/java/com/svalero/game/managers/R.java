@@ -2,6 +2,7 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -20,22 +21,32 @@ public class R {
     private static final String ENEMIES_ATLAS_PATH = ENEMIES + File.separator + ENEMIES_ATLAS;
     private static final String UI_ATLAS_PATH = UI + File.separator + UI_ATLAS;
     private static final String MUSIC_PATH = MUSIC + File.separator;
+    private static final String SOUNDS_PATH = SOUNDS + File.separator;
 
     public static void loadAllResources() {
         assetManager.load(RANGER_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(ENEMIES_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
         loadMusic();
+        loadSounds();
     }
 
     private static void loadMusic(){
-        assetManager.load(MUSIC_PATH + DEFAULT_MUSIC, Music.class);
-        assetManager.load(MUSIC_PATH + INTRO_MUSIC, Music.class);
-        assetManager.load(MUSIC_PATH + LUNAR_RAMPAGE, Music.class);
-        assetManager.load(MUSIC_PATH + SUFFOCATION, Music.class);
-        assetManager.load(MUSIC_PATH + GOD_OF_DARKNESS, Music.class);
-        assetManager.load(MUSIC_PATH + LEVEL_OVER_MUSIC, Music.class);
-        assetManager.load(MUSIC_PATH + GAME_OVER_MUSIC, Music.class);
+        for(String music : MUSIC_LIST)
+            assetManager.load(MUSIC_PATH + music, Music.class);
+    }
+
+    private static void loadSounds(){
+        for(String sound: SOUNDS_LIST)
+            assetManager.load(SOUNDS_PATH + sound, Sound.class);
+    }
+
+    public static Sound getSound(String fileName) {
+        return assetManager.get(SOUNDS_PATH + fileName, Sound.class);
+    }
+
+    public static boolean isLoadedSound(String fileName) {
+        return assetManager.isLoaded(SOUNDS_PATH + fileName, Sound.class);
     }
 
     public static void loadNewMusic(String fileName) {

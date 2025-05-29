@@ -3,6 +3,8 @@ package com.svalero.game.constants;
 import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.utils.AnimationInfo;
 
+import java.util.List;
+
 public interface Constants {
 
     //Skin
@@ -96,8 +98,30 @@ public interface Constants {
     String SUFFOCATION = "DavidKBD-Eternity-Pack-07-Suffocation-loop.ogg";
     String GAME_OVER_MUSIC = "DavidKBD-Eternity-Pack-02-Agony-Space-deep-loop.ogg";
     String LEVEL_OVER_MUSIC = "DavidKBD-Cosmic-Pack-04-Orbit-Oddyseey-variation1.ogg";
+    List<String> MUSIC_LIST = List.of(INTRO_MUSIC, DEFAULT_MUSIC, LUNAR_RAMPAGE,
+        GOD_OF_DARKNESS, SUFFOCATION, GAME_OVER_MUSIC, LEVEL_OVER_MUSIC);
 
-    //Configuration
+    //Sound
+    String DEFAULT_EXPLOSION_SOUND = "DefaultExplosion.wav";
+    String DREADNOUGHT_EXPLODING = "DreadnoughtExploding.wav";
+    String RANGER_EXPLODING = "RangerExploding.wav";
+    String MISSILE_SOUND = "Missile.wav";
+    String POWER_UP_SOUND = "powerup.wav";
+    String RANGER_BEAM_SOUND = "RangerBeam.wav";
+    String RAY_SOUND = "Ray.wav";
+    String RANGER_HIT_SOUND = "RangerHit.wav";
+    String SHIELD_HIT_SOUND = "ShieldHit.wav";
+    String PROTON_SOUND = "Proton.wav";
+    String SQUADRON_BEAM_SOUND = "SquadronBeam.wav";
+    List<String> SOUNDS_LIST = List.of(DEFAULT_EXPLOSION_SOUND, DREADNOUGHT_EXPLODING, RANGER_EXPLODING,
+        MISSILE_SOUND, POWER_UP_SOUND, RANGER_BEAM_SOUND, RAY_SOUND, RANGER_HIT_SOUND, SHIELD_HIT_SOUND, PROTON_SOUND,
+        SQUADRON_BEAM_SOUND
+    );
+    float LOW_SOUND_VOLUME = 0.2f;
+    float MEDIUM_SOUND_VOLUME = 0.5f;
+    float HIGH_SOUND_VOLUME = 0.8f;
+
+    //Preferences configuration
     String GAME_SETTINGS = "game-settings";
     String SOUND_ENABLED = "sound_enabled";
     String MUSIC_VOLUME = "music_volume";
@@ -144,11 +168,13 @@ public interface Constants {
     float DELAY_SPLASH_SCREEN = 2f;
     float WIDTH_PROGRESS_BAR = 400;
     float HEIGHT_PROGRESS_BAR = 40;
+    float DELAY_GAME_OVER = 02f;
 
     //Config game
 
     float LEVEL_DELAY = 5f;
     float ENEMY_HIT_EFFECT_DURATION = 0.1f;
+    float DEFAULT_FRAME_DURATION = 0.1f;
 
     float BACKGROUND_SPEED = 200f;
     float RANGER_SPEED = 500f;
@@ -161,6 +187,7 @@ public interface Constants {
     float RANGER_IMMUNITY_HIT_DURATION = 1f;
     int RANGER_LIVES = 3;
     float RANGER_EXPLOSION_SCALE = 5f;
+    float RANGER_EXPLOSION_FRAME_DURATION = 0.4f;
     float SCORE_BONUS_LIVES = 1000;
     float RANGER_LENIENT_PERCENTAGE = 0.1f; //Increase rectangle to get items
 

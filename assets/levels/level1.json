@@ -13,12 +13,14 @@
     { "delay": 2, "type": "FIGHTER_SQUADRON" },
     { "delay": 5, "type": "GUN_TURRET" },
     { "delay": 5, "type": "GUN_TURRET" },
-    { "delay": 5, "type": "GUN_TURRET" }
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 3, "type": "FRIGATE" },
+    { "delay": 4, "type": "DREADNOUGHT" }
   ],
   "powerUps": [
-    { "delay": 2, "type": "DAMAGE" },
-    { "delay": 2, "type": "HEALTH" },
-    { "delay": 2, "type": "SHIELD" }
+    { "delay": 7, "type": "DAMAGE" },
+    { "delay": 5, "type": "HEALTH" },
+    { "delay": 3, "type": "SHIELD" }
   ],
   "music": "DavidKBD-Cosmic-Pack-05-Stellar-Confrontation-full.ogg"
 }

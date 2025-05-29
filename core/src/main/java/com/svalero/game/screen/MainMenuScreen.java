@@ -2,7 +2,6 @@ package com.svalero.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.ConfigurationManager;
-import com.svalero.game.managers.R;
 
 import java.io.File;
 
@@ -46,8 +44,7 @@ public class MainMenuScreen implements Screen {
         //Global load
         ConfigurationManager.loadPreferences();
         //Play intro music
-        Music music = R.getMusic(INTRO_MUSIC);
-        game.getMusicManager().play(music, true, ConfigurationManager.getMusicVolume());
+        game.getMusicManager().play(INTRO_MUSIC, true, ConfigurationManager.getMusicVolume());
     }
 
 
