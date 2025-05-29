@@ -52,6 +52,9 @@ public class MainMenuScreen implements Screen {
     public void show() {
         Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         Gdx.input.setInputProcessor(stage);
+
+        //Show mouse
+        Gdx.input.setCursorCatched(false);
     }
 
     @Override
@@ -122,7 +125,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        TextButton exitBtn = new TextButton("Exit", skin);
+        TextButton exitBtn = new TextButton("Close Game", skin);
         exitBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

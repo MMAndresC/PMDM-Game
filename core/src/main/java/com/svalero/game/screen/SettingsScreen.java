@@ -44,6 +44,9 @@ public class SettingsScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
+        //Show mouse
+        Gdx.input.setCursorCatched(false);
+
         boolean soundEnabled = ConfigurationManager.isSoundEnabled();
         float musicVolume = ConfigurationManager.getMusicVolume();
 
