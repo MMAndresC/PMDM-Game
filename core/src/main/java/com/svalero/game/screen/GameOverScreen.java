@@ -49,6 +49,9 @@ public class GameOverScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
+        //Show mouse
+        Gdx.input.setCursorCatched(false);
+
         // Create content table
         Table table = createContentTable();
 
@@ -124,7 +127,7 @@ public class GameOverScreen implements Screen {
 
         TextButton newGameBtn = new TextButton("New Game", skin);
         TextButton menuBtn = new TextButton("Return to Main Menu", skin);
-        TextButton exitBtn = new TextButton("Exit", skin);
+        TextButton exitBtn = new TextButton("Close Game", skin);
 
         // Listeners
         newGameBtn.addListener(new ClickListener() {

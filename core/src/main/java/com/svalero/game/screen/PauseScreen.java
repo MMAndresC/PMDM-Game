@@ -50,6 +50,9 @@ public class PauseScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
+        //Show mouse
+        Gdx.input.setCursorCatched(false);
+
         boolean soundEnabled = ConfigurationManager.isSoundEnabled();
         float musicVolume = ConfigurationManager.getMusicVolume();
 
@@ -146,8 +149,8 @@ public class PauseScreen implements Screen {
         volumeSlider.setValue(musicVolume);
 
         TextButton resumeBtn = new TextButton("Resume", skin);
-        TextButton menuBtn = new TextButton("Return to Main Menu", skin);
-        TextButton exitBtn = new TextButton("Exit", skin);
+        TextButton menuBtn = new TextButton("Quit game", skin);
+        TextButton exitBtn = new TextButton("Close Game", skin);
 
         // Save preferences listener
         soundCheckbox.addListener(new ChangeListener() {

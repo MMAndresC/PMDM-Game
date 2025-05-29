@@ -44,8 +44,7 @@ public class RenderManager {
         this.logicManager = logicManager;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont(Gdx.files.internal("fonts/font32Option.fnt"));
-        String backgroundLevel = logicManager.getBackground();
-        this.background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + backgroundLevel));
+        updateLevelBackground();
     }
 
     public void render(float dt) {
@@ -64,6 +63,10 @@ public class RenderManager {
         drawExplosions();
         if(logicManager.isLevelOver())
             drawLevelUI();
+        if(logicManager.isChangeBackground()){
+            updateLevelBackground();
+            logicManager.setChangeBackground(false);
+        }
         batch.end();
 
         /**
@@ -75,7 +78,7 @@ public class RenderManager {
             DEBUG_showRangerRectangle(logicManager.getRanger().getHitBox());
         }*/
         //Enemies
-        DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
+        //DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
         //Ray
         //DEBUG_showRaysPolygon(logicManager.getEnemyManager().getProjectiles());
         //Projectiles
@@ -90,6 +93,11 @@ public class RenderManager {
                 effect.getWidth(), effect.getHeight(), effect.getScaleX(), effect.getScaleY(), effect.getRotation()
             );
         }
+    }
+
+    public void updateLevelBackground(){
+        String backgroundLevel = logicManager.getBackground();
+        this.background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + backgroundLevel));
     }
 
     public void drawExplosions() {
@@ -152,14 +160,21 @@ public class RenderManager {
     private void updateBackground(float dt, float bgHeight) {
         bgY -= BACKGROUND_SPEED * dt;
         if (bgY <= -bgHeight) {
-            bgY = 0;
+            bgY += bgHeight;
         }
     }
 
     private void drawBackground(float dt) {
-        updateBackground(dt, background.getHeight());
-        batch.draw(background, 0, bgY, Gdx.graphics.getWidth(), background.getHeight());
-        batch.draw(background, 0, bgY + background.getHeight(), Gdx.graphics.getWidth(), background.getHeight());
+        float bgHeight = background.getHeight();
+        float screenWidth = Gdx.graphics.getWidth();
+
+        updateBackground(dt, bgHeight);
+
+        // Cover screen
+        for (int i = 0; i < 3; i++) {
+            float y = bgY + i * bgHeight;
+            batch.draw(background, 0, y, screenWidth, bgHeight);
+        }
     }
 
     private void drawEnemies(float dt) {

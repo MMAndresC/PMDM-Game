@@ -218,7 +218,7 @@ public interface Constants {
     float KAMIKAZE_POINTS_SCORE = 100f;
 
     float FRIGATE_SPEED = 200f;
-    float FRIGATE_HIT_POINTS = 60f;
+    float FRIGATE_HIT_POINTS = 100f;
     float FRIGATE_SCALE = 1.5f;
     float FRIGATE_RAY_DAMAGE = 20f;
     float FRIGATE_RAY_SPEED = 200f;
@@ -227,7 +227,7 @@ public interface Constants {
     float RAY_HOLD_DURATION = 4f;
 
     float DREADNOUGHT_SPEED = 300f;
-    float DREADNOUGHT_HIT_POINTS = 300f;
+    float DREADNOUGHT_HIT_POINTS = 400f;
     float DREADNOUGHT_SCALE = 2f;
     float DREADNOUGHT_PROTON_DAMAGE = 5f;
     float DREADNOUGHT_PROTON_SPEED = 200f;

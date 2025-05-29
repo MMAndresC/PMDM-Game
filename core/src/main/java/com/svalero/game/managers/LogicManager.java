@@ -61,6 +61,8 @@ public class LogicManager {
 
     private String levelMusic;
 
+    private boolean changeBackground = false;
+
     private boolean transitioningToGameOver = false;
     private float gameOverTimer = 0f;
 
@@ -96,7 +98,10 @@ public class LogicManager {
         levelMusic = level.getMusic();
         isLevelOver = false;
         levelCompleteTimer = 0;
-        background = level.getBackground();
+        if(!level.getBackground().equals(background)){
+            changeBackground = true;
+            background = level.getBackground();
+        }
         //Initialize managers
         enemyManager.clear();
         enemyManager.setLevelEnemies(level.getEnemies());
@@ -334,7 +339,7 @@ public class LogicManager {
                 }else{
                     ranger.lostLife(RANGER_IMMUNITY_DURATION);
                     if (ranger.isDestroyed()) {
-                        Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
+                        Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
                         //Sound ranger explosion
                         SoundManager.play(RANGER_EXPLODING, HIGH_SOUND_VOLUME);
                         explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, RANGER_EXPLOSION_SCALE, RANGER_EXPLOSION_FRAME_DURATION));

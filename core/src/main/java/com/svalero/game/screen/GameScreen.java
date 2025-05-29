@@ -1,9 +1,9 @@
 package com.svalero.game.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.LogicManager;
-import com.svalero.game.managers.MusicManager;
 import com.svalero.game.managers.RenderManager;
 
 public class GameScreen implements Screen {
@@ -27,6 +27,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        //Hide mouse
+        Gdx.input.setCursorCatched(true);
         logicManager.setPaused(false);
         if(logicManager.getFreezeTime() > 0)
             logicManager.adjustFreezeTime();

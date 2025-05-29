@@ -3,24 +3,26 @@
   "animations": [],
   "enemies": [
     { "delay": 5, "type": "ASTEROID" },
-    { "delay": 5, "type": "ASTEROID" },
     { "delay": 2, "type": "KAMIKAZE" },
-    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 3, "type": "ASTEROID" },
+    { "delay": 3, "type": "GUN_TURRET" },
     { "delay": 4, "type": "GUN_TURRET" },
     { "delay": 4, "type": "GUN_TURRET" },
     { "delay": 2, "type": "FIGHTER_SQUADRON" },
-    { "delay": 5, "type": "ASTEROID" },
+    { "delay": 4, "type": "GUN_TURRET" },
+    { "delay": 4, "type": "GUN_TURRET" },
     { "delay": 2, "type": "FIGHTER_SQUADRON" },
     { "delay": 5, "type": "GUN_TURRET" },
-    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 2, "type": "KAMIKAZE" },
+    { "delay": 3, "type": "GUN_TURRET" },
     { "delay": 5, "type": "GUN_TURRET" },
     { "delay": 3, "type": "FRIGATE" },
-    { "delay": 4, "type": "DREADNOUGHT" }
+    { "delay": 3, "type": "FRIGATE" }
   ],
   "powerUps": [
-    { "delay": 7, "type": "DAMAGE" },
+    { "delay": 20, "type": "SHIELD" },
     { "delay": 5, "type": "HEALTH" },
-    { "delay": 3, "type": "SHIELD" }
+    { "delay": 15, "type": "SHIELD" }
   ],
   "music": "DavidKBD-Cosmic-Pack-05-Stellar-Confrontation-full.ogg"
 }

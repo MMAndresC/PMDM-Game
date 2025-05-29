@@ -53,6 +53,9 @@ public class SplashScreen implements Screen {
     public void show() {
         controlTime = TimeUtils.nanoTime() / 1_000_000_000f;
 
+        //Show mouse
+        Gdx.input.setCursorCatched(true);
+
         stage = new Stage(new ScreenViewport());
 
         skin = game.getSkin();
