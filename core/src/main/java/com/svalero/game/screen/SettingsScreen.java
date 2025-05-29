@@ -1,7 +1,6 @@
 package com.svalero.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
+import com.svalero.game.managers.ConfigurationManager;
 import com.svalero.game.managers.R;
 
 import java.io.File;
@@ -36,7 +36,7 @@ public class SettingsScreen implements Screen {
         this.game = game;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        this.skin = new Skin(Gdx.files.internal(UI + File.separator + MENU_SKIN));
+        this.skin = game.getSkin();
         this.background = R.getUITexture(WINDOW);
     }
 
@@ -44,9 +44,8 @@ public class SettingsScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
-        Preferences prefs = Gdx.app.getPreferences("game_settings");
-        boolean soundEnabled = prefs.getBoolean("sounds_enabled", true);
-        float musicVolume = prefs.getFloat("music_volume", 1f);
+        boolean soundEnabled = ConfigurationManager.isSoundEnabled();
+        float musicVolume = ConfigurationManager.getMusicVolume();
 
         // Create content table
         Table table = createContentTable(soundEnabled, musicVolume);
@@ -113,7 +112,7 @@ public class SettingsScreen implements Screen {
         soundCheckbox.setChecked(soundEnabled);
         soundCheckbox.setTransform(true);
         soundCheckbox.setScale(SCALE_CHECKBOX);
-        Label musicLabel = new Label("Sound VFX", skin);
+        Label musicLabel = new Label("Sound SFX", skin);
 
         Table musicRow = new Table();
         musicRow.add(soundCheckbox).padRight(PADDING_CHECKBOX).padTop(PADDING_CHECKBOX).center();
@@ -131,17 +130,18 @@ public class SettingsScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 boolean isChecked = soundCheckbox.isChecked();
-                Gdx.app.getPreferences("game_settings").putBoolean("sound_enabled", isChecked).flush();
+                ConfigurationManager.setSoundEnabled(isChecked);
             }
         });
 
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                float currentValue = volumeSlider.getValue();
-                int volume = Math.round(currentValue * 100);
-                volumeLabel.setText("Volume: " + volume);
-                Gdx.app.getPreferences("game_settings").putFloat("music_volume", currentValue).flush();
+                float volume = volumeSlider.getValue();
+                int volumePerCent = Math.round(volume * 100);
+                volumeLabel.setText("Volume: " + volumePerCent);
+               ConfigurationManager.setMusicVolume(volume);
+                game.getMusicManager().setVolume(volume);
             }
         });
 

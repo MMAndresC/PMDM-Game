@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
+import com.svalero.game.managers.ConfigurationManager;
 
 import java.io.File;
 
@@ -31,6 +32,7 @@ public class MainMenuScreen implements Screen {
 
     private float bgX;
 
+
     public MainMenuScreen(MyGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -39,6 +41,10 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Table table = createOptionsTable();
         stage.addActor(table);
+        //Global load
+        ConfigurationManager.loadPreferences();
+        //Play intro music
+        game.getMusicManager().play(INTRO_MUSIC, true, ConfigurationManager.getMusicVolume());
     }
 
 
@@ -141,7 +147,14 @@ public class MainMenuScreen implements Screen {
 
     private void drawBackground(float dt) {
         updateBackground(dt, background.getWidth());
-        batch.draw(background, bgX, 0,  background.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(background, bgX + background.getWidth(), 0, background.getWidth(), Gdx.graphics.getHeight());
+
+        float bgWidth = background.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        // To loop image
+        for (int i = 0; i < 3; i++) {
+            float x = bgX + i * bgWidth;
+            batch.draw(background, x, 0, bgWidth, screenHeight);
+        }
     }
 }

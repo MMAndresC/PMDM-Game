@@ -16,4 +16,5 @@ public class Level {
     private List<LevelAnimations> animations;
     private List<LevelEnemies> enemies;
     private List<LevelPowerUps> powerUps;
+    private String music;
 }

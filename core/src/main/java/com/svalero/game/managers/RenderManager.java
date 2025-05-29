@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import static com.svalero.game.constants.Constants.*;
+import static com.svalero.game.utils.ShowRectangleDebug.DEBUG_showEnemiesRectangle;
 
 @Data
 @NoArgsConstructor
@@ -74,7 +75,7 @@ public class RenderManager {
             DEBUG_showRangerRectangle(logicManager.getRanger().getHitBox());
         }*/
         //Enemies
-        //DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
+        DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
         //Ray
         //DEBUG_showRaysPolygon(logicManager.getEnemyManager().getProjectiles());
         //Projectiles

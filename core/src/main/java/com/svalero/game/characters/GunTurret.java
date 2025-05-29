@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.managers.SoundManager;
 import com.svalero.game.projectiles.Missile;
 import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.utils.DrawInfo;
@@ -114,10 +115,11 @@ public class GunTurret extends Character{
         body.setY(bodyY);
 
         // Center gun on body
+        float adjust = 7;
         float gunX = (direction == 0)
             ? bodyX + (bodyWidth) / 2f - 4
             : bodyX - (bodyWidth) / 2f;
-        float gunY = bodyY + (bodyHeight - gunHeight) / 2f - 7;
+        float gunY = bodyY + (bodyHeight - gunHeight) / 2f - adjust;
         gun.setX(gunX);
         gun.setY(gunY);
 
@@ -128,13 +130,20 @@ public class GunTurret extends Character{
         float bottom = Math.min(mount.getY(), body.getY());
 
         //Update hit box
-        hitBox.set(left, bottom, right - left, top - bottom);
+        if(direction == 0)
+            hitBox.set(left, bottom, right - left, top - bottom);
+        else
+            hitBox.set(left - adjust * 2, bottom, right - left - adjust, top - bottom);
     }
 
     public Projectile createMissile(Vector2 rangerPosition){
         float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         //Shoot?
         if (currentTime - lastShot >= fireRate) {
+
+            //Sound Missile
+            SoundManager.play(MISSILE_SOUND, LOW_SOUND_VOLUME);
+
             lastShot = currentTime;
             float originX = (direction == 0)
                 ? gun.getX() + (gun.getWidth() / 2f)

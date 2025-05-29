@@ -19,7 +19,7 @@ public class Explosion {
     private Vector2 position;
 
 
-    public Explosion(Vector2 position, CHARACTER_TYPE type, float scale) {
+    public Explosion(Vector2 position, CHARACTER_TYPE type, float scale, float frameDuration) {
         this.position = new Vector2(position);
         animationTime = 0;
         Array<TextureRegion> frames = switch (type) {
@@ -30,7 +30,7 @@ public class Explosion {
             case DREADNOUGHT -> R.getEnemiesRegions(DREADNOUGHT_EXPLOSION);
             default -> R.getEnemiesRegions(DEFAULT_ENEMY_EXPLOSION);
         };
-        animation = new Animation<>(0.1f, frames, Animation.PlayMode.NORMAL);
+        animation = new Animation<>(frameDuration, frames, Animation.PlayMode.NORMAL);
         TextureRegion texture = animation.getKeyFrame(animationTime);
             explosion = new DrawInfo(texture, position.x, position.y,
                 texture.getRegionWidth() * scale,

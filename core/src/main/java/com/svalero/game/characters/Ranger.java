@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.managers.SoundManager;
 import com.svalero.game.projectiles.ProjectileRanger;
 import com.svalero.game.utils.DrawInfo;
 import lombok.AllArgsConstructor;
@@ -188,6 +189,8 @@ public class Ranger extends Character{
         //Spacing out shots
         float currentTime = TimeUtils.nanoTime() / 1_000_000_000f; // Seconds
         if (currentTime - lastShot >= fireRate) {
+            //Sound shoot
+            SoundManager.play(RANGER_BEAM_SOUND, LOW_SOUND_VOLUME);
             lastShot = currentTime;
 
             float posX = position.x - 2f;
