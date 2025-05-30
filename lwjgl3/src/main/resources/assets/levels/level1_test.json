@@ -1,0 +1,13 @@
+{
+  "background": "bg1.png",
+  "animations": [],
+  "enemies": [
+    { "delay": 2, "type": "FRIGATE" },
+    { "delay": 4, "type": "DREADNOUGHT" }
+  ],
+  "powerUps": [
+
+  ],
+  "music": "DavidKBD-Eternity-Pack-07-Suffocation-loop.ogg"
+}
+

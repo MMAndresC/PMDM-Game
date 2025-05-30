@@ -43,7 +43,7 @@ public class RenderManager {
     public RenderManager(LogicManager logicManager) {
         this.logicManager = logicManager;
         this.batch = new SpriteBatch();
-        this.font = new BitmapFont(Gdx.files.internal("fonts/font32Option.fnt"));
+        this.font = new BitmapFont(Gdx.files.internal(FONTS + OPTION_FONT));
         updateLevelBackground();
     }
 

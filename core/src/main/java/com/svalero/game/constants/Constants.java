@@ -25,6 +25,9 @@ public interface Constants {
     String ENEMIES = "enemies";
     String MUSIC = "music";
     String SOUNDS = "sounds";
+    String ASSETS = "assets";
+    String OPTION_FONT = "font32Option.fnt";
+    String LEVELS = "levels";
 
     //Files
 

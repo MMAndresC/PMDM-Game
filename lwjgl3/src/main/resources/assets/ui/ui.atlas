@@ -1,0 +1,203 @@
+ui.png
+size: 1944, 1878
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+button-down
+  rotate: false
+  xy: 1262, 171
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+button-over
+  rotate: false
+  xy: 1569, 171
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+button-up
+  rotate: false
+  xy: 0, 478
+  size: 307, 307
+  orig: 307, 307
+  offset: 0, 0
+  index: -1
+check-box-off
+  rotate: false
+  xy: 556, 0
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+check-box
+  rotate: false
+  xy: 571, 0
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+Damage-Icon
+  rotate: false
+  xy: 365, 91
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
+Health_Bar_Table
+  rotate: false
+  xy: 430, 91
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+Keys-Move
+  rotate: false
+  xy: 890, 40
+  size: 53, 41
+  orig: 53, 41
+  offset: 0, 0
+  index: -1
+Keys-Pause
+  rotate: false
+  xy: 620, 0
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+Keys-Shoot
+  rotate: false
+  xy: 586, 0
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+Level-Window
+  rotate: false
+  xy: 0, 171
+  size: 421, 171
+  orig: 421, 171
+  offset: 0, 0
+  index: -1
+Loading-Bar-Blue2
+  rotate: false
+  xy: 658, 0
+  size: 890, 40
+  orig: 890, 40
+  offset: 0, 0
+  index: -1
+Loading-Bar-Orange2
+  rotate: false
+  xy: 0, 40
+  size: 890, 40
+  orig: 890, 40
+  offset: 0, 0
+  index: -1
+Mouse-Menu
+  rotate: false
+  xy: 638, 0
+  size: 20, 31
+  orig: 20, 31
+  offset: 0, 0
+  index: -1
+Music_BTN
+  rotate: false
+  xy: 421, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Pause-Header
+  rotate: false
+  xy: 0, 91
+  size: 300, 59
+  orig: 300, 59
+  offset: 0, 0
+  index: -1
+Settings_BTN
+  rotate: false
+  xy: 631, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Shield-Icon
+  rotate: false
+  xy: 300, 91
+  size: 65, 61
+  orig: 65, 61
+  offset: 0, 0
+  index: -1
+Ship-Icon
+  rotate: false
+  xy: 1051, 171
+  size: 211, 211
+  orig: 211, 211
+  offset: 0, 0
+  index: -1
+slider-fancy-knob
+  rotate: false
+  xy: 0, 0
+  size: 261, 11
+  orig: 261, 11
+  offset: 0, 0
+  index: -1
+slider-fancy
+  rotate: false
+  xy: 261, 0
+  size: 261, 11
+  orig: 261, 11
+  offset: 0, 0
+  index: -1
+slider-horizontal
+  rotate: false
+  xy: 522, 0
+  size: 17, 11
+  split: 4, 4, 0, 0
+  pad: 0, 0, 0, 0
+  orig: 17, 11
+  offset: 0, 0
+  index: -1
+slider-horizontal
+  rotate: false
+  xy: 539, 0
+  size: 17, 11
+  orig: 17, 11
+  offset: 0, 0
+  index: -1
+slider-knob
+  rotate: false
+  xy: 602, 0
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+Sound_BTN
+  rotate: false
+  xy: 841, 171
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Stats_Bar
+  rotate: false
+  xy: 830, 91
+  size: 1080, 80
+  orig: 1080, 80
+  offset: 0, 0
+  index: -1
+Table
+  rotate: false
+  xy: 943, 40
+  size: 1001, 51
+  orig: 1001, 51
+  offset: 0, 0
+  index: -1
+Window
+  rotate: false
+  xy: 307, 478
+  size: 940, 1400
+  orig: 940, 1400
+  offset: 0, 0
+  index: -1

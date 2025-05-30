@@ -10,9 +10,9 @@
   },
 
   "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-    "default-font": { "file": "../fonts/font32Default.fnt" },
-    "title-font": { "file": "../fonts/font64Bold.fnt" },
-    "button-font": { "file": "../fonts/font32Option.fnt" }
+    "default-font": { "file": "fonts/font32Default.fnt" },
+    "title-font": { "file": "fonts/font64Bold.fnt" },
+    "button-font": { "file": "fonts/font32Option.fnt" }
   },
 
   "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
