@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.ConfigurationManager;
+import com.svalero.game.managers.GamepadManager;
 
 import java.io.File;
 
@@ -31,6 +32,9 @@ public class MainMenuScreen implements Screen {
     private final SpriteBatch batch;
 
     private float bgX;
+
+    private TextButton[] menuButtons;
+    private int selectedIndex = 0;
 
 
     public MainMenuScreen(MyGame game) {
@@ -53,8 +57,9 @@ public class MainMenuScreen implements Screen {
         Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         Gdx.input.setInputProcessor(stage);
 
-        //Show mouse
-        Gdx.input.setCursorCatched(false);
+        //Show mouse if not gamepad connected
+        if(!game.getGamepadManager().isControllerConnected())
+            Gdx.input.setCursorCatched(false);
     }
 
     @Override
@@ -70,6 +75,7 @@ public class MainMenuScreen implements Screen {
 
         if (stage != null) {
             stage.act(dt);
+            handleControllerInput(dt);
             stage.draw();
         }
     }
@@ -95,6 +101,53 @@ public class MainMenuScreen implements Screen {
         if (stage != null) stage.dispose();
         if (batch != null) batch.dispose();
         if (background != null) background.dispose();
+    }
+
+    private void handleControllerInput(float dt){
+        GamepadManager gamepadManager = game.getGamepadManager();
+
+        if (!gamepadManager.isControllerConnected()) return;
+
+        gamepadManager.update(dt);
+
+        float yAxis = gamepadManager.getAxisLeftY();
+
+        // Default inverted axis, correct it
+        if (gamepadManager.isReady()) {
+            // Up stick or up pad code
+            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(UP_PAD))
+                && selectedIndex > 0
+            ) {
+                updateSelectedButton(selectedIndex - 1);
+                gamepadManager.setCooldown(INPUT_DELAY);
+                // Down stick or down pad code
+            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(DOWN_PAD))
+                && selectedIndex < menuButtons.length - 1
+            ) {
+                updateSelectedButton(selectedIndex + 1);
+                gamepadManager.setCooldown(INPUT_DELAY);
+            }
+        }
+
+        // Button X confirm option
+        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(X_BUTTON)) {
+            gamepadManager.setCooldown(INPUT_DELAY); // Activating cooldown
+
+            switch (selectedIndex) {
+                case 0 -> {
+                    dispose();
+                    game.setScreen(new GameScreen(game));
+                }
+                case 1 -> game.setScreen(new SettingsScreen(game));
+                case 2 -> Gdx.app.exit();
+            }
+        }
+    }
+
+    private void updateSelectedButton(int newIndex) {
+        menuButtons[selectedIndex].setColor(1, 1, 1, 1); //Not selected color
+        selectedIndex = newIndex;
+        menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f); // Selected color
     }
 
     private Table createOptionsTable() {
@@ -132,6 +185,12 @@ public class MainMenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
+
+        //Add in array to control option selected with gamepad
+        menuButtons = new TextButton[] { playBtn, settingsBtn, exitBtn };
+        //First button selected
+        if(game.getGamepadManager().isControllerConnected())
+            menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
 
         table.add(title).padBottom(PADDING_TITLE).row();
         table.add(playBtn).width(WIDTH_BUTTON).height(HEIGHT_BUTTON).padBottom(PADDING_BUTTON).row();

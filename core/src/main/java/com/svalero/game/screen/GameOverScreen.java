@@ -3,7 +3,6 @@ package com.svalero.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,10 +14,9 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.ConfigurationManager;
+import com.svalero.game.managers.GamepadManager;
 import com.svalero.game.managers.R;
 import lombok.Data;
-
-import java.io.File;
 
 import static com.svalero.game.constants.Constants.*;
 
@@ -35,6 +33,9 @@ public class GameOverScreen implements Screen {
 
     private TextureRegion background;
 
+    private TextButton[] menuButtons;
+    private int selectedIndex = 0;
+
     public GameOverScreen(MyGame game, float score) {
         this.game = game;
         this.score = score;
@@ -49,8 +50,9 @@ public class GameOverScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
-        //Show mouse
-        Gdx.input.setCursorCatched(false);
+        //Show mouse if not gamepad connected
+        if(!game.getGamepadManager().isControllerConnected())
+            Gdx.input.setCursorCatched(false);
 
         // Create content table
         Table table = createContentTable();
@@ -77,6 +79,7 @@ public class GameOverScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(dt);
+        handleControllerInput(dt);
         stage.draw();
     }
 
@@ -151,6 +154,12 @@ public class GameOverScreen implements Screen {
             }
         });
 
+        //Add in array to control option selected with gamepad
+        menuButtons = new TextButton[] { newGameBtn, menuBtn, exitBtn };
+        //First button selected
+        if(game.getGamepadManager().isControllerConnected())
+            menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
+
         table.add(gameOverLabel).padBottom(PADDING_GAME_OVER_TITLE).row();
         table.add(scoreLabel).padBottom(PADDING_GAME_OVER_SCORE).row();
         table.add(scoreValue).padBottom(PADDING_GAME_OVER_SCORE_VALUE).row();
@@ -158,5 +167,49 @@ public class GameOverScreen implements Screen {
         table.add(menuBtn).padBottom(PADDING_BUTTON).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).row();
         table.add(exitBtn).width(WIDTH_BUTTON_GAME_OVER).height(HEIGHT_BUTTON_GAME_OVER).row();
         return table;
+    }
+
+    private void handleControllerInput(float dt){
+        GamepadManager gamepadManager = game.getGamepadManager();
+
+        if (!gamepadManager.isControllerConnected()) return;
+
+        gamepadManager.update(dt);
+
+        float yAxis = gamepadManager.getAxisLeftY();
+
+        // Default inverted axis, correct it
+        if (gamepadManager.isReady()) {
+            // Up stick or up pad code
+            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(UP_PAD))
+                && selectedIndex > 0
+            ) {
+                updateSelectedButton(selectedIndex - 1);
+                gamepadManager.setCooldown(INPUT_DELAY);
+                // Down stick or down pad code
+            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(DOWN_PAD))
+                && selectedIndex < menuButtons.length - 1
+            ) {
+                updateSelectedButton(selectedIndex + 1);
+                gamepadManager.setCooldown(INPUT_DELAY);
+            }
+        }
+
+        // Button X confirm option
+        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(X_BUTTON)) {
+            gamepadManager.setCooldown(INPUT_DELAY); // Activating cooldown
+
+            switch (selectedIndex) {
+                case 0 -> game.setScreen(new GameScreen(game));
+                case 1 -> game.setScreen(new MainMenuScreen(game));
+                case 2 -> Gdx.app.exit();
+            }
+        }
+    }
+
+    private void updateSelectedButton(int newIndex) {
+        menuButtons[selectedIndex].setColor(1, 1, 1, 1); //Not selected color
+        selectedIndex = newIndex;
+        menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f); // Selected color
     }
 }

@@ -16,10 +16,9 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.ConfigurationManager;
+import com.svalero.game.managers.GamepadManager;
 import com.svalero.game.managers.R;
 import lombok.Data;
-
-import java.io.File;
 
 import static com.svalero.game.constants.Constants.*;
 import static com.svalero.game.constants.Constants.HEIGHT_BUTTON_GAME_OVER;
@@ -37,6 +36,13 @@ public class PauseScreen implements Screen {
 
     private TextureRegion background;
 
+    private int selectedIndex = 0;
+    private Actor[] menuElements;
+
+    private Label soundLabel;
+
+    private Label volumeLabel;
+
     public PauseScreen(MyGame game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
@@ -50,8 +56,9 @@ public class PauseScreen implements Screen {
     public void show() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
-        //Show mouse
-        Gdx.input.setCursorCatched(false);
+        //Show mouse if not gamepad connected
+        if(!game.getGamepadManager().isControllerConnected())
+            Gdx.input.setCursorCatched(false);
 
         boolean soundEnabled = ConfigurationManager.isSoundEnabled();
         float musicVolume = ConfigurationManager.getMusicVolume();
@@ -81,6 +88,7 @@ public class PauseScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(dt);
+        handleControllerInput(dt);
         stage.draw();
     }
 
@@ -135,16 +143,16 @@ public class PauseScreen implements Screen {
         soundCheckbox.setChecked(soundEnabled);
         soundCheckbox.setTransform(true);
         soundCheckbox.setScale(SCALE_CHECKBOX);
-        Label musicLabel = new Label("Sound SFX", skin);
+        soundLabel = new Label("Sound SFX", skin);
 
         Table musicRow = new Table();
         musicRow.add(soundCheckbox).padRight(PADDING_CHECKBOX).padTop(PADDING_CHECKBOX).center();
-        musicRow.add(musicLabel).center();
+        musicRow.add(soundLabel).center();
         musicRow.align(Align.center);
 
         // Volume Slider
         int volume = Math.round(musicVolume * 100);
-        Label volumeLabel = new Label("Volume: " + volume, skin);
+        volumeLabel = new Label("Volume: " + volume, skin);
         Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, skin, "fancy");
         volumeSlider.setValue(musicVolume);
 
@@ -194,6 +202,11 @@ public class PauseScreen implements Screen {
             }
         });
 
+        //Add components to control with gamepad
+        menuElements = new Actor[]{soundCheckbox, volumeSlider, resumeBtn, menuBtn, exitBtn};
+        if(game.getGamepadManager().isControllerConnected())
+            soundLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
+
         table.add(pauseHeader).width(headerWidth).height(headerHeight)
             .padBottom(PADDING_BUTTON).center().row();
         table.add(settingLabel).center().padBottom(PADDING_SETTING_LABEL).row();
@@ -206,4 +219,83 @@ public class PauseScreen implements Screen {
 
         return table;
     }
+
+    private void handleControllerInput(float dt){
+        GamepadManager gamepadManager = game.getGamepadManager();
+
+        if (!gamepadManager.isControllerConnected()) return;
+
+        gamepadManager.update(dt);
+
+        float yAxis = gamepadManager.getAxisLeftY();
+        float xAxis = gamepadManager.getAxisLeftX();
+
+        //Vertical navigation between elements
+        if (gamepadManager.isReady()) {
+            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(UP_PAD))
+                && selectedIndex > 0
+            ) {
+                updateSelectedElement(selectedIndex - 1);
+                gamepadManager.setCooldown(INPUT_DELAY);
+            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(DOWN_PAD))
+                && selectedIndex < menuElements.length - 1
+            ) {
+                updateSelectedElement(selectedIndex + 1);
+                gamepadManager.setCooldown(INPUT_DELAY);
+            }
+        }
+
+        // Save selected element
+        Actor current = menuElements[selectedIndex];
+
+        // Press X in checkbox & button
+        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(X_BUTTON)) {
+            gamepadManager.setCooldown(INPUT_DELAY); //Activating cooldown
+
+            if (current instanceof CheckBox checkBox) {
+                checkBox.toggle();
+                ConfigurationManager.setSoundEnabled(checkBox.isChecked());
+            } else if (current instanceof TextButton) {
+                switch(selectedIndex){
+                    case 2 -> game.setScreen(gameScreen);
+                    case 3 ->  game.setScreen(new MainMenuScreen(game));
+                    case 4 ->  Gdx.app.exit();
+                }
+            }
+        }
+
+        // Control slider with horizontal joystick
+        if (current instanceof Slider slider) {
+            float newValue = slider.getValue() + xAxis * dt; // sensibility by time
+            newValue = Math.max(slider.getMinValue(), Math.min(slider.getMaxValue(), newValue));
+            slider.setValue(newValue);
+
+            int volumePerCent = Math.round(newValue * 100);
+            volumeLabel.setText("Volume: " + volumePerCent);
+            ConfigurationManager.setMusicVolume(newValue);
+            game.getMusicManager().setVolume(newValue);
+        }
+    }
+
+    private void updateSelectedElement(int newIndex) {
+        //Checkbox change label color
+        if(selectedIndex == 0)
+            soundLabel.setColor(1, 1, 1, 1);
+        else if(selectedIndex == 1){
+            volumeLabel.setColor(1, 1, 1, 1);
+            menuElements[selectedIndex].setColor(1, 1, 1, 1);
+        }else
+            menuElements[selectedIndex].setColor(1, 1, 1, 1); // Restore
+
+        selectedIndex = newIndex;
+
+        if(selectedIndex == 0)
+            soundLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
+        else if(selectedIndex == 1){
+            volumeLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
+            menuElements[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
+        }else
+            menuElements[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f); // Highlight
+    }
+
 }

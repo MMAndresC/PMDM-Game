@@ -175,8 +175,53 @@ public class LogicManager {
         }
     }
 
+    public void handleControllerInput(float dt) {
+        GamepadManager gamepadManager = game.getGamepadManager();
+
+        float x = ranger.getPosition().x;
+        float y = ranger.getPosition().y;
+        boolean isMoving = false;
+
+        float deadZone = 0.3f;
+
+        if (gamepadManager.getAxisLeftX() < -deadZone || gamepadManager.isButtonPressed(LEFT_PAD)){
+            x -= RANGER_SPEED * dt;
+            isMoving = true;
+        }
+        if (gamepadManager.getAxisLeftX() > deadZone || gamepadManager.isButtonPressed(RIGHT_PAD)){
+            x += RANGER_SPEED * dt;
+            isMoving = true;
+        }
+        if (gamepadManager.getAxisLeftY() > deadZone || gamepadManager.isButtonPressed(DOWN_PAD)) {
+            y -= RANGER_SPEED * dt; // Joystick Y inverted
+            isMoving = true;
+        }
+        if (gamepadManager.getAxisLeftY() < -deadZone || gamepadManager.isButtonPressed(UP_PAD)) {
+            y += RANGER_SPEED * dt;
+            isMoving = true;
+        }
+
+        ranger.setNewPosition(x, y, isMoving);
+
+        //X button code 0
+        if (gamepadManager.isButtonPressed(X_BUTTON)) {
+            ranger.createProjectile();
+        }
+
+        if (gamepadManager.isPausePressed()) {
+            freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            isPaused = true;
+            game.setScreen(new PauseScreen(game, gameScreen));
+        }
+    }
+
     public void update(float dt) {
-        handleInput(dt);
+        //Input keyboard or controller
+       if(game.getGamepadManager().isControllerConnected()){
+           handleControllerInput(dt);
+       }else
+            handleInput(dt);
+
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
         powerUpManager.update(dt);
