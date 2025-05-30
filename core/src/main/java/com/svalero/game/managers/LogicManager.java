@@ -2,16 +2,21 @@ package com.svalero.game.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.MyGame;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.items.PowerUp;
+import com.svalero.game.projectiles.Projectile;
+import com.svalero.game.projectiles.Ray;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.GameScreen;
 import com.svalero.game.screen.PauseScreen;
-import com.svalero.game.utils.Level;
+import com.svalero.game.levels.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +39,8 @@ public class LogicManager {
 
     private LevelManager levelManager;
 
+    private PowerUpManager powerUpManager;
+
     private List<Explosion> explosions;
 
     private int numberLevel;
@@ -42,11 +49,22 @@ public class LogicManager {
 
     private boolean isLevelOver;
 
+    private boolean isLevelOverMusicSounding;
+
     private float levelCompleteTimer;
 
     private GameScreen gameScreen;
 
     private float freezeTime;
+
+    private boolean isPaused;
+
+    private String levelMusic;
+
+    private boolean changeBackground = false;
+
+    private boolean transitioningToGameOver = false;
+    private float gameOverTimer = 0f;
 
 
     public LogicManager(MyGame game, GameScreen gameScreen) {
@@ -55,15 +73,18 @@ public class LogicManager {
         this.ranger = new Ranger();
         this.enemyManager = new EnemyManager();
         this.levelManager = new LevelManager();
+        this.powerUpManager = new PowerUpManager();
         this.explosions = new ArrayList<>();
         this.numberLevel = 1;
         this.isLevelOver = false;
         this.levelCompleteTimer = 0;
         this.freezeTime = 0;
+        this.isPaused = false;
         initializeLevel();
     }
 
     public void initializeLevel(){
+        isLevelOverMusicSounding = false;
         Level level = levelManager.getCurrentLevel(numberLevel);
         System.out.println("Level number: " + numberLevel + " " + level);
         if(level == null){
@@ -74,10 +95,22 @@ public class LogicManager {
             game.setScreen(new GameOverScreen(game, ranger.getScore()));
             return;
         }
+        levelMusic = level.getMusic();
         isLevelOver = false;
         levelCompleteTimer = 0;
+        if(!level.getBackground().equals(background)){
+            changeBackground = true;
+            background = level.getBackground();
+        }
+        //Initialize managers
+        enemyManager.clear();
         enemyManager.setLevelEnemies(level.getEnemies());
-        background = level.getBackground();
+        powerUpManager.clear();
+        powerUpManager.setLevelPowerUps(level.getPowerUps());
+        //Remove ranger projectiles
+        ranger.getProjectiles().clear();
+        //Play music
+        game.getMusicManager().play(levelMusic, true, ConfigurationManager.getMusicVolume());
     }
 
     public void checkLevelEnd(float dt){
@@ -86,9 +119,14 @@ public class LogicManager {
         if(enemyManager.getEnemies().isEmpty()
             && enemyManager.getIndexEnemy() >= enemyManager.getLevelEnemies().size()){
             isLevelOver = true;
+            //Play music level over
+            if(!isLevelOverMusicSounding){
+                game.getMusicManager().stop();
+                game.getMusicManager().play(LEVEL_OVER_MUSIC, false, ConfigurationManager.getMusicVolume());
+                isLevelOverMusicSounding = true;
+            }
             if(levelCompleteTimer >= LEVEL_DELAY){
-                //Reset enemyManager
-                enemyManager = new EnemyManager();
+                game.getMusicManager().stop();
                 numberLevel++;
                 //Add bonus to score
                 float score = ranger.getScore();
@@ -132,30 +170,102 @@ public class LogicManager {
         //Pause
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            isPaused = true;
+            game.setScreen(new PauseScreen(game, gameScreen));
+        }
+    }
+
+    public void handleControllerInput(float dt) {
+        GamepadManager gamepadManager = game.getGamepadManager();
+
+        float x = ranger.getPosition().x;
+        float y = ranger.getPosition().y;
+        boolean isMoving = false;
+
+        float deadZone = 0.3f;
+
+        if (gamepadManager.getAxisLeftX() < -deadZone || gamepadManager.isButtonPressed(LEFT_PAD)){
+            x -= RANGER_SPEED * dt;
+            isMoving = true;
+        }
+        if (gamepadManager.getAxisLeftX() > deadZone || gamepadManager.isButtonPressed(RIGHT_PAD)){
+            x += RANGER_SPEED * dt;
+            isMoving = true;
+        }
+        if (gamepadManager.getAxisLeftY() > deadZone || gamepadManager.isButtonPressed(DOWN_PAD)) {
+            y -= RANGER_SPEED * dt; // Joystick Y inverted
+            isMoving = true;
+        }
+        if (gamepadManager.getAxisLeftY() < -deadZone || gamepadManager.isButtonPressed(UP_PAD)) {
+            y += RANGER_SPEED * dt;
+            isMoving = true;
+        }
+
+        ranger.setNewPosition(x, y, isMoving);
+
+        //X button code 0
+        if (gamepadManager.isButtonPressed(X_BUTTON)) {
+            ranger.createProjectile();
+        }
+
+        if (gamepadManager.isPausePressed()) {
+            freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            isPaused = true;
             game.setScreen(new PauseScreen(game, gameScreen));
         }
     }
 
     public void update(float dt) {
+        //Input keyboard or controller
+       if(game.getGamepadManager().isControllerConnected()){
+           handleControllerInput(dt);
+       }else
+            handleInput(dt);
 
-        handleInput(dt);
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
+        powerUpManager.update(dt);
         if(!ranger.isImmune() && !ranger.isDestroyed()){
             checkBodyCollisions();
             checkEnemiesProjectilesCollisions();
             checkRangerProjectilesCollision();
         }
+        if(!ranger.isDestroyed()) //Immune ranger can catch items
+            checkRangerPowerUpsCollision();
         for(Explosion explosion: explosions){
             explosion.update(dt);
         }
         checkLevelEnd(dt);
+
+        //Give a delay before change to game over screen
+        if (transitioningToGameOver) {
+            gameOverTimer += dt;
+            if (gameOverTimer >= DELAY_GAME_OVER) {
+                game.setScreen(new GameOverScreen(game, ranger.getScore()));
+            }
+        }
+    }
+
+    public void checkRangerPowerUpsCollision(){
+        if(ranger.isDestroyed() || isLevelOver) return;
+        //Increase a little ranger rect
+        Rectangle rangerRect = ranger.setLenientHitBox();
+        for(PowerUp powerUp: powerUpManager.getPowerUps()){
+            if(powerUp.isActive() && powerUp.getRect().overlaps(rangerRect)){
+                powerUp.setStatus(STATUS.DESTROYED);
+                ranger.setPowerUp(powerUp.getType());
+                SoundManager.play(POWER_UP_SOUND, HIGH_SOUND_VOLUME);
+            }
+        }
+        powerUpManager.getPowerUps().removeIf(powerUp -> powerUp.getStatus() == STATUS.DESTROYED);
     }
 
     public void checkRangerProjectilesCollision(){
         if(ranger.isDestroyed() || isLevelOver) return;
+
         for(Projectile projectile: ranger.getProjectiles()){
             if(projectile.isDestroyed()) continue;
+
             for(Character enemy: enemyManager.getEnemies()){
                 if(enemy.isActive() && projectile.getRect() != null && projectile.getRect().overlaps(enemy.getHitBox())){
                     projectile.setStatus(STATUS.DESTROYED);
@@ -163,15 +273,17 @@ public class LogicManager {
                     if(enemy.noHitPointsLeft()){
                         ranger.sumScore(enemy.getPointsScore());
                         enemy.setStatus(STATUS.DESTROYED);
-                        if(enemy instanceof GunTurret){
-                            if(!((GunTurret) enemy).getMissiles().isEmpty()){
-                                enemy.setStatus(STATUS.INACTIVE);
-                            }
-                        }
-                        CHARACTER_TYPE type = returnType(enemy);
                         Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                        explosions.add(new Explosion(position, type));
+                        explosions.add(new Explosion(position, enemy.getType(), enemy.getScale(), DEFAULT_FRAME_DURATION));
+                        //Explosion sounds
+                        if(enemy.getType() == CHARACTER_TYPE.DREADNOUGHT)
+                            SoundManager.play(DREADNOUGHT_EXPLODING, HIGH_SOUND_VOLUME);
+                        else
+                            SoundManager.play(DEFAULT_EXPLOSION_SOUND, HIGH_SOUND_VOLUME);
                         enemy.dispose();
+                    }else{
+                        enemy.setHitEffect(true);
+                        enemy.setHitEffectTime(0);
                     }
                 }
             }
@@ -186,52 +298,77 @@ public class LogicManager {
         return new Vector2(centerX, centerY);
     }
 
-    public CHARACTER_TYPE returnType(Character enemy){
-        if(enemy instanceof Fighter) return CHARACTER_TYPE.FIGHTER;
-        if(enemy instanceof Kamikaze) return CHARACTER_TYPE.KAMIKAZE;
-        if(enemy instanceof GunTurret) return CHARACTER_TYPE.GUN_TURRET;
-        if(enemy instanceof Asteroid) return CHARACTER_TYPE.ASTEROID;
-        return CHARACTER_TYPE.FIGHTER;
-    }
+    public void checkEnemiesProjectilesCollisions() {
+        if (ranger.isDestroyed() || isLevelOver) return;
 
-    public void checkEnemiesProjectilesCollisions(){
-        if(ranger.isDestroyed() || isLevelOver) return;
         boolean collision = false;
         int index = 0;
-        while(!collision && enemyManager.getProjectiles().size() > index){
-            Projectile projectile = enemyManager.getProjectiles().get(index);
-            Rectangle rect = projectile.getRect();
-            if(rect != null && rect.overlaps(ranger.getHitBox())) {
-                collision = true;
-                ranger.hit(projectile.getDamage());
-                if (ranger.isDestroyed()) {
-                    Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
-                    explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
-                    ranger.dispose();
-                    game.setScreen(new GameOverScreen(game, ranger.getScore()));
-                    return;
-                }
-            }else index++;
-        }
-        if(collision){
-            //EnemyManager has a projectiles copy, remove in copy and in the original
-            //GunTurret & FighterSquadron, that is reason why new projectiles are created sending
-            //shooter parent. Projectile and shooter are related in both ways
-            Projectile p = enemyManager.getProjectiles().get(index);
-            Character shooter = null;
 
-            if (p instanceof Missile missile) {
-                shooter = missile.getShooter();
-                if (shooter instanceof GunTurret turret) {
-                    turret.removeMissile(missile);
-                }
-            }else if(p.getOriginSquadron() != null){
-                p.getOriginSquadron().getProjectiles().remove(p);
+        while (!collision && enemyManager.getProjectiles().size() > index) {
+            Projectile projectile = enemyManager.getProjectiles().get(index);
+
+            if (projectile instanceof Ray) {
+                if (overlapProjectilePolygon((Ray) projectile)) {
+                    collision = true;
+                } else index++;
+            } else {
+                Rectangle rect = projectile.getRect();
+                if (rect != null && rect.overlaps(ranger.getHitBox())) {
+                    projectile.setStatus(STATUS.DESTROYED);
+                    collision = true;
+                } else index++;
             }
-            p.dispose();
-            enemyManager.getProjectiles().get(index).dispose();
-            enemyManager.getProjectiles().remove(index);
         }
+
+        if (collision) {
+            Projectile projectile = enemyManager.getProjectiles().get(index);
+
+            if (!(projectile instanceof Ray)) {
+                projectile.dispose();
+                enemyManager.getProjectiles().remove(index);
+            }
+
+            if (isRangerDestroyed(projectile)) {
+                ranger.dispose();
+                triggerGameOverTransition();
+            }
+        }
+    }
+
+    public boolean overlapProjectilePolygon(Ray projectile){
+        Polygon polygon = projectile.getPolygon();
+        Rectangle hitBox = ranger.getHitBox();
+        Polygon rPoly = new Polygon(new float[] {
+            0, 0,
+            hitBox.width, 0,
+            hitBox.width, hitBox.height,
+            0, hitBox.height
+        });
+        rPoly.setPosition(hitBox.x, hitBox.y);
+        if(polygon != null && Intersector.overlapConvexPolygons(polygon, rPoly)) {
+            return isRangerDestroyed(projectile);
+        }
+        return false;
+    }
+
+    public boolean isRangerDestroyed(Projectile projectile){
+
+        if(ranger.isShieldActive()){
+            SoundManager.play(SHIELD_HIT_SOUND, MEDIUM_SOUND_VOLUME);
+            ranger.hitShield(projectile.getDamage());
+        }else{
+            SoundManager.play(RANGER_HIT_SOUND, HIGH_SOUND_VOLUME);
+            ranger.hit(projectile.getDamage());
+        }
+
+        if (ranger.isDestroyed()) {
+            Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
+            //Sound ranger explosion
+            SoundManager.play(RANGER_EXPLODING, HIGH_SOUND_VOLUME);
+            explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, RANGER_EXPLOSION_SCALE, RANGER_EXPLOSION_FRAME_DURATION));
+            return true;
+        }
+        return false;
     }
 
     public void checkBodyCollisions() {
@@ -242,34 +379,47 @@ public class LogicManager {
             Character enemy = enemyManager.getEnemies().get(index);
             Rectangle hitBox = enemy.getHitBox();
             if(hitBox != null && hitBox.overlaps(ranger.getHitBox())) {
-                ranger.lostLife(RANGER_IMMUNITY_DURATION);
-                if (ranger.isDestroyed()) {
-                    Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
-                    explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER));
-                    ranger.dispose();
-                    game.setScreen(new GameOverScreen(game, ranger.getScore()));
-                    return;
+                if(ranger.isShieldActive()){
+                    ranger.destroyShield();
+                }else{
+                    ranger.lostLife(RANGER_IMMUNITY_DURATION);
+                    if (ranger.isDestroyed()) {
+                        Vector2 position = getCenterPositionExplosion(ranger.getHitBox());
+                        //Sound ranger explosion
+                        SoundManager.play(RANGER_EXPLODING, HIGH_SOUND_VOLUME);
+                        explosions.add(new Explosion(position, CHARACTER_TYPE.RANGER, RANGER_EXPLOSION_SCALE, RANGER_EXPLOSION_FRAME_DURATION));
+                        ranger.dispose();
+                        triggerGameOverTransition();
+                        return;
+                    }
                 }
 
                 Vector2 position = getCenterPositionExplosion(enemy.getHitBox());
                 CHARACTER_TYPE type = enemy.getType();
 
+                boolean destroyed = true;
+                if(enemy instanceof Dreadnought)
+                    destroyed = ((Dreadnought) enemy).destroyedByCollision();
+
                 if (enemy instanceof Fighter fighter) {
                     fighter.setStatus(STATUS.DESTROYED);
                     fighter.dispose();
-                }if(enemy instanceof GunTurret gunTurret) {
-                    if(!gunTurret.getMissiles().isEmpty()) gunTurret.setStatus(STATUS.INACTIVE);
-                    else {
-                        gunTurret.setStatus(STATUS.DESTROYED);
-                        gunTurret.dispose();
-                        enemyManager.getEnemies().remove(index);
-                    }
-                }else {
+                }else if(destroyed){
                     enemyManager.getEnemies().get(index).dispose();
                     enemyManager.getEnemies().remove(index);
                 }
 
-                explosions.add(new Explosion(position, type));
+                if(destroyed){
+                    //Explosion sound
+                    if(enemy.getType() == CHARACTER_TYPE.DREADNOUGHT)
+                        SoundManager.play(DREADNOUGHT_EXPLODING, HIGH_SOUND_VOLUME);
+                    else
+                        SoundManager.play(DEFAULT_EXPLOSION_SOUND, HIGH_SOUND_VOLUME);
+                    explosions.add(new Explosion(position, type, enemy.getScale(), DEFAULT_FRAME_DURATION));
+                }else{
+                    enemy.setHitEffect(true);
+                    enemy.setHitEffectTime(0);
+                }
                 collision = true;
             }else
                 index++;
@@ -281,10 +431,14 @@ public class LogicManager {
         float pausedDuration = now - freezeTime;
         ranger.setLastShot(ranger.getLastShot() + pausedDuration);
         for(Character enemy: enemyManager.getEnemies()){
-            //TODO actualizo a todos aunque no disparen
-            //Pendiente de refactorizar enemymanager
             enemy.setLastShot(enemy.getLastShot() + pausedDuration);
         }
         freezeTime = 0;
+    }
+
+    public void triggerGameOverTransition() {
+        transitioningToGameOver = true;
+        gameOverTimer = 0f;
+        game.getMusicManager().stop();
     }
 }

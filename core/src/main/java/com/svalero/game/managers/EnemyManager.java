@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.characters.*;
 
 import com.svalero.game.characters.Character;
-import com.svalero.game.utils.LevelEnemies;
+import com.svalero.game.projectiles.Projectile;
+import com.svalero.game.levels.LevelEnemies;
+import com.svalero.game.projectiles.Proton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -46,56 +48,80 @@ public class EnemyManager {
         timeSinceLastSpawn += dt;
         this.rangerPosition.set(rangerPosition);
 
+        //Create new enemy
         if (indexEnemy < levelEnemies.size() && timeSinceLastSpawn >= levelEnemies.get(indexEnemy).getDelay()) {
             timeSinceLastSpawn = 0;
             generateEnemy();
         }
 
         // Update all enemies
-        projectiles.clear();
         for (Character enemy : enemies) {
-            if(enemy instanceof Kamikaze || enemy instanceof GunTurret)
+            if(enemy instanceof Kamikaze)
                 enemy.update(dt, rangerPosition);
             else
                 enemy.update(dt);
-            //TODO a los tipos que disparen pedirles sus listas de disparo
-            if(enemy instanceof GunTurret){
-                projectiles.addAll(((GunTurret) enemy).getMissiles());
-            }else if(enemy instanceof Fighter)
-                projectiles.addAll(fighterSquadronManager.getProjectiles());
         }
-
         // Update fighter squadrons and add their fighters to the general list
         fighterSquadronManager.update(dt, rangerPosition);
         enemies.removeIf(enemy -> enemy instanceof Fighter); // Remove fighter references
         enemies.addAll(fighterSquadronManager.getAllFighters()); //Load new with updates to synchronize
-
+        //Update projectiles
+        for(Projectile projectile : projectiles) {
+            projectile.update(dt);
+        }
+        // Check if enemies have to create projectiles
+        for(Character enemy: enemies){
+            if(enemy instanceof GunTurret){
+                Projectile missile = ((GunTurret) enemy).createMissile(rangerPosition);
+                if(missile != null)
+                    projectiles.add(missile);
+            }else if(enemy instanceof Fighter){
+                List<Projectile> beams = ((Fighter) enemy).getSquadron().createProjectile();
+                if(beams != null)
+                    projectiles.addAll(beams);
+            }else if(enemy instanceof Frigate) {
+                Projectile ray = ((Frigate) enemy).createProjectile(rangerPosition);
+                if(ray != null)
+                    projectiles.add(ray);
+            }else if(enemy instanceof Dreadnought){
+                List<Proton> protons = ((Dreadnought) enemy).createProjectile();
+                if(protons != null)
+                    projectiles.addAll(protons);
+            }
+        }
         removeElementsOutScreen();
     }
 
     public void removeElementsOutScreen() {
         enemies.removeIf(enemy -> enemy.getStatus() == STATUS.OUT);
+        projectiles.removeIf(projectile -> projectile.getStatus() == STATUS.OUT
+            || projectile.getStatus() == STATUS.DESTROYED
+        );
     }
 
     public void generateEnemy() {
         ENEMY_TYPE enemyType = levelEnemies.get(indexEnemy).getType();
 
         switch (enemyType) {
-            case ASTEROID:
-                createAsteroidShower();
-                break;
-            case FIGHTER_SQUADRON:
-                createFightersSquadron();
-                break;
-            case GUN_TURRET:
-                createGunTurret();
-                break;
-            case KAMIKAZE:
-                createKamikaze();
-                break;
+            case ASTEROID -> createAsteroidShower();
+            case FIGHTER_SQUADRON -> createFightersSquadron();
+            case GUN_TURRET -> createGunTurret();
+            case KAMIKAZE -> createKamikaze();
+            case FRIGATE -> createFrigate();
+            case DREADNOUGHT -> createDreadnought();
         }
 
         indexEnemy++;
+    }
+
+    public void createDreadnought() {
+        Dreadnought dreadnought = new Dreadnought();
+        enemies.add(dreadnought);
+    }
+
+    public void createFrigate(){
+        Frigate frigate = new Frigate();
+        enemies.add(frigate);
     }
 
     public void createKamikaze(){
@@ -143,5 +169,14 @@ public class EnemyManager {
 
             enemies.add(asteroid);
         }
+    }
+
+    public void clear(){
+        projectiles.clear();
+        enemies.clear();
+        indexEnemy = 0;
+        levelEnemies.clear();
+        timeSinceLastSpawn = 0;
+        fighterSquadronManager.clear();
     }
 }

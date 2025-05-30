@@ -1,5 +1,6 @@
 package com.svalero.game.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.svalero.game.MyGame;
 import com.svalero.game.managers.LogicManager;
@@ -14,7 +15,6 @@ public class GameScreen implements Screen {
     private LogicManager logicManager;
 
 
-
     public GameScreen(MyGame game) {
         this.game = game;
         loadManagers(game);
@@ -27,24 +27,34 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        //Hide mouse
+        Gdx.input.setCursorCatched(true);
+        logicManager.setPaused(false);
         if(logicManager.getFreezeTime() > 0)
             logicManager.adjustFreezeTime();
     }
 
     @Override
     public void render(float dt) {
+        if (logicManager.isPaused()) return;
         logicManager.update(dt);
         renderManager.render(dt);
     }
 
     @Override
     public void resize(int width, int height) {
+        if(logicManager == null) return;
+        if(logicManager.getRanger() == null) return;
+        if(logicManager.getRanger().getPosition() == null) return;
+
+        //Resize changes position of ranger, when come back of pause, reposition it
+        if (height == 0) {
+            logicManager.setPaused(true);
+        }
     }
 
-    @Override public void pause() {}
-    @Override public void resume() {}
+    @Override public void pause() {logicManager.setPaused(true);}
+    @Override public void resume() {logicManager.setPaused(false);}
     @Override public void hide() {}
-    @Override public void dispose() {
-
-    }
+    @Override public void dispose() {}
 }

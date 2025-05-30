@@ -1,74 +1,74 @@
 ranger.png
-size: 231, 302
+size: 252, 539
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Explosion1
   rotate: false
-  xy: 0, 110
+  xy: 96, 91
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion2
   rotate: false
-  xy: 65, 110
+  xy: 161, 91
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion3
   rotate: false
-  xy: 130, 110
+  xy: 0, 155
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion4
   rotate: false
-  xy: 0, 174
+  xy: 65, 155
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion5
   rotate: false
-  xy: 65, 174
+  xy: 130, 155
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion6
   rotate: false
-  xy: 130, 174
+  xy: 0, 219
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion7
   rotate: false
-  xy: 0, 238
+  xy: 65, 219
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion8
   rotate: false
-  xy: 65, 238
+  xy: 130, 219
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Explosion9
   rotate: false
-  xy: 130, 238
+  xy: 0, 283
   size: 65, 64
   orig: 65, 64
   offset: 0, 0
   index: -1
 Main-Ship-Damaged
   rotate: false
-  xy: 132, 14
+  xy: 57, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -152,37 +152,58 @@ Main-Ship-Engine-Effect-Powering4
   index: -1
 Main-Ship-Engines-Base
   rotate: false
-  xy: 180, 14
+  xy: 105, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Engines-Supercharged
   rotate: false
-  xy: 0, 62
+  xy: 153, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Full-health
   rotate: false
-  xy: 48, 62
+  xy: 201, 43
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Slight-damage
   rotate: false
-  xy: 96, 62
+  xy: 0, 91
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Main-Ship-Very-damaged
   rotate: false
-  xy: 144, 62
+  xy: 48, 91
   size: 48, 48
   orig: 48, 48
+  offset: 0, 0
+  index: -1
+Powerup-Damage
+  rotate: false
+  xy: 123, 14
+  size: 48, 29
+  orig: 48, 29
+  offset: 0, 0
+  index: -1
+Powerup-Health
+  rotate: false
+  xy: 171, 14
+  size: 48, 29
+  orig: 48, 29
+  offset: 0, 0
+  index: -1
+Powerup-Shield
+  rotate: false
+  xy: 0, 43
+  size: 48, 29
+  orig: 48, 29
   offset: 0, 0
   index: -1
 Projectile-Laser-Large
@@ -229,7 +250,7 @@ Projectile-Minigun-Small
   index: -1
 Projectile-Plasma-Large
   rotate: false
-  xy: 123, 14
+  xy: 48, 43
   size: 9, 31
   orig: 9, 31
   offset: 0, 0
@@ -246,5 +267,89 @@ Projectile-Plasma-Small
   xy: 91, 14
   size: 7, 24
   orig: 7, 24
+  offset: 0, 0
+  index: -1
+Shield1
+  rotate: false
+  xy: 65, 283
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield2
+  rotate: false
+  xy: 129, 283
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield3
+  rotate: false
+  xy: 0, 347
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield4
+  rotate: false
+  xy: 64, 347
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield5
+  rotate: false
+  xy: 128, 347
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield6
+  rotate: false
+  xy: 0, 411
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield7
+  rotate: false
+  xy: 64, 411
+  size: 60, 64
+  orig: 60, 64
+  offset: 0, 0
+  index: -1
+Shield8
+  rotate: false
+  xy: 124, 411
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield9
+  rotate: false
+  xy: 188, 411
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield10
+  rotate: false
+  xy: 0, 475
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield11
+  rotate: false
+  xy: 64, 475
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Shield12
+  rotate: false
+  xy: 128, 475
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1

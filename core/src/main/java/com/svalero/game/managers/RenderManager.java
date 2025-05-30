@@ -10,7 +10,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.items.PowerUp;
+import com.svalero.game.projectiles.Projectile;
+import com.svalero.game.projectiles.Ray;
 import com.svalero.game.utils.DrawInfo;
+import com.svalero.game.utils.DrawInfoEffect;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import static com.svalero.game.constants.Constants.*;
+import static com.svalero.game.utils.ShowRectangleDebug.DEBUG_showEnemiesRectangle;
 
 @Data
 @NoArgsConstructor
@@ -39,8 +44,7 @@ public class RenderManager {
         this.logicManager = logicManager;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont(Gdx.files.internal("fonts/font32Option.fnt"));
-        String backgroundLevel = logicManager.getBackground();
-        this.background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + backgroundLevel));
+        updateLevelBackground();
     }
 
     public void render(float dt) {
@@ -51,6 +55,7 @@ public class RenderManager {
         batch.begin();
         drawBackground(dt);
         drawUI();
+        drawPowerUps();
         drawRanger();
         drawRangerProjectile();
         drawEnemies(dt);
@@ -58,15 +63,41 @@ public class RenderManager {
         drawExplosions();
         if(logicManager.isLevelOver())
             drawLevelUI();
+        if(logicManager.isChangeBackground()){
+            updateLevelBackground();
+            logicManager.setChangeBackground(false);
+        }
         batch.end();
 
-        //DEBUG tool to show rectangle border
+        /**
+         * DEBUG tool to show rectangle border
+         */
+
         //Ranger
-       /* ShowRectangleDebug.inRed(
-            logicManager.getRanger().getHitBox().x,
-            logicManager.getRanger().getHitBox().y,
-            logicManager.getRanger().getHitBox().width,
-            logicManager.getRanger().getHitBox().height);*/
+        /*if(logicManager.getRanger().getHitBox() != null){
+            DEBUG_showRangerRectangle(logicManager.getRanger().getHitBox());
+        }*/
+        //Enemies
+        //DEBUG_showEnemiesRectangle(logicManager.getEnemyManager().getEnemies());
+        //Ray
+        //DEBUG_showRaysPolygon(logicManager.getEnemyManager().getProjectiles());
+        //Projectiles
+        //DEBUG_showProjectilesRectangle(logicManager.getEnemyManager().getProjectiles());
+    }
+
+    public void drawPowerUps(){
+        List<PowerUp> powerUps = logicManager.getPowerUpManager().getPowerUps();
+        for(PowerUp powerUp : powerUps){
+            DrawInfoEffect effect = powerUp.drawWithRotationEffect();
+            batch.draw(effect.getRegion(), effect.getX(), effect.getY(), effect.getOriginX(), effect.getOriginY(),
+                effect.getWidth(), effect.getHeight(), effect.getScaleX(), effect.getScaleY(), effect.getRotation()
+            );
+        }
+    }
+
+    public void updateLevelBackground(){
+        String backgroundLevel = logicManager.getBackground();
+        this.background = new Texture(Gdx.files.internal(BACKGROUNDS + File.separator + backgroundLevel));
     }
 
     public void drawExplosions() {
@@ -96,6 +127,10 @@ public class RenderManager {
             batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
             batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
             batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+            if(ranger.isShieldActive()){
+                DrawInfo shield = ranger.getShield();
+                batch.draw(shield.getRegion(), shield.getX(), shield.getY(), shield.getWidth(), shield.getHeight());
+            }
         }
     }
 
@@ -107,29 +142,54 @@ public class RenderManager {
 
     public void drawEnemiesProjectiles(){
         for(Projectile projectile: logicManager.getEnemyManager().getProjectiles()) {
-            batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y);
+            if(projectile instanceof Ray){
+                DrawInfoEffect drawInfo = ((Ray) projectile).getDrawInfo();
+                batch.draw(drawInfo.getRegion(), drawInfo.getX(), drawInfo.getY(), drawInfo.getOriginX(),
+                    drawInfo.getOriginY(), drawInfo.getWidth(), drawInfo.getHeight(), drawInfo.getScaleX(),
+                    drawInfo.getScaleY(), drawInfo.getRotation());
+            } else{
+                float scale = projectile.getScale();
+                float width = projectile.getCurrentFrame().getRegionWidth() * scale;
+                float height = projectile.getCurrentFrame().getRegionHeight() * scale;
+                batch.draw(projectile.getCurrentFrame(), projectile.getPosition().x, projectile.getPosition().y,
+                    width, height);
+            }
         }
     }
 
     private void updateBackground(float dt, float bgHeight) {
         bgY -= BACKGROUND_SPEED * dt;
         if (bgY <= -bgHeight) {
-            bgY = 0;
+            bgY += bgHeight;
         }
     }
 
     private void drawBackground(float dt) {
-        updateBackground(dt, background.getHeight());
-        batch.draw(background, 0, bgY, Gdx.graphics.getWidth(), background.getHeight());
-        batch.draw(background, 0, bgY + background.getHeight(), Gdx.graphics.getWidth(), background.getHeight());
+        float bgHeight = background.getHeight();
+        float screenWidth = Gdx.graphics.getWidth();
+
+        updateBackground(dt, bgHeight);
+
+        // Cover screen
+        for (int i = 0; i < 3; i++) {
+            float y = bgY + i * bgHeight;
+            batch.draw(background, 0, y, screenWidth, bgHeight);
+        }
     }
 
     private void drawEnemies(float dt) {
         List<Character> enemies = logicManager.getEnemyManager().getEnemies();
         for(Character enemy: enemies) {
 
-            //Not render inactives or destroyed enemies
-            if(enemy.isInactive() || enemy.isDestroyed()) continue;
+            //Not render destroyed enemies
+            if(enemy.isDestroyed()) continue;
+
+            boolean shouldDraw = true;
+            if (enemy.isHitEffect()) {
+                float time = TimeUtils.nanoTime() / 1_000_000_000f;
+                shouldDraw = ((int)(time * 10) % 2 != 0);  // Draw in odd frames
+            }
+            if(!shouldDraw) continue;
 
             if(enemy instanceof GunTurret) {
                 DrawInfo body = ((GunTurret) enemy).getBody();
@@ -143,6 +203,16 @@ public class RenderManager {
                 DrawInfo engineEffect = ((Kamikaze) enemy).getEngineEffect();
                 batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
                 batch.draw(engineEffect.getRegion(), engineEffect.getX(), engineEffect.getY(), engineEffect.getWidth(), engineEffect.getHeight());
+            }else if(enemy instanceof Frigate) {
+                DrawInfo body = ((Frigate) enemy).getBody();
+                DrawInfo engine = ((Frigate) enemy).getEngine();
+                batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+                batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
+            }else if(enemy instanceof Dreadnought){
+                DrawInfo body = ((Dreadnought) enemy).getBody();
+                DrawInfo engine = ((Dreadnought) enemy).getEngine();
+                batch.draw(body.getRegion(), body.getX(), body.getY(), body.getWidth(), body.getHeight());
+                batch.draw(engine.getRegion(), engine.getX(), engine.getY(), engine.getWidth(), engine.getHeight());
             }else
                 batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
         }
@@ -167,11 +237,28 @@ public class RenderManager {
         TextureRegion shipIcon = R.getUITexture(SHIP_ICON);
         font.draw(batch, "X " + logicManager.getRanger().getLives(), screenWidth - WIDTH_HEALTH_BAR - SPACING, HEIGHT_HEALTH_BAR - 10);
         batch.draw(shipIcon, screenWidth - WIDTH_HEALTH_BAR - SPACING - WIDTH_SHIP_ICON - 10, 0, WIDTH_SHIP_ICON, HEIGHT_SHIP_ICON);
-        TextureRegion healthStat = R.getUITexture(HEALTH_STAT);
 
-        float healthPercentage = logicManager.getRanger().getHitPoints() / RANGER_HIT_POINTS;
+        float healthPercentage;
+        TextureRegion healthStat;
+        if(logicManager.getRanger().isShieldActive()){
+            healthStat = R.getUITexture(HEALTH_SHIELD_STAT);
+            healthPercentage = logicManager.getRanger().getPointsLifeShield() / RANGER_HIT_POINTS;
+        }else{
+            healthStat = R.getUITexture(HEALTH_STAT);
+            healthPercentage = logicManager.getRanger().getHitPoints() / RANGER_HIT_POINTS;
+        }
         float width = healthPercentage * WIDTH_HEALTH_STAT;
         batch.draw(healthStat, screenWidth - WIDTH_HEALTH_BAR + 5f, 5f, width, HEIGHT_STATS_BAR - 10f);
+
+        if(logicManager.getRanger().isShieldActive()){
+            TextureRegion shieldIcon = R.getUITexture(SHIELD_ICON);
+            batch.draw(shieldIcon, (screenWidth / 2f) - WIDTH_POWER_UP_ICON + 5, 0, WIDTH_POWER_UP_ICON, HEIGHT_POWER_UP_ICON);
+        }
+
+        if(logicManager.getRanger().isDoubleCannonActive()){
+            TextureRegion damageIcon = R.getUITexture(DAMAGE_ICON);
+            batch.draw(damageIcon, (screenWidth / 2f) + WIDTH_POWER_UP_ICON - 5, 0, WIDTH_POWER_UP_ICON, HEIGHT_POWER_UP_ICON);
+        }
     }
 
     private void drawLevelUI() {

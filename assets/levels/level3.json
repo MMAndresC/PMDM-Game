@@ -1,0 +1,29 @@
+{
+  "background": "bg3.png",
+  "animations": [],
+  "enemies": [
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 2, "type": "GUN_TURRET" },
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 2, "type": "GUN_TURRET" },
+    { "delay": 2, "type": "KAMIKAZE" },
+    { "delay": 2, "type": "KAMIKAZE" },
+    { "delay": 2, "type": "KAMIKAZE" },
+    { "delay": 5, "type": "ASTEROID" },
+    { "delay": 5, "type": "FRIGATE" },
+    { "delay": 2, "type": "FIGHTER_SQUADRON" },
+    { "delay": 5, "type": "FIGHTER_SQUADRON" },
+    { "delay": 5, "type": "GUN_TURRET" },
+    { "delay": 5, "type": "ASTEROID" },
+    { "delay": 5, "type": "FRIGATE" },
+    { "delay": 2, "type": "FRIGATE" }
+  ],
+  "powerUps": [
+    { "delay": 3, "type": "SHIELD" },
+    { "delay": 5, "type": "DAMAGE" },
+    { "delay": 7, "type": "HEALTH" },
+    { "delay": 8, "type": "SHIELD" },
+    { "delay": 5, "type": "HEALTH" }
+  ],
+  "music": "DavidKBD-Cosmic-Pack-06-Lunar-Rampage-full.ogg"
+}

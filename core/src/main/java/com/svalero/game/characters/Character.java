@@ -53,6 +53,11 @@ public abstract class Character implements Disposable {
 
     protected float pointsScore;
 
+    protected float scale = 1f;
+
+    protected boolean hitEffect = false;
+    protected float hitEffectTime = 0;
+
     public Character(float x, float y, float speed) {
         this.position.x = x;
         this.position.y = y;
@@ -71,6 +76,7 @@ public abstract class Character implements Disposable {
             lives--;
         }
     }
+
 
     public boolean noHitPointsLeft(){
         return hitPoints <= 0;

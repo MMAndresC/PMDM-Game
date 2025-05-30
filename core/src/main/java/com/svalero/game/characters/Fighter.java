@@ -52,11 +52,20 @@ public class Fighter extends Character {
         float height = currentFrame.getRegionHeight();
 
         hitBox.set(
-            position.x - width / 2f,
-            position.y - height / 2f,
+            position.x ,
+            position.y ,
             width,
-            height
-        );
+            height);
+    }
+
+    public void updateHitEffect(float dt){
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
     }
 
     public void setAnimationByDirection(Vector2 direction, float dt) {
@@ -73,19 +82,4 @@ public class Fighter extends Character {
         currentFrame = idleFrame;
     }
 
-    public Projectile fireProjectile() {
-        Vector2 origin = new Vector2(position.x + (currentFrame.getRegionWidth() / 2f ), position.y);
-        TextureRegion frame = R.getEnemyTexture(DEFAULT_ENEMY_PROJECTILE);
-       return new Projectile(this, origin, FIGHTER_BEAM_SPEED, FIGHTER_BEAM_DAMAGE, frame) {
-            @Override
-            public void update(float dt) {
-                position.y -= speed * dt;
-                if(position.y <= -currentFrame.getRegionHeight()){
-                    status = STATUS.OUT;
-                    return;
-                }
-                rect = new Rectangle(position.x, position.y, currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-            }
-       };
-    }
 }

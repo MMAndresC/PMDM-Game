@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.svalero.game.managers.R;
+import com.svalero.game.managers.SoundManager;
+import com.svalero.game.projectiles.Missile;
+import com.svalero.game.projectiles.Projectile;
 import com.svalero.game.utils.DrawInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.svalero.game.constants.Constants.*;
 
@@ -22,9 +22,9 @@ import static com.svalero.game.constants.Constants.*;
 public class GunTurret extends Character{
 
     DrawInfo body, gun, mount;
+
     int direction;
-    float lastShot;
-    List<Missile> missiles;
+
 
     public GunTurret(){
         //Init
@@ -32,13 +32,13 @@ public class GunTurret extends Character{
         type = CHARACTER_TYPE.GUN_TURRET;
         animationTime = 0;
         fireRate = GUN_TURRET_FIRE_RATE;
-        missiles = new ArrayList<>();
         lastShot = TimeUtils.nanoTime() / 1_000_000_000f;
         bulletDamage = GUN_TURRET_MISSILE_DAMAGE;
         bulletSpeed = GUN_TURRET_MISSILE_SPEED;
         status = STATUS.ACTIVE;
         lives = 1;
         pointsScore = GUN_TURRET_POINTS_SCORE;
+        scale = GUN_TURRET_SCALE;
 
         //Load textures
         //Random side of screen, 0 left, 1 right
@@ -77,22 +77,21 @@ public class GunTurret extends Character{
     }
 
     @Override
-    public void update(float dt, Vector2 rangerPosition) {
-        updateMissilePosition(dt);
-        //Not active only want update missiles
-        if(!isActive()) {
-            updateMissilePosition(dt);
-            if(missiles.isEmpty()) status = STATUS.OUT;
-            return;
-        }
-        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
+    public void update(float dt) {
         animationTime += dt;
         //Update position, only y movement
         position.y -= GUN_TURRET_SPEED;
-        //if turret is out of screen mark to be removed
+
+        if(hitEffect){
+            hitEffectTime += dt;
+            if (hitEffectTime >= ENEMY_HIT_EFFECT_DURATION) {
+                hitEffect = false;
+                hitEffectTime = 0;
+            }
+        }
+
         if(position.y < -mount.getRegion().getRegionHeight()){
-            if(missiles.isEmpty()) status = STATUS.OUT;
-            else status = STATUS.INACTIVE;
+            status = STATUS.OUT;
             return;
         }
         mount.setX(position.x);
@@ -116,10 +115,11 @@ public class GunTurret extends Character{
         body.setY(bodyY);
 
         // Center gun on body
+        float adjust = 7;
         float gunX = (direction == 0)
             ? bodyX + (bodyWidth) / 2f - 4
             : bodyX - (bodyWidth) / 2f;
-        float gunY = bodyY + (bodyHeight - gunHeight) / 2f - 7;
+        float gunY = bodyY + (bodyHeight - gunHeight) / 2f - adjust;
         gun.setX(gunX);
         gun.setY(gunY);
 
@@ -130,10 +130,20 @@ public class GunTurret extends Character{
         float bottom = Math.min(mount.getY(), body.getY());
 
         //Update hit box
-        hitBox.set(left, bottom, right - left, top - bottom);
+        if(direction == 0)
+            hitBox.set(left, bottom, right - left, top - bottom);
+        else
+            hitBox.set(left - adjust * 2, bottom, right - left - adjust, top - bottom);
+    }
 
+    public Projectile createMissile(Vector2 rangerPosition){
+        float currentTime = TimeUtils.nanoTime() / 1_000_000_000f;
         //Shoot?
         if (currentTime - lastShot >= fireRate) {
+
+            //Sound Missile
+            SoundManager.play(MISSILE_SOUND, LOW_SOUND_VOLUME);
+
             lastShot = currentTime;
             float originX = (direction == 0)
                 ? gun.getX() + (gun.getWidth() / 2f)
@@ -141,23 +151,8 @@ public class GunTurret extends Character{
             float originY = gun.getY() + gun.getHeight() / 2f - 10f;
 
             Vector2 origin = new Vector2(originX, originY);
-            missiles.add(new Missile(this, origin, bulletSpeed, bulletDamage, rangerPosition));
+            return new Missile(origin, bulletSpeed, bulletDamage, rangerPosition);
         }
+        return null;
     }
-
-    private void updateMissilePosition(float dt){
-        //Update missile position
-        for(Projectile missile: missiles){
-            missile.update(dt);
-            if(missile.isOutOfBounds()) missile.dispose();
-        }
-
-        //Remove out of screen missiles
-        missiles.removeIf(Projectile::isOutOfBounds);
-    }
-
-    public void removeMissile(Projectile p) {
-        missiles.remove(p);
-    }
-
 }

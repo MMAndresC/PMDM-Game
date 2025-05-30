@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.characters.Fighter;
 import com.svalero.game.characters.FighterSquadron;
-import com.svalero.game.characters.Projectile;
+import com.svalero.game.projectiles.Projectile;
 
 import static com.svalero.game.constants.Constants.*;
 
@@ -31,7 +31,7 @@ public class FighterSquadronManager {
         float offScreenY = screenHeight + 100f;
 
         // Coordinate y destination random
-        float targetY = screenHeight - MathUtils.random(100f, 200f);
+        float targetY = screenHeight - MathUtils.random(100f, 250f);
 
         //Space to set triangle formation
         float spacingX = 80f;
@@ -72,11 +72,15 @@ public class FighterSquadronManager {
             .collect(Collectors.toList());
     }
 
-    public List<Projectile> getProjectiles() {
-        return squadrons.stream()
-            .flatMap(s -> s.getProjectiles().stream())
-            .collect(Collectors.toList());
+    public List<Projectile> createProjectiles() {
+        List<Projectile> projectiles = new ArrayList<>();
+        for(FighterSquadron squadron : squadrons) {
+            projectiles.addAll(squadron.createProjectile());
+        }
+        return projectiles;
     }
 
-
+    public void clear(){
+        squadrons.clear();
+    }
 }
