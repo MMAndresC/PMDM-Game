@@ -157,7 +157,8 @@ public class GameOverScreen implements Screen {
         //Add in array to control option selected with gamepad
         menuButtons = new TextButton[] { newGameBtn, menuBtn, exitBtn };
         //First button selected
-        menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
+        if(game.getGamepadManager().isControllerConnected())
+            menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
 
         table.add(gameOverLabel).padBottom(PADDING_GAME_OVER_TITLE).row();
         table.add(scoreLabel).padBottom(PADDING_GAME_OVER_SCORE).row();

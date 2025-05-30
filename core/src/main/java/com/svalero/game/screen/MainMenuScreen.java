@@ -189,7 +189,8 @@ public class MainMenuScreen implements Screen {
         //Add in array to control option selected with gamepad
         menuButtons = new TextButton[] { playBtn, settingsBtn, exitBtn };
         //First button selected
-        menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
+        if(game.getGamepadManager().isControllerConnected())
+            menuButtons[selectedIndex].setColor(0.6f, 0.4f, 0.8f, 1f);
 
         table.add(title).padBottom(PADDING_TITLE).row();
         table.add(playBtn).width(WIDTH_BUTTON).height(HEIGHT_BUTTON).padBottom(PADDING_BUTTON).row();

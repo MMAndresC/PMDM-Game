@@ -185,7 +185,8 @@ public class SettingsScreen implements Screen {
 
         //Add components to control with gamepad
         menuElements = new Actor[]{soundCheckbox, volumeSlider, backBtn};
-        soundLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
+        if(game.getGamepadManager().isControllerConnected())
+            soundLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
 
         // Build layout
         table.add(settingLabel).center().padBottom(PADDING_SETTING_LABEL).row();

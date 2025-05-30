@@ -204,7 +204,8 @@ public class PauseScreen implements Screen {
 
         //Add components to control with gamepad
         menuElements = new Actor[]{soundCheckbox, volumeSlider, resumeBtn, menuBtn, exitBtn};
-        soundLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
+        if(game.getGamepadManager().isControllerConnected())
+            soundLabel.setColor(0.6f, 0.4f, 0.8f, 1f);
 
         table.add(pauseHeader).width(headerWidth).height(headerHeight)
             .padBottom(PADDING_BUTTON).center().row();
