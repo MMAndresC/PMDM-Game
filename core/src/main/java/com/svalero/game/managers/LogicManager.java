@@ -176,36 +176,39 @@ public class LogicManager {
     }
 
     public void handleControllerInput(float dt) {
+        GamepadManager gamepadManager = game.getGamepadManager();
+
         float x = ranger.getPosition().x;
         float y = ranger.getPosition().y;
         boolean isMoving = false;
 
         float deadZone = 0.3f;
 
-        if (game.getGamepadManager().getAxisLeftX() < -deadZone) {
+        if (gamepadManager.getAxisLeftX() < -deadZone || gamepadManager.isButtonPressed(LEFT_PAD)){
             x -= RANGER_SPEED * dt;
             isMoving = true;
         }
-        if (game.getGamepadManager().getAxisLeftX() > deadZone) {
+        if (gamepadManager.getAxisLeftX() > deadZone || gamepadManager.isButtonPressed(RIGHT_PAD)){
             x += RANGER_SPEED * dt;
             isMoving = true;
         }
-        if (game.getGamepadManager().getAxisLeftY() > deadZone) {
-            y -= RANGER_SPEED * dt; // Joystick Y invertido
+        if (gamepadManager.getAxisLeftY() > deadZone || gamepadManager.isButtonPressed(DOWN_PAD)) {
+            y -= RANGER_SPEED * dt; // Joystick Y inverted
             isMoving = true;
         }
-        if (game.getGamepadManager().getAxisLeftY() < -deadZone) {
+        if (gamepadManager.getAxisLeftY() < -deadZone || gamepadManager.isButtonPressed(UP_PAD)) {
             y += RANGER_SPEED * dt;
             isMoving = true;
         }
 
         ranger.setNewPosition(x, y, isMoving);
-        //TODO averiguar codigo del boton de disparo
-       /* if (game.getControllerManager().isButtonPressed(*//* botón disparo *//*)) {
-            ranger.createProjectile();
-        }*/
 
-        if (game.getGamepadManager().isPausePressed()) {
+        //X button code 0
+        if (gamepadManager.isButtonPressed(X_BUTTON)) {
+            ranger.createProjectile();
+        }
+
+        if (gamepadManager.isPausePressed()) {
             freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
             isPaused = true;
             game.setScreen(new PauseScreen(game, gameScreen));

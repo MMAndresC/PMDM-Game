@@ -169,23 +169,24 @@ public class GameOverScreen implements Screen {
     }
 
     private void handleControllerInput(float dt){
-        game.getGamepadManager().update(dt);
         GamepadManager gamepadManager = game.getGamepadManager();
 
         if (!gamepadManager.isControllerConnected()) return;
+
+        gamepadManager.update(dt);
 
         float yAxis = gamepadManager.getAxisLeftY();
 
         // Default inverted axis, correct it
         if (gamepadManager.isReady()) {
             // Up stick or up pad code
-            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(11))
+            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(UP_PAD))
                 && selectedIndex > 0
             ) {
                 updateSelectedButton(selectedIndex - 1);
                 gamepadManager.setCooldown(INPUT_DELAY);
                 // Down stick or down pad code
-            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(12))
+            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(DOWN_PAD))
                 && selectedIndex < menuButtons.length - 1
             ) {
                 updateSelectedButton(selectedIndex + 1);
@@ -194,7 +195,7 @@ public class GameOverScreen implements Screen {
         }
 
         // Button X confirm option
-        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(0)) {
+        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(X_BUTTON)) {
             gamepadManager.setCooldown(INPUT_DELAY); // Activating cooldown
 
             switch (selectedIndex) {

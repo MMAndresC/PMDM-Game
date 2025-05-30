@@ -246,6 +246,11 @@ public interface Constants {
 
     //Gamepad
     float INPUT_DELAY = 0.2f;
+    int X_BUTTON = 0;
+    int UP_PAD = 11;
+    int DOWN_PAD = 12;
+    int LEFT_PAD = 13;
+    int RIGHT_PAD = 14;
 
 
     //Enum

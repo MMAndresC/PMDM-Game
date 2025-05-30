@@ -230,21 +230,22 @@ public class SettingsScreen implements Screen {
 
     private void handleControllerInput(float dt){
         GamepadManager gamepadManager = game.getGamepadManager();
-        game.getGamepadManager().update(dt);
 
         if (!gamepadManager.isControllerConnected()) return;
+
+        gamepadManager.update(dt);
 
         float yAxis = gamepadManager.getAxisLeftY();
         float xAxis = gamepadManager.getAxisLeftX();
 
         //Vertical navigation between elements
         if (gamepadManager.isReady()) {
-            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(11))
+            if ((yAxis < -0.5f || gamepadManager.isButtonPressed(UP_PAD))
                 && selectedIndex > 0
             ) {
                 updateSelectedElement(selectedIndex - 1);
                 gamepadManager.setCooldown(INPUT_DELAY);
-            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(12))
+            } else if ((yAxis > 0.5f || gamepadManager.isButtonPressed(DOWN_PAD))
                 && selectedIndex < menuElements.length - 1
             ) {
                 updateSelectedElement(selectedIndex + 1);
@@ -256,7 +257,7 @@ public class SettingsScreen implements Screen {
         Actor current = menuElements[selectedIndex];
 
         // Press X in checkbox & button
-        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(0)) {
+        if (gamepadManager.isReady() && gamepadManager.isButtonPressed(X_BUTTON)) {
             gamepadManager.setCooldown(INPUT_DELAY); //Activating cooldown
 
             if (current instanceof CheckBox checkBox) {
