@@ -175,8 +175,50 @@ public class LogicManager {
         }
     }
 
+    public void handleControllerInput(float dt) {
+        float x = ranger.getPosition().x;
+        float y = ranger.getPosition().y;
+        boolean isMoving = false;
+
+        float deadZone = 0.3f;
+
+        if (game.getGamepadManager().getAxisLeftX() < -deadZone) {
+            x -= RANGER_SPEED * dt;
+            isMoving = true;
+        }
+        if (game.getGamepadManager().getAxisLeftX() > deadZone) {
+            x += RANGER_SPEED * dt;
+            isMoving = true;
+        }
+        if (game.getGamepadManager().getAxisLeftY() > deadZone) {
+            y -= RANGER_SPEED * dt; // Joystick Y invertido
+            isMoving = true;
+        }
+        if (game.getGamepadManager().getAxisLeftY() < -deadZone) {
+            y += RANGER_SPEED * dt;
+            isMoving = true;
+        }
+
+        ranger.setNewPosition(x, y, isMoving);
+        //TODO averiguar codigo del boton de disparo
+       /* if (game.getControllerManager().isButtonPressed(*//* botón disparo *//*)) {
+            ranger.createProjectile();
+        }*/
+
+        if (game.getGamepadManager().isPausePressed()) {
+            freezeTime = TimeUtils.nanoTime() / 1_000_000_000f;
+            isPaused = true;
+            game.setScreen(new PauseScreen(game, gameScreen));
+        }
+    }
+
     public void update(float dt) {
-        handleInput(dt);
+        //Input keyboard or controller
+       if(game.getGamepadManager().isControllerConnected()){
+           handleControllerInput(dt);
+       }else
+            handleInput(dt);
+
         ranger.update(dt);
         enemyManager.update(dt, ranger.getPosition());
         powerUpManager.update(dt);

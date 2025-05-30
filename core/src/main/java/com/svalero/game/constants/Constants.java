@@ -244,6 +244,9 @@ public interface Constants {
     float POWER_UP_SCALE = 1.5f;
     int POWER_UP_DUPLICATED_BONUS_POINTS = 1000;
 
+    //Gamepad
+    float INPUT_DELAY = 0.2f;
+
 
     //Enum
     enum STATUS { OUT, ACTIVE, DESTROYED, INACTIVE}
@@ -252,5 +255,4 @@ public interface Constants {
     enum CHARACTER_TYPE {RANGER, ASTEROID, GUN_TURRET, FIGHTER, KAMIKAZE, FRIGATE, DREADNOUGHT}
     enum POWER_UP {DAMAGE, HEALTH, SHIELD}
     enum RAY_STATE { GROWING, HOLDING }
-
 }
